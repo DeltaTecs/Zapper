@@ -11,24 +11,24 @@ import io.TextureBuffer;
 
 public class PaintableStats {
 
-	private static final BufferedImage IMG_HEALTH = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_HEALTH);
-	private static final BufferedImage IMG_SPEED = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_SPEED);
-	private static final BufferedImage IMG_EFFICIENCY = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_EFFICIENCY);
-	private static final BufferedImage IMG_RELOAD_WITH = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_RELOAD_WITH);
-	private static final BufferedImage IMG_RELOAD_WITHOUT = TextureBuffer
+	protected static final BufferedImage IMG_HEALTH = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_HEALTH);
+	protected static final BufferedImage IMG_SPEED = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_SPEED);
+	protected static final BufferedImage IMG_EFFICIENCY = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_EFFICIENCY);
+	protected static final BufferedImage IMG_RELOAD_WITH = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_RELOAD_WITH);
+	protected static final BufferedImage IMG_RELOAD_WITHOUT = TextureBuffer
 			.get(TextureBuffer.NAME_SYMBOL_STAT_RELOAD_WITHOUT);
-	private static final BufferedImage IMG_DAMAGE = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_DAMAGE);
-	private static final BufferedImage IMG_BULLETSPEED = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_BULLETSPEED);
-	private static final BufferedImage IMG_RANGE = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_RANGE);
+	protected static final BufferedImage IMG_DAMAGE = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_DAMAGE);
+	protected static final BufferedImage IMG_BULLETSPEED = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_BULLETSPEED);
+	protected static final BufferedImage IMG_RANGE = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_RANGE);
 
-	private static final Color COLOR_HEALTH = new Color(247, 0, 0);
-	private static final Color COLOR_SPEED = new Color(100, 190, 52);
-	private static final Color COLOR_EFFICIENCY = new Color(226, 104, 135);
-	private static final Color COLOR_RELOAD = new Color(213, 40, 0);
-	private static final Color COLOR_DAMAGE = new Color(130, 23, 0);
-	private static final Color COLOR_BULLETSPEED = new Color(244, 195, 0);
-	private static final Color COLOR_RANGE = new Color(104, 175, 226);
-	private static final Color COLOR_DELTA = new Color(223, 186, 130);
+	protected static final Color COLOR_HEALTH = new Color(247, 0, 0);
+	protected static final Color COLOR_SPEED = new Color(100, 190, 52);
+	protected static final Color COLOR_EFFICIENCY = new Color(226, 104, 135);
+	protected static final Color COLOR_RELOAD = new Color(213, 40, 0);
+	protected static final Color COLOR_DAMAGE = new Color(130, 23, 0);
+	protected static final Color COLOR_BULLETSPEED = new Color(244, 195, 0);
+	protected static final Color COLOR_RANGE = new Color(104, 175, 226);
+	protected static final Color COLOR_DELTA = new Color(223, 186, 130);
 	private static final Color COLOR_DETAIL_BG = ShopSecBuy.COLOR_BG;
 	private static final Stroke STOKE_CLASSIC = new BasicStroke(1);
 	private static final Font FONT_DETAIL = new Font("Arial", Font.BOLD, 15);

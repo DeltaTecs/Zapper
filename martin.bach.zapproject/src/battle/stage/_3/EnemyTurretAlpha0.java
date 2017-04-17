@@ -14,7 +14,7 @@ import io.TextureBuffer;
 public class EnemyTurretAlpha0 extends Enemy {
 
 	private static final float SPEED = 0;
-	private static final int MAX_HP = 30000;
+	private static final int MAX_HP = 3000;
 	private static final int SHOOTING_RANGE = 600;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_ENEMYTURRET_ALPHA0);
 	private static final float SCALE = 0.6f;

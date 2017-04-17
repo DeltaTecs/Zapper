@@ -28,7 +28,7 @@ public class MainZap {
 	public static final String VERSION = "0.8.2 _ Alpha";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = true;
+	public static final boolean FINAL_RUN = false || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
@@ -485,6 +485,11 @@ public class MainZap {
 		String s = new File("").getAbsolutePath();
 		System.out.println("[Debug] Path is: " + s);
 		return s;
+	}
+
+	private static boolean inWorkspace() {
+		String path = MainZap.class.getResource("").toString();
+		return !path.contains("jar");
 	}
 
 	public static AffineTransform getScaleTransform() {

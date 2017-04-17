@@ -8,7 +8,7 @@ import collision.CollisionType;
 public class ProjectileAlpha0 extends Projectile {
 
 	private static final float RADIUS = 7.0f;
-	private static final int DAMAGE = 400;
+	private static final int DAMAGE = 40;
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, false);
 	private static final float SPEED = 6.0f;

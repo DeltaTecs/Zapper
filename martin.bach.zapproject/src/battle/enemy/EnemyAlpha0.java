@@ -14,7 +14,7 @@ import library.ScheduledList;
 public class EnemyAlpha0 extends Enemy {
 
 	private static final float SPEED = 2.3f;
-	private static final int MAX_HP = 2400;
+	private static final int MAX_HP = 240;
 	private static final int SHOOTING_RANGE = 300;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_ALPHA0);
 	private static final float SCALE = 0.5f;

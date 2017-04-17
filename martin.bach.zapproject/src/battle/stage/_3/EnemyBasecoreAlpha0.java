@@ -19,7 +19,7 @@ public class EnemyBasecoreAlpha0 extends Enemy {
 	private static final float ROTATION_SPEED = 0.01f;
 	private static final float SCALE = 5;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_ENEMYBASECORE_ALPHA0);
-	private static final int MAX_HP = 200000;
+	private static final int MAX_HP = 20000;
 	private static final ExplosionEffectPattern EXPL_PATTERN = new ExplosionEffectPattern(80, 800);
 	private static final int SCORE = 100;
 	private static final int CRYSTALS = 120;

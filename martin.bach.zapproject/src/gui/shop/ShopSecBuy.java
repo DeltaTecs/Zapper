@@ -19,69 +19,69 @@ import io.TextureBuffer;
 public abstract class ShopSecBuy {
 
 	public static final int DESCRIPTION_WIDTH = 272;
-	private static final float SCROLL_SPEED = 3.0f;
-	private static final BufferedImage IMG_CRYSTAL = TextureBuffer.get(TextureBuffer.NAME_CRYSTAL);
-	private static final Color COLOR_HOVER_BACK = new Color(0, 0, 50, 30);
-	private static final Color COLOR_IMG_BG = new Color(230, 230, 255);
+	protected static final float SCROLL_SPEED = 3.0f;
+	protected static final BufferedImage IMG_CRYSTAL = TextureBuffer.get(TextureBuffer.NAME_CRYSTAL);
+	protected static final Color COLOR_HOVER_BACK = new Color(0, 0, 50, 30);
+	protected static final Color COLOR_IMG_BG = new Color(230, 230, 255);
 	protected static final Color COLOR_BG = new Color(240, 240, 255);
-	private static final Color COLOR_FG = new Color(50, 0, 0);
-	private static final Color COLOR_FRAME = new Color(180, 50, 50, 120);
-	private static final Color COLOR_FRAME_BG = new Color(255, 220, 220, 50);
-	private static final Color COLOR_SITE_BORDER = new Color(50, 50, 255, 80);
-	private static final Color COLOR_STATS_BG = new Color(200, 200, 255, 30);
-	private static final Color COLOR_BUY = new Color(255, 100, 100);
-	private static final Color COLOR_BUY_HOVER = new Color(255, 0, 0, 20);
-	private static final Color COLOR_SCROLL_BORDER = new Color(198, 24, 33, 100);
-	private static final Color COLOR_SCROLL_FG = new Color(104, 33, 38, 150);
-	private static final Color COLOR_SCROLL_HOVER = new Color(40, 0, 0, 40);
-	private static final Color COLOR_SCROLL_BG = new Color(255, 255, 255, 200);
-	private static final Font FONT_NAME = new Font("Arial", Font.BOLD, 20);
-	private static final Font FONT_PRICE = new Font("Arial", Font.BOLD, 19);
-	private static final Font FONT_BALANCE = new Font("Arial", Font.BOLD, 35);
-	private static final Font FONT_BUY = new Font("Arial", Font.BOLD, 44);
-	private static final Font FONT_STATS_PRICE = new Font("Arial", Font.BOLD, 24);
-	private static final Font FONT_STATS_TITEL = new Font("Arial", Font.BOLD, 24);
-	private static final Font FONT_STATS_DESC = new Font("Arial", 0, 15);
-	private static final BasicStroke STROKE_ITEM_FRAME = new BasicStroke(2.3f);
-	private static final BasicStroke STROKE_SITE_BORDER = new BasicStroke(4f);
-	private static final BasicStroke STROKE_BUY = new BasicStroke(4.5f);
-	private static final BasicStroke STROKE_SCROLL_BORDER = new BasicStroke(3.4f);
-	private static final BasicStroke STROKE_SHIPS_CUT = new BasicStroke(1);
-	private static final int SYM_BACK_X = 40;
-	private static final int SYM_BACK_Y = 70;
-	private static final Rectangle BOUNDS_BACK = new Rectangle(SYM_BACK_X - 5, SYM_BACK_Y - 5, 60, 60);
-	private static final Rectangle BOUNDS_SCROLL_UP = new Rectangle(230, 526, 50, 50);
-	private static final Rectangle BOUNDS_SCROLL_DOWN = new Rectangle(280, 526, 50, 50);
-	private static final Rectangle BOUNDS_BUY = new Rectangle(510, 152, 100, 50);
-	private static final Rectangle BOUNDS_DISPLAY_SHIPS = new Rectangle(39, 135, 293, 442);
-	private static final Polygon SYMBOL_BACK = new Polygon(new int[] { SYM_BACK_X, 50 + SYM_BACK_X, 50 + SYM_BACK_X },
+	protected static final Color COLOR_FG = new Color(50, 0, 0);
+	protected static final Color COLOR_FRAME = new Color(180, 50, 50, 120);
+	protected static final Color COLOR_FRAME_BG = new Color(255, 220, 220, 50);
+	protected static final Color COLOR_SITE_BORDER = new Color(50, 50, 255, 80);
+	protected static final Color COLOR_STATS_BG = new Color(200, 200, 255, 30);
+	protected static final Color COLOR_BUY = new Color(255, 100, 100);
+	protected static final Color COLOR_BUY_HOVER = new Color(255, 0, 0, 20);
+	protected static final Color COLOR_SCROLL_BORDER = new Color(198, 24, 33, 100);
+	protected static final Color COLOR_SCROLL_FG = new Color(104, 33, 38, 150);
+	protected static final Color COLOR_SCROLL_HOVER = new Color(40, 0, 0, 40);
+	protected static final Color COLOR_SCROLL_BG = new Color(255, 255, 255, 200);
+	protected static final Font FONT_NAME = new Font("Arial", Font.BOLD, 20);
+	protected static final Font FONT_PRICE = new Font("Arial", Font.BOLD, 19);
+	protected static final Font FONT_BALANCE = new Font("Arial", Font.BOLD, 35);
+	protected static final Font FONT_BUY = new Font("Arial", Font.BOLD, 44);
+	protected static final Font FONT_STATS_PRICE = new Font("Arial", Font.BOLD, 24);
+	protected static final Font FONT_STATS_TITEL = new Font("Arial", Font.BOLD, 24);
+	protected static final Font FONT_STATS_DESC = new Font("Arial", 0, 15);
+	protected static final BasicStroke STROKE_ITEM_FRAME = new BasicStroke(2.3f);
+	protected static final BasicStroke STROKE_SITE_BORDER = new BasicStroke(4f);
+	protected static final BasicStroke STROKE_BUY = new BasicStroke(4.5f);
+	protected static final BasicStroke STROKE_SCROLL_BORDER = new BasicStroke(3.4f);
+	protected static final BasicStroke STROKE_SHIPS_CUT = new BasicStroke(1);
+	protected static final int SYM_BACK_X = 40;
+	protected static final int SYM_BACK_Y = 70;
+	protected static final Rectangle BOUNDS_BACK = new Rectangle(SYM_BACK_X - 5, SYM_BACK_Y - 5, 60, 60);
+	protected static final Rectangle BOUNDS_SCROLL_UP = new Rectangle(230, 526, 50, 50);
+	protected static final Rectangle BOUNDS_SCROLL_DOWN = new Rectangle(280, 526, 50, 50);
+	protected static final Rectangle BOUNDS_BUY = new Rectangle(510, 152, 100, 50);
+	protected static final Rectangle BOUNDS_DISPLAY_SHIPS = new Rectangle(39, 135, 293, 442);
+	protected static final Polygon SYMBOL_BACK = new Polygon(new int[] { SYM_BACK_X, 50 + SYM_BACK_X, 50 + SYM_BACK_X },
 			new int[] { 25 + SYM_BACK_Y, SYM_BACK_Y, 50 + SYM_BACK_Y }, 3);
-	private static final Polygon SYMBOL_UP = new Polygon(
+	protected static final Polygon SYMBOL_UP = new Polygon(
 			new int[] { BOUNDS_SCROLL_UP.x + 10, BOUNDS_SCROLL_UP.x + 40, BOUNDS_SCROLL_UP.x + 25 },
 			new int[] { BOUNDS_SCROLL_UP.y + 40, BOUNDS_SCROLL_UP.y + 40, BOUNDS_SCROLL_UP.y + 10 }, 3);
-	private static final Polygon SYMBOL_DOWN = new Polygon(
+	protected static final Polygon SYMBOL_DOWN = new Polygon(
 			new int[] { BOUNDS_SCROLL_DOWN.x + 10, BOUNDS_SCROLL_DOWN.x + 40, BOUNDS_SCROLL_DOWN.x + 25 },
 			new int[] { BOUNDS_SCROLL_DOWN.y + 10, BOUNDS_SCROLL_DOWN.y + 10, BOUNDS_SCROLL_DOWN.y + 40 }, 3);
-	private static final int ITEM_POS_X = 50;
-	private static final int ITEM_IMAGE_WIDTH = 75;
-	private static final int ITEM_IMAGE_HEIGHT = 50;
-	private static final int ITEM_HEIGHT = 80;
-	private static final int ITEM_WIDTH = 240;
-	private static final int[] POINTS_X_TITLE_BG_CORNER = new int[] { ITEM_WIDTH + ITEM_POS_X + 4,
+	protected static final int ITEM_POS_X = 50;
+	protected static final int ITEM_IMAGE_WIDTH = 75;
+	protected static final int ITEM_IMAGE_HEIGHT = 50;
+	protected static final int ITEM_HEIGHT = 80;
+	protected static final int ITEM_WIDTH = 240;
+	protected static final int[] POINTS_X_TITLE_BG_CORNER = new int[] { ITEM_WIDTH + ITEM_POS_X + 4,
 			ITEM_WIDTH + ITEM_POS_X + 4 + 30, ITEM_WIDTH + ITEM_POS_X + 4 };
-	private static final int SELECT_IMAGE_WIDTH = 150;
-	private static final int SELECT_IMAGE_HEIGHT = 140;
+	protected static final int SELECT_IMAGE_WIDTH = 150;
+	protected static final int SELECT_IMAGE_HEIGHT = 140;
 	// -- Dailog ----------
-	private static final Color COLOR_DIA_BG = new Color(255, 255, 255, 240);
-	private static final Color COLOR_DIA_BORDER = new Color(0, 0, 0, 100);
-	private static final Color COLOR_DIA_TEXT = new Color(0, 0, 0, 180);
-	private static final Font FONT_DIALOG = new Font("Arial", Font.BOLD, 22);
-	private static final Font FONT_DIALOG_OPTION = new Font("Arial", Font.BOLD, 40);
-	private static final Rectangle BOUNDS_DIALOG = new Rectangle(140, 250, 370, 150);
-	private static final int BORDERWIDTH_DIALOG = 8;
-	private static final Stroke STROKE_BUTTON_BORDER = new BasicStroke(5);
-	private static final Rectangle BOUNDS_DIA_YES = new Rectangle(180, 330, 120, 50);
-	private static final Rectangle BOUNDS_DIA_NO = new Rectangle(350, 330, 120, 50);
+	protected static final Color COLOR_DIA_BG = new Color(255, 255, 255, 240);
+	protected static final Color COLOR_DIA_BORDER = new Color(0, 0, 0, 100);
+	protected static final Color COLOR_DIA_TEXT = new Color(0, 0, 0, 180);
+	protected static final Font FONT_DIALOG = new Font("Arial", Font.BOLD, 22);
+	protected static final Font FONT_DIALOG_OPTION = new Font("Arial", Font.BOLD, 40);
+	protected static final Rectangle BOUNDS_DIALOG = new Rectangle(140, 250, 370, 150);
+	protected static final int BORDERWIDTH_DIALOG = 8;
+	protected static final Stroke STROKE_BUTTON_BORDER = new BasicStroke(5);
+	protected static final Rectangle BOUNDS_DIA_YES = new Rectangle(180, 330, 120, 50);
+	protected static final Rectangle BOUNDS_DIA_NO = new Rectangle(350, 330, 120, 50);
 	private static final String TEXT_DIA = "Exchange ship?";
 	// ---
 

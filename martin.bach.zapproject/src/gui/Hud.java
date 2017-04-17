@@ -269,4 +269,8 @@ public abstract class Hud {
 		Hud.shopIconVisible = shopIconVisible;
 	}
 
+	public static boolean clickInShopButton(int tx, int ty) {
+		return CLICK_OPENSHOP_AREA.contains(tx, ty);
+	}
+
 }

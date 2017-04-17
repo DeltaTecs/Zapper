@@ -15,7 +15,7 @@ import io.TextureBuffer;
 public class EnemyBeta2 extends Enemy {
 
 	private static final float SPEED = 4.3f;
-	private static final int MAX_HP = 1200;
+	private static final int MAX_HP = 120;
 	private static final int SHOOTING_RANGE = 900;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_BETA2);
 	private static final float SCALE = 0.7f;

@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import corecase.MainZap;
 import gui.Frame;
+import gui.Hud;
 import gui.screens.pause.PauseScreen;
 import library.ClickListener;
 import library.ClickableObject;
@@ -85,6 +86,10 @@ public abstract class Shop {
 
 		@Override
 		public void release(int dx, int dy) {
+			
+			
+			if (Hud.clickInShopButton(dx, dy))
+				return; // Nicht doppelt klicken
 
 			switch (directory) {
 			case MENU:
