@@ -8,9 +8,11 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import corecase.MainZap;
+
 public abstract class TextureBuffer {
 
-	private static final String PATH = new File("").getAbsolutePath() + "\\assets\\textures\\";
+	private static final String PATH = MainZap.DIRECTORY + "\\assets\\textures\\";
 
 	public static final String NAME_PLAYERSHIP_DEFAULT = "playerShipDefault.png";
 	public static final String NAME_PLAYERSHIP_DELTAVI = "playerShipDeltaVI.png";

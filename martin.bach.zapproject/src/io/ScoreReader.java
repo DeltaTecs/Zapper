@@ -7,11 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 
+import corecase.MainZap;
 import gui.screens.death.ScoreEntry;
 
 public class ScoreReader {
 
-	private static final File FILE = new File("assets\\save\\scr.sv");
+	private static final File FILE = new File(MainZap.DIRECTORY + "\\assets\\save\\scr.sv");
 	private static final String SPLIT_POINTER_ENTRY = ">";
 	private static final String SPLIT_POINTER_VALUE = "<";
 

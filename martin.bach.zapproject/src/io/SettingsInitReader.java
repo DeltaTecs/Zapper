@@ -11,7 +11,7 @@ import corecase.MainZap;
 
 public abstract class SettingsInitReader {
 
-	private static final File FILE = new File("assets\\save\\set.sv");
+	private static final File FILE = new File(MainZap.DIRECTORY + "\\assets\\save\\set.sv");
 	private static final String SPLIT_FLAG = ";";
 
 	public static float loadScale() {

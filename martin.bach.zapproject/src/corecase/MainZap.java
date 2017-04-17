@@ -24,9 +24,10 @@ import schedule.DynamicUpdateLoop;
 
 public class MainZap {
 
-	public static final String VERSION = "0.1.7 _ Alpha";
+	public static final String VERSION = "0.8.1 _ Alpha";
+	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = true;
+	public static final boolean FINAL_RUN = false;
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
@@ -161,7 +162,7 @@ public class MainZap {
 			collisionLoop.setBooster(collisionLoop.getTimeBetweenFramesMS() / 2);
 		// ----
 
-		StageManager.setUp(1); // ### debug. Eig. setUp(1)
+		StageManager.setUp(4); // ### debug. Eig. setUp(1)
 		Hud.setUpClickListener();
 		PauseScreen.setUp(false);
 		Shop.setUp();
@@ -169,7 +170,6 @@ public class MainZap {
 		if (FINAL_RUN)
 			Tutorial.show();
 
-		// ### DEBUG
 		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 
 	}
@@ -478,6 +478,13 @@ public class MainZap {
 		player.setSpeed(10.0f);
 		player.setBulletSpeed(17.0f);
 		player.setBulletDamage(700);
+	}
+
+	public static String determineDirectory() {
+		String s = MainZap.class.getResource(".").toString();
+		s = s.replaceAll("file:/", "");
+		s = s.replaceAll("/corecase/", "");
+		return s;
 	}
 
 	public static AffineTransform getScaleTransform() {
