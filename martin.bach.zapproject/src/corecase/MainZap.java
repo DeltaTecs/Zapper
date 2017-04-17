@@ -26,7 +26,7 @@ public class MainZap {
 
 	public static final String VERSION = "0.1.7 _ Alpha";
 
-	public static final boolean FINAL_RUN = false;
+	public static final boolean FINAL_RUN = true;
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
@@ -161,7 +161,7 @@ public class MainZap {
 			collisionLoop.setBooster(collisionLoop.getTimeBetweenFramesMS() / 2);
 		// ----
 
-		StageManager.setUp(4); // ### debug. Eig. setUp(1)
+		StageManager.setUp(1); // ### debug. Eig. setUp(1)
 		Hud.setUpClickListener();
 		PauseScreen.setUp(false);
 		Shop.setUp();

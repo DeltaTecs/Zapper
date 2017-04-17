@@ -48,6 +48,7 @@ public abstract class Shop {
 			ShopSecBuy.update();
 			break;
 		case UPGRADES:
+			ShopSecUpgrade.update();
 			break;
 		default: // Gibts nicht
 			break;
@@ -71,6 +72,7 @@ public abstract class Shop {
 			ShopSecBuy.paint(g);
 			break;
 		case UPGRADES:
+			ShopSecUpgrade.paint(g);
 			break;
 		default: // Gibts nicht
 			break;
@@ -92,6 +94,7 @@ public abstract class Shop {
 				ShopSecBuy.callClick(dx, dy);
 				break;
 			case UPGRADES:
+				ShopSecUpgrade.callClick(dx, dy);
 				break;
 			default: // Gibts nicht
 				break;
@@ -118,6 +121,7 @@ public abstract class Shop {
 				ShopSecBuy.callMove(dx, dy);
 				break;
 			case UPGRADES:
+				ShopSecUpgrade.callMove(dx, dy);
 				break;
 			default: // Gibts nicht
 				break;
@@ -134,6 +138,7 @@ public abstract class Shop {
 				ShopSecBuy.callMove(dx, dy);
 				break;
 			case UPGRADES:
+				ShopSecUpgrade.callMove(dx, dy);
 				break;
 			default: // Gibts nicht
 				break;
@@ -157,7 +162,7 @@ public abstract class Shop {
 	}
 
 	public static void reset() {
-		// &&& upgrades zurücksetzten
+		ShopSecUpgrade.reset();
 	}
 
 	private static void paintBackground(Graphics2D g) {
