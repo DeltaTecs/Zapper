@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.io.File;
 import java.util.Random;
 
 import battle.stage.StageManager;
@@ -24,10 +25,10 @@ import schedule.DynamicUpdateLoop;
 
 public class MainZap {
 
-	public static final String VERSION = "0.8.1 _ Alpha";
+	public static final String VERSION = "0.8.2 _ Alpha";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = false;
+	public static final boolean FINAL_RUN = true;
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
@@ -481,9 +482,8 @@ public class MainZap {
 	}
 
 	public static String determineDirectory() {
-		String s = MainZap.class.getResource(".").toString();
-		s = s.replaceAll("file:/", "");
-		s = s.replaceAll("/corecase/", "");
+		String s = new File("").getAbsolutePath();
+		System.out.println("[Debug] Path is: " + s);
 		return s;
 	}
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import corecase.MainZap;
+import io.TextureBuffer;
 import library.ClickableObject;
 
 public class Frame extends JFrame {
@@ -26,6 +27,7 @@ public class Frame extends JFrame {
 	public Frame() {
 
 		super("Zapper " + MainZap.VERSION);
+		setIconImage(TextureBuffer.get(TextureBuffer.NAME_HEADIMAGE));
 		setLayout(null);
 		setResizable(MainZap.allowBiggerWindow);
 		getContentPane().setPreferredSize(new Dimension(SIZE, SIZE));
@@ -112,7 +114,7 @@ public class Frame extends JFrame {
 	public BufferStrategy getBufferStrategy() {
 		return bufferStrategy;
 	}
-	
+
 	public void clearClickables() {
 		coreClickables.clear();
 	}

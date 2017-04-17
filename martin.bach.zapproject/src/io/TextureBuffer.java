@@ -14,6 +14,7 @@ public abstract class TextureBuffer {
 
 	private static final String PATH = MainZap.DIRECTORY + "\\assets\\textures\\";
 
+	public static final String NAME_HEADIMAGE = "headImage.png";
 	public static final String NAME_PLAYERSHIP_DEFAULT = "playerShipDefault.png";
 	public static final String NAME_PLAYERSHIP_DELTAVI = "playerShipDeltaVI.png";
 	public static final String NAME_PLAYERSHIP_DELTAVII = "playerShipDeltaVII.png";
@@ -68,6 +69,7 @@ public abstract class TextureBuffer {
 
 	private static void initLoadList() {
 
+		names.add(NAME_HEADIMAGE);
 		names.add(NAME_PLAYERSHIP_DELTAVI);
 		names.add(NAME_PLAYERSHIP_DELTAVII);
 		names.add(NAME_PLAYERSHIP_DEFAULT);
