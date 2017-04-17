@@ -1,0 +1,994 @@
+package ingameobjects;
+
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+
+import battle.collect.BulletDamageUp;
+import battle.collect.BulletRangeUp;
+import battle.collect.BulletSpeedUp;
+import battle.collect.ReloadUp;
+import battle.collect.SpeedUp;
+import battle.projectile.Projectile;
+import battle.projectile.ProjectileDesign;
+import collision.Collideable;
+import collision.CollisionInformation;
+import collision.CollisionType;
+import corecase.MainZap;
+import gui.Frame;
+import gui.Hud;
+import gui.Map;
+import gui.PlayerAmmoIndicator;
+import gui.PlayerHpBar;
+import gui.effect.ExplosionEffect;
+import gui.effect.ExplosionEffectPattern;
+import gui.screens.death.DeathScreen;
+import gui.shop.Shop;
+import gui.shop.meta.DefaultShipConfig;
+import gui.shop.meta.ProjDesignDefault;
+import gui.shop.meta.ShipStartConfig;
+import io.TextureBuffer;
+import library.SpeedVector;
+
+public class Player extends InteractiveObject {
+
+	// -- Texturen für Boost-Indicator -------
+	private static final BufferedImage IMG_SPEED_BOOST_R = TextureBuffer.get(TextureBuffer.NAME_COLLECT_SPEEDUP_ROUND);
+	private static final BufferedImage IMG_SPEED_BOOST_C = TextureBuffer.get(TextureBuffer.NAME_COLLECT_SPEEDUP_CORNER);
+	private static final BufferedImage IMG_BULLETSPEED_BOOST_R = TextureBuffer
+			.get(TextureBuffer.NAME_COLLECT_BULLET_SPEED_UP_ROUND);
+	private static final BufferedImage IMG_BULLETSPEED_BOOST_C = TextureBuffer
+			.get(TextureBuffer.NAME_COLLECT_BULLET_SPEED_UP_CORNER);
+	private static final BufferedImage IMG_RANGE_BOOST_R = TextureBuffer
+			.get(TextureBuffer.NAME_COLLECT_BULLET_RANGE_UP_ROUND);
+	private static final BufferedImage IMG_RANGE_BOOST_C = TextureBuffer
+			.get(TextureBuffer.NAME_COLLECT_BULLET_RANGE_UP_CORNER);
+	private static final BufferedImage IMG_DMG_BOOST_R = TextureBuffer
+			.get(TextureBuffer.NAME_COLLECT_BULLET_DMG_UP_ROUND);
+	private static final BufferedImage IMG_DMG_BOOST_C = TextureBuffer
+			.get(TextureBuffer.NAME_COLLECT_BULLET_DMG_UP_CORNER);
+	private static final BufferedImage IMG_RELOAD_BOOST_R = TextureBuffer
+			.get(TextureBuffer.NAME_COLLECT_RELOAD_UP_ROUND);
+	private static final BufferedImage IMG_RELOAD_BOOST_C = TextureBuffer
+			.get(TextureBuffer.NAME_COLLECT_RELOAD_UP_CORNER);
+	// ---
+
+	private static final int POS_BOOST_INDICATOR = 170;
+	private static final int SIZE_BOOST_INDICATOR = 53;
+	private static final int SPACE_BOOST_INDICATOR = 6;
+	private static final float ALPHA_BOOST_IND_FG = 0.4f;
+	private static final float ALPHA_BOOST_IND_BG = 0.3f;
+	private static final float ALPHA_BOOST_IND_ADD_BOUND = 0.1f;
+	private static final float ALPHA_BOOST_IND_ADD_DELTA = 0.008f;
+
+	private static final int PROJ_RANGE_DEFAULT = 800;
+	private static final int HP_MAX_DEFAULT = 80000;
+	private static final boolean REALISTIC_PROJ_VELO = true;
+	private static final float BOOST_FAC_SPEED = 1.5f;
+	private static final float BOOST_FAC_BULLET_SPEED = 1.5f;
+	private static final float BOOST_FAC_BULLET_RANGE = 3f;
+	private static final float BOOST_FAC_BULLET_DMG = 1.5f;
+	private static final float BOOST_FAC_RELOAD = 0.4f;
+	private static final float RES_RELOAD_BOOST_AMMO_WASTE_FAC = 2f;
+	private static final float WARPSPEED_MULTIPLIER = 1.04f;
+	private static final float WARP_BLENDING_SPEEDBORDER = -35f;
+
+	private static CollisionInformation collisionInfo = new CollisionInformation(30, CollisionType.COLLIDE_AS_PLAYER,
+			true);
+	private float speed = 3.5f; // default
+	private BufferedImage texture;
+	private float textureScale = 1.0f;
+	private SpeedVector velocity = new SpeedVector(0, 0);
+	private int screenAimX = Frame.HALF_SCREEN_SIZE;
+	private int screenAimY = 0;
+	private int midSizeX;
+	private int midSizeY;
+	private double rotation = 0;
+	private AffineTransform textureTransform;
+	private PlayerHpBar hpBar = new PlayerHpBar(HP_MAX_DEFAULT);
+	private PlayerAmmoIndicator ammoIndicator = new PlayerAmmoIndicator();
+	private int projRange = PROJ_RANGE_DEFAULT;
+	private boolean warping = false;
+	private boolean shooting = false;
+	private boolean outOfAmmo = false;
+	// ---VVV Waffen-konfig --- !!! Wenn geändert: Auch in totalReset()
+	// ändern!!!
+	private float ammoUsageFac = 1.8f;
+	private float maxWeaponCooldownWithout = 4.5f;
+	private float maxWeaponCooldownWith = 3.0f;
+	private float maxWeaponCooldown = maxWeaponCooldownWith;
+	private float weaponCooldown = maxWeaponCooldown;
+	// !!! Waffen-Cooldown wird in 0.1 - Schritten ab gezogen.
+	// Alles andere in 1er!
+	private int bulletDamage = 300; // eig. 300
+	private float bulletSpeed = 12;
+	private ProjectileDesign projDesign = new ProjDesignDefault();
+	// --- ende: Waffen-konfig
+
+	// W, A, S, D
+	private boolean[] arrowKeysPressed = new boolean[] { false, false, false, false };
+	private int maxHp = HP_MAX_DEFAULT;
+	private int hp = HP_MAX_DEFAULT;
+	private ExplosionEffectPattern explPattern = new ExplosionEffectPattern(60, 600);
+	private ExplosionEffect explEffect;
+	private boolean alive = true;
+	private boolean visibile = true;
+	// speed-boost?, bullet-speed-boost?, bullet-range-boost?, bullet-dmg-boost?
+	// reload-boost?
+	private boolean[] boostsActive = new boolean[] { false, false, false, false, false };
+	private int[] boostDurations = new int[] { 0, 0, 0, 0, 0 };
+	private float boostAlphaAdd = 0.0f;
+	private float boostAlphaDelta = ALPHA_BOOST_IND_ADD_DELTA;
+	private ShipStartConfig lastApplyedConfig;
+
+	public Player() {
+		super(collisionInfo, false, false); // false -> nicht an Stage gebunden;
+											// false -> egal ob BG oder FG
+		texture = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DEFAULT);
+		midSizeX = (int) ((texture.getWidth() * textureScale) / 2);
+		midSizeY = (int) ((texture.getHeight() * textureScale) / 2);
+		textureTransform = new AffineTransform();
+		textureTransform.translate(Frame.HALF_SCREEN_SIZE - midSizeX, Frame.HALF_SCREEN_SIZE - midSizeY);
+		textureTransform.scale(textureScale, textureScale);
+		setPosition(Map.SIZE / 2, Map.SIZE / 2);
+		lastApplyedConfig = ShipStartConfig.get(ShipStartConfig.C_DEFAULT);
+		applyMeta(lastApplyedConfig);
+	}
+
+	@Override
+	public void paint(Graphics2D g) {
+
+		// Graphics sind auf 0/0 Kontext
+
+		if (visibile) {
+
+			// Schiff zeichnen
+			AffineTransform buffer = new AffineTransform(textureTransform);
+			buffer.rotate(rotation, texture.getWidth() / 2, texture.getHeight() / 2);
+			g.drawImage(texture, buffer, null);
+
+		}
+
+		// Explosion (falls tot)
+		if (explEffect != null) {
+			g.translate(-getLocX() + Frame.HALF_SCREEN_SIZE, -getLocY() + Frame.HALF_SCREEN_SIZE);
+			explEffect.paint(g);
+			g.translate(getLocX() - Frame.HALF_SCREEN_SIZE, getLocY() - Frame.HALF_SCREEN_SIZE);
+		}
+
+		if (!alive || warping)
+			return; // TOT oder im Warp
+
+		// HP-Leiste
+		hpBar.paint(g);
+
+		// Ammo-Leisten
+		ammoIndicator.paint(g);
+
+		// Boost-Indicator
+		paintBoostIndicator(g);
+
+		if (MainZap.debug) {
+
+			// Pos
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("Arial", Font.BOLD, 14));
+			g.drawString("P-Pos " + getPosX() + " | " + getPosY(), 10, 20);
+			g.drawString("P-Aim v:" + getMapAimX() + " | " + getMapAimY(), 10, 36);
+
+			g.setColor(Color.RED);
+			g.fillRect(getMapAimX() - 2 - (int) getPosX() + Frame.HALF_SCREEN_SIZE,
+					getMapAimY() - 2 - (int) getPosY() + Frame.HALF_SCREEN_SIZE, 4, 4);
+			g.setColor(Color.GREEN);
+			g.translate(Frame.SIZE / 2, Frame.SIZE / 2);
+			g.drawOval((int) (-collisionInfo.getRadius()), (int) (-collisionInfo.getRadius()),
+					(int) (2 * collisionInfo.getRadius()), (int) (2 * collisionInfo.getRadius()));
+			g.translate(-Frame.SIZE / 2, -Frame.SIZE / 2);
+
+		}
+
+	}
+
+	@Override
+	public void collide(Collideable c) {
+
+		if (warping) // im Warp nicht erlaubt
+			return;
+
+		if (c instanceof Projectile) {
+
+			Projectile p = (Projectile) c;
+			hp -= p.getDamage();
+			hpBar.remove(p.getDamage());
+
+			if (hp <= 0 && alive)
+				die(); // rip
+
+		}
+
+	}
+
+	private void die() {
+
+		alive = false;
+		MainZap.getGrid().remove(this);
+
+		explEffect = new ExplosionEffect(explPattern, this);
+		explEffect.setFinishTask(new Runnable() {
+
+			@Override
+			public void run() {
+
+				visibile = false;
+				MainZap.getMainLoop().scheduleTask(new Runnable() {
+
+					@Override
+					public void run() {
+
+						DeathScreen.popUp();
+
+					}
+
+				}, ExplosionEffect.DURATION, false);
+
+			}
+
+		});
+
+	}
+
+	private void updateRotation() {
+		if (warping) { // Im Warp nicht erlaubt
+			return;
+		}
+		rotation = Math.PI - Math.atan2(screenAimX - Frame.HALF_SCREEN_SIZE, screenAimY - Frame.HALF_SCREEN_SIZE);
+	}
+
+	@Override
+	public void update() {
+		if (alive && !warping) {
+			updateBoosts();
+			updatePosition();
+			updateRotation();
+			updateShooting();
+			updateAmmo();
+			hpBar.update();
+			updateBoostIndicatorAlpha();
+		}
+		if (warping)
+			updateWarp();
+		if (explEffect != null)
+			explEffect.update();
+	}
+
+	private void updateAmmo() {
+
+		if (shooting) {
+
+			if (boostsActive[4]) { // Boost verschwendet muni
+				ammoIndicator.remove(ammoUsageFac * RES_RELOAD_BOOST_AMMO_WASTE_FAC);
+			} else {
+				ammoIndicator.remove(ammoUsageFac);
+			}
+
+		}
+
+		if (outOfAmmo) {
+
+			if (ammoIndicator.ammoRemaining() == true)
+				setRunningOnLowAmmo(false);
+
+		} else {
+
+			if (ammoIndicator.ammoRemaining() == false)
+				setRunningOnLowAmmo(true);
+
+		}
+
+	}
+
+	private void updateBoostIndicatorAlpha() {
+
+		if (boostAlphaAdd > ALPHA_BOOST_IND_ADD_BOUND) {
+			boostAlphaAdd = ALPHA_BOOST_IND_ADD_BOUND;
+			boostAlphaDelta *= -1;
+			return;
+		}
+
+		if (boostAlphaAdd < -ALPHA_BOOST_IND_ADD_BOUND) {
+			boostAlphaAdd = -ALPHA_BOOST_IND_ADD_BOUND;
+			boostAlphaDelta *= -1;
+			return;
+		}
+
+		boostAlphaAdd += boostAlphaDelta;
+	}
+
+	private void updatePosition() {
+
+		if (Shop.isOpen())
+			return; // Im Schop keine Bewegung
+
+		float speed = this.speed;
+		if (boostsActive[0]) // speedboost
+			speed = this.speed * BOOST_FAC_SPEED;
+
+		getVelocity().setX(0);
+		getVelocity().setY(0);
+
+		boolean[] keys = arrowKeysPressed;
+
+		if (keys[0]) { // W
+			velocity.setY(-speed);
+		}
+		if (keys[1]) { // A
+			velocity.setX(-speed);
+		}
+		if (keys[2]) { // S
+			velocity.setY(velocity.getY() + speed);
+		}
+		if (keys[3]) { // D
+			velocity.setX(velocity.getX() + speed);
+		}
+
+		if (Math.abs(velocity.getX()) + Math.abs(velocity.getY()) > speed) {
+			velocity.setX(velocity.getX() * 0.7f);
+			velocity.setY(velocity.getY() * 0.7f);
+		}
+
+		moveX(velocity.getX());
+		moveY(velocity.getY());
+
+		// Position mit der Map-Größe Clippen:
+		setPosition(MainZap.clip(getPosX()), MainZap.clip(getPosY()));
+	}
+
+	private void updateWarp() {
+		velocity.setY(velocity.getY() * WARPSPEED_MULTIPLIER);
+		if (velocity.getY() < WARP_BLENDING_SPEEDBORDER)
+			Hud.pushBlending();
+		moveX(velocity.getX());
+		moveY(velocity.getY());
+	}
+
+	private void updateBoosts() {
+
+		for (int i = 0; i != boostsActive.length; i++) {
+
+			if (boostsActive[i]) {
+
+				if (boostDurations[i] == 0) {
+					boostsActive[i] = false;
+					continue;
+				}
+				boostDurations[i]--;
+
+			}
+		}
+	}
+
+	public void updateShooting() {
+
+		if (warping) // im Warp
+			return;
+
+		if (weaponCooldown > 0) {
+			weaponCooldown -= 0.1f;
+		} else if (shooting) {
+			if (!boostsActive[4]) {
+				weaponCooldown = maxWeaponCooldown;
+			} else {
+				weaponCooldown = maxWeaponCooldown * BOOST_FAC_RELOAD;
+			}
+			shoot();
+		}
+
+	}
+
+	private void shoot() {
+
+		Projectile proj = new Projectile(bulletSpeed, projDesign, bulletDamage);
+		if (REALISTIC_PROJ_VELO) {
+			proj.launch((int) getPosX(), (int) getPosY(), getMapAimX(), getMapAimY(), getVelocity(), projRange, this);
+		} else {
+			proj.launch((int) getPosX(), (int) getPosY(), getMapAimX(), getMapAimY(), projRange, this);
+		}
+		if (boostsActive[1]) { // Bullet-speed-boost
+			proj.setSpeed(proj.getSpeed() * BOOST_FAC_BULLET_SPEED);
+			int[] rgba = new int[] { proj.getColor().getRed(), proj.getColor().getGreen(), proj.getColor().getBlue(),
+					proj.getColor().getAlpha() };
+			proj.setColor(new Color(rgba[0], MainZap.clipRGB(rgba[1] + 80), rgba[2], rgba[3]));
+		}
+
+		if (boostsActive[2]) { // Bullet-range-boost
+			proj.setRange((int) (proj.getRange() * BOOST_FAC_BULLET_RANGE));
+			int[] rgba = new int[] { proj.getColor().getRed(), proj.getColor().getGreen(), proj.getColor().getBlue(),
+					proj.getColor().getAlpha() };
+			proj.setColor(new Color(rgba[0], rgba[1], MainZap.clipRGB(rgba[2] + 80), rgba[3]));
+		}
+
+		if (boostsActive[3]) { // Bullet-dmg-boost
+			proj.setDamage((int) (proj.getDamage() * BOOST_FAC_BULLET_DMG));
+			proj.setSquare(true); // sexy? dann quadrat?
+		}
+
+		proj.register();
+	}
+
+	public void heal(int h) {
+
+		if ((long) h + (long) hp > Integer.MAX_VALUE) {
+			hp = Integer.MAX_VALUE;
+			hpBar.add(h);
+			return;
+		}
+
+		hp += h;
+		hpBar.add(h);
+		if (hp > maxHp)
+			hp = maxHp;
+
+	}
+
+	public void setRunningOnLowAmmo(boolean b) {
+
+		if (b) {
+			maxWeaponCooldown = maxWeaponCooldownWithout;
+		} else {
+			maxWeaponCooldown = maxWeaponCooldownWith;
+		}
+
+		outOfAmmo = b;
+	}
+
+	private void paintBoostIndicator(Graphics2D g) {
+
+		int y = POS_BOOST_INDICATOR;
+		Composite storeComp = g.getComposite();
+
+		if (boostsActive[0]) { // Speed-Boost
+
+			// Background
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_BG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_SPEED_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_SPEED_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			// Foreground
+			g.clipRect(6, 0, (int) ((float) SIZE_BOOST_INDICATOR * (boostDurations[0] / (float) SpeedUp.BOOST_TIME)),
+					1000);
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_FG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_SPEED_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_SPEED_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			g.setClip(null);
+
+			y += SIZE_BOOST_INDICATOR + SPACE_BOOST_INDICATOR;
+		}
+
+		if (boostsActive[3]) { // Damage-Boost
+
+			// Background
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_BG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_DMG_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_DMG_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			// Foreground
+			g.clipRect(6, 0, (int) (SIZE_BOOST_INDICATOR * (boostDurations[3] / (float) BulletDamageUp.BOOST_TIME)),
+					1000);
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_FG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_DMG_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_DMG_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			g.setClip(null);
+
+			y += SIZE_BOOST_INDICATOR + SPACE_BOOST_INDICATOR;
+		}
+
+		if (boostsActive[4]) { // Reload-Boost
+
+			// Background
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_BG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_RELOAD_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_RELOAD_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			// Foreground
+			g.clipRect(6, 0, (int) (SIZE_BOOST_INDICATOR * (boostDurations[4] / (float) ReloadUp.BOOST_TIME)), 1000);
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_FG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_RELOAD_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_RELOAD_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			g.setClip(null);
+
+			y += SIZE_BOOST_INDICATOR + SPACE_BOOST_INDICATOR;
+		}
+
+		if (boostsActive[1]) { // Bullet-Speed-Boost
+
+			// Background
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_BG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_BULLETSPEED_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_BULLETSPEED_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			// Foreground
+			g.clipRect(6, 0, (int) (SIZE_BOOST_INDICATOR * (boostDurations[1] / (float) BulletSpeedUp.BOOST_TIME)),
+					1000);
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_FG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_BULLETSPEED_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_BULLETSPEED_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			g.setClip(null);
+
+			y += SIZE_BOOST_INDICATOR + SPACE_BOOST_INDICATOR;
+		}
+
+		if (boostsActive[2]) { // Range-Boost
+
+			// Background
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_BG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_RANGE_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_RANGE_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			// Foreground
+			g.clipRect(6, 0, (int) (SIZE_BOOST_INDICATOR * (boostDurations[2] / (float) BulletRangeUp.BOOST_TIME)),
+					1000);
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ALPHA_BOOST_IND_FG + boostAlphaAdd));
+			if (MainZap.roundCorners) {
+				g.drawImage(IMG_RANGE_BOOST_R, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			} else {
+				g.drawImage(IMG_RANGE_BOOST_C, 6, y, SIZE_BOOST_INDICATOR, SIZE_BOOST_INDICATOR, null);
+			}
+			g.setClip(null);
+
+			y += SIZE_BOOST_INDICATOR + SPACE_BOOST_INDICATOR;
+		}
+
+		g.setComposite(storeComp);
+	}
+
+	public void applyMeta(ShipStartConfig c) {
+		speed = c.getSpeed();
+		textureScale = c.getScale();
+		ammoUsageFac = c.getEfficiency();
+		maxWeaponCooldownWithout = c.getReloadWithout();
+		maxWeaponCooldownWith = c.getReloadWith();
+		bulletDamage = c.getDamage();
+		projDesign = c.getProjDesign();
+		bulletSpeed = c.getProjSpeed();
+		maxHp = c.getHp();
+		hp = c.getHp();
+		collisionInfo = c.getCollInfo();
+
+		texture = c.getTexture();
+		midSizeX = (int) ((texture.getWidth() * textureScale) / 2);
+		midSizeY = (int) ((texture.getHeight() * textureScale) / 2);
+		textureTransform = new AffineTransform();
+		textureTransform.translate(Frame.HALF_SCREEN_SIZE - midSizeX, Frame.HALF_SCREEN_SIZE - midSizeY);
+		textureTransform.scale(textureScale, textureScale);
+		setPosition(Map.SIZE / 2, Map.SIZE / 2);
+
+		reset();
+
+		lastApplyedConfig = c;
+	}
+
+	public void reset() {
+
+		ammoIndicator.add(true);
+		hp = maxHp;
+		hpBar.setHp(maxHp);
+		hpBar.setMaxHp(maxHp);
+		for (int i = 0; i != boostsActive.length; i++) {
+			boostsActive[i] = false;
+			boostDurations[i] = 0;
+		}
+		velocity.setX(0);
+		velocity.setY(0);
+
+		maxWeaponCooldown = maxWeaponCooldownWith;
+		weaponCooldown = maxWeaponCooldown;
+
+	}
+
+	public void totalReset() {
+
+		applyMeta(new DefaultShipConfig());
+
+		screenAimX = Frame.HALF_SCREEN_SIZE;
+		screenAimY = 0;
+		rotation = 0;
+		warping = false;
+		shooting = false;
+		outOfAmmo = false;
+		maxWeaponCooldown = maxWeaponCooldownWith;
+		weaponCooldown = maxWeaponCooldown;
+		alive = true;
+		visibile = true;
+		boostsActive = new boolean[] { false, false, false, false, false };
+		boostDurations = new int[] { 0, 0, 0, 0, 0 };
+		boostAlphaDelta = ALPHA_BOOST_IND_ADD_DELTA;
+
+		reset();
+	}
+
+	public ShipStartConfig genConfig() {
+		return new ShipStartConfig(texture, textureScale, bulletDamage, speed, bulletSpeed, maxWeaponCooldownWith,
+				maxWeaponCooldownWithout, maxHp, collisionInfo, projRange, projDesign, explPattern, ammoUsageFac,
+				lastApplyedConfig.getName(), lastApplyedConfig.getDescription(), lastApplyedConfig.getPrice());
+	}
+
+	private MouseMotionListener motionListener = new MouseMotionListener() {
+
+		@Override
+		public void mouseDragged(MouseEvent arg0) {
+			if (Shop.isOpen())
+				return; // Im
+						// Schop
+						// keine
+						// Bewegung
+			screenAimX = (int) (arg0.getX() / MainZap.getScale());
+			screenAimY = (int) (arg0.getY() / MainZap.getScale());
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent arg0) {
+			if (Shop.isOpen())
+				return; // Im
+						// Schop
+						// keine
+						// Bewegung
+			screenAimX = (int) (arg0.getX() / MainZap.getScale());
+			screenAimY = (int) (arg0.getY() / MainZap.getScale());
+		}
+
+	};
+
+	private MouseListener clickListener = new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			if (!Shop.isOpen())
+				shooting = true;
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			shooting = false;
+			weaponCooldown = maxWeaponCooldown;
+		}
+
+	};
+
+	private KeyListener keyListener = new KeyListener() {
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			switch (arg0.getKeyCode()) {
+			case KeyEvent.VK_W:
+				arrowKeysPressed[0] = true;
+				break;
+			case KeyEvent.VK_A:
+				arrowKeysPressed[1] = true;
+				break;
+			case KeyEvent.VK_S:
+				arrowKeysPressed[2] = true;
+				break;
+			case KeyEvent.VK_D:
+				arrowKeysPressed[3] = true;
+				break;
+			default:
+				// unbelegt
+				break;
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			switch (arg0.getKeyCode()) {
+			case KeyEvent.VK_W:
+				arrowKeysPressed[0] = false;
+				break;
+			case KeyEvent.VK_A:
+				arrowKeysPressed[1] = false;
+				break;
+			case KeyEvent.VK_S:
+				arrowKeysPressed[2] = false;
+				break;
+			case KeyEvent.VK_D:
+				arrowKeysPressed[3] = false;
+				break;
+			default:
+				// unbelegt
+				break;
+			}
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+
+		}
+
+	};
+
+	public BufferedImage getTexture() {
+		return texture;
+	}
+
+	public void setTexture(BufferedImage texture) {
+		this.texture = texture;
+	}
+
+	public SpeedVector getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(SpeedVector velocity) {
+		this.velocity = velocity;
+	}
+
+	public int getMapAimX() {
+		return (int) getPosX() + screenAimX - Frame.HALF_SCREEN_SIZE;
+	}
+
+	public int getMapAimY() {
+		return (int) getPosY() + screenAimY - Frame.HALF_SCREEN_SIZE;
+	}
+
+	public double getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(double rotation) {
+		this.rotation = rotation;
+	}
+
+	public AffineTransform getTextureTransform() {
+		return textureTransform;
+	}
+
+	public MouseMotionListener getMotionListener() {
+		return motionListener;
+	}
+
+	public MouseListener getClickListener() {
+		return clickListener;
+	}
+
+	public KeyListener getKeyListener() {
+		return keyListener;
+	}
+
+	@Override
+	public CollisionInformation getInformation() {
+		return collisionInfo;
+	}
+
+	@Override
+	public void register() {
+		System.err.println("[Warn] Spieler nicht als Interaktive Komponente registirier bar! ingameobjects.Player");
+	}
+
+	@Override
+	public void unRegister() {
+		System.err.println("[Warn] Spieler nicht als Interaktive Komponente unRegistrier bar! ingameobjects.Player");
+	}
+
+	public int distanceTo(int x, int y) {
+		return (int) Math.sqrt((x - getPosX()) * (x - getPosX()) + (y - getPosY()) * (y - getPosY()));
+	}
+
+	public void speedBoost(int duration) {
+		if (warping) // im Warp nicht erlaubt
+			return;
+		boostsActive[0] = true;
+		boostDurations[0] += duration;
+	}
+
+	public void bulletSpeedBoost(int duration) {
+		if (warping) // im Warp nicht erlaubt
+			return;
+		boostsActive[1] = true;
+		boostDurations[1] += duration;
+	}
+
+	public void bulletRangeBoost(int duration) {
+		if (warping) // im Warp nicht erlaubt
+			return;
+		boostsActive[2] = true;
+		boostDurations[2] += duration;
+	}
+
+	public void bulletDamageBoost(int duration) {
+		if (warping) // im Warp nicht erlaubt
+			return;
+		boostsActive[3] = true;
+		boostDurations[3] += duration;
+	}
+
+	public void reloadBoost(int duration) {
+		if (warping) // im Warp nicht erlaubt
+			return;
+		boostsActive[4] = true;
+		boostDurations[4] += duration;
+	}
+
+	public void enterWarp() {
+		reset();
+		warping = true;
+		rotation = 0;
+		velocity.setX(0);
+		velocity.setY(-0.2f);
+	}
+
+	public void exitWarp() {
+		warping = false;
+		rotation = 0;
+		velocity.setX(0);
+		velocity.setY(0);
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		hpBar.setHp(hp);
+		this.hp = hp;
+	}
+
+	public int getMaxHp() {
+		return maxHp;
+	}
+
+	public void setMaxHp(int maxHp) {
+		this.maxHp = maxHp;
+		hpBar.setMaxHp(maxHp);
+	}
+
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public float getAmmoUsageFac() {
+		return ammoUsageFac;
+	}
+
+	public void setAmmoUsageFac(float ammoUsage) {
+		this.ammoUsageFac = ammoUsage;
+	}
+
+	public PlayerAmmoIndicator getAmmoIndicator() {
+		return ammoIndicator;
+	}
+
+	public boolean isWarping() {
+		return warping;
+	}
+
+	public void setWarping(boolean warping) {
+		this.warping = warping;
+	}
+
+	public float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+
+	public int getProjRange() {
+		return projRange;
+	}
+
+	public void setProjRange(int projRange) {
+		this.projRange = projRange;
+	}
+
+	public float getMaxWeaponCooldownWithout() {
+		return maxWeaponCooldownWithout;
+	}
+
+	public void setMaxWeaponCooldownWithout(float maxWeaponCooldownWhenOutOfAmmo) {
+		this.maxWeaponCooldownWithout = maxWeaponCooldownWhenOutOfAmmo;
+	}
+
+	public float getMaxWeaponCooldownWith() {
+		return maxWeaponCooldownWith;
+	}
+
+	public void setMaxWeaponCooldownWith(float maxWeaponCooldownWhenWithAmmo) {
+		this.maxWeaponCooldownWith = maxWeaponCooldownWhenWithAmmo;
+	}
+
+	public float getMaxWeaponCooldown() {
+		return maxWeaponCooldown;
+	}
+
+	public void setMaxWeaponCooldown(float maxWeaponCooldown) {
+		this.maxWeaponCooldown = maxWeaponCooldown;
+	}
+
+	public int getBulletDamage() {
+		return bulletDamage;
+	}
+
+	public void setBulletDamage(int bulletDamage) {
+		this.bulletDamage = bulletDamage;
+	}
+
+	public float getBulletSpeed() {
+		return bulletSpeed;
+	}
+
+	public void setBulletSpeed(float bulletSpeed) {
+		this.bulletSpeed = bulletSpeed;
+	}
+
+	public ProjectileDesign getProjDesign() {
+		return projDesign;
+	}
+
+	public void setProjDesign(ProjectileDesign projDesign) {
+		this.projDesign = projDesign;
+	}
+
+	public float getTextureScale() {
+		return textureScale;
+	}
+
+	public PlayerHpBar getHpBar() {
+		return hpBar;
+	}
+
+	public void setTextureScale(float textureScale) {
+		midSizeX = (int) ((texture.getWidth() * textureScale) / 2);
+		midSizeY = (int) ((texture.getHeight() * textureScale) / 2);
+		this.textureScale = textureScale;
+		textureTransform = new AffineTransform();
+		textureTransform.translate(Frame.HALF_SCREEN_SIZE - midSizeX, Frame.HALF_SCREEN_SIZE - midSizeY);
+		textureTransform.scale(textureScale, textureScale);
+	}
+
+}
