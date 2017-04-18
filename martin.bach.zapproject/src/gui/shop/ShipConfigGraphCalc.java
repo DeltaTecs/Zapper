@@ -1,5 +1,6 @@
 package gui.shop;
 
+import corecase.MainZap;
 import gui.shop.meta.ShipStartConfig;
 
 public class ShipConfigGraphCalc {
@@ -52,7 +53,7 @@ public class ShipConfigGraphCalc {
 			projRange = 1.0f - (1.0f / (float) Math.pow(1.5, config.getProjRange() / 800.0f));
 		}
 
-		description = new PaintableDescription(config.getDescription());
+		description = new PaintableDescription(config.getDescription(), ShopSecBuy.DESCRIPTION_WIDTH);
 	}
 
 	// Läuft alle verfügbaren Statistiken ab und trägen die höchsten Werte ein
@@ -91,6 +92,31 @@ public class ShipConfigGraphCalc {
 				minReloadWithout = c.getReloadWithout();
 		}
 
+		// Möglicherweise upgrades
+		ShipStartConfig c = MainZap.getPlayer().genConfig();
+		if (c.getHp() > maxHealth)
+			maxHealth = c.getHp();
+
+		if (c.getSpeed() > maxSpeed)
+			maxSpeed = c.getSpeed();
+
+		if (c.getDamage() > maxDamage)
+			maxDamage = c.getDamage();
+
+		if (c.getEfficiency() > maxEfficiency)
+			maxEfficiency = c.getEfficiency();
+
+		if (c.getProjSpeed() > maxProjSpeed)
+			maxProjSpeed = c.getProjSpeed();
+
+		if (c.getProjRange() > maxProjRange)
+			maxProjRange = c.getProjRange();
+
+		if (c.getReloadWith() < minReloadWith)
+			minReloadWith = c.getReloadWith();
+
+		if (c.getReloadWithout() < minReloadWithout)
+			minReloadWithout = c.getReloadWithout();
 	}
 
 	public float getHealth() {

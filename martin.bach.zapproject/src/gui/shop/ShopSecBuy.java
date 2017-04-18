@@ -106,6 +106,8 @@ public abstract class ShopSecBuy {
 	private static PaintableStats shownStats;
 
 	public static void open() {
+		if (ShipConfigGraphCalc.LINEAR_MODE)
+			ShipConfigGraphCalc.scanForStatMaximas();
 		availableConfigs.clear();
 		for (ShipStartConfig c : ShipStartConfig.getConfigs()) {
 			availableConfigs.add(new ShipConfigGraphCalc(c));
@@ -325,6 +327,7 @@ public abstract class ShopSecBuy {
 				shownStats.setConfigs(selectedConfig, activeConfig);
 				MainZap.getPlayer().applyMeta(selectedConfig.getConfig());
 				MainZap.removeCrystals(selectedConfig.getConfig().getPrice());
+				ShopSecUpgrade.reset();
 				Shop.close();
 			} else if (BOUNDS_DIA_NO.contains(tx, ty)) {
 				inDialog = false;

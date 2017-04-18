@@ -13,14 +13,16 @@ public class PaintableDescription {
 	private String[] lines = null;
 	private boolean initilized = false;
 	private String content;
+	private int maxLineLength;
 
 	/*
 	 * Keine Mega-Langen Wörter erlaubt. Es wird nach Leerzeichen umgebrochen
 	 * Soll ein Zeilenumbruch vermieden werden aber trozdem ein Leerzeichen
 	 * gesetzt werden, dann statt" "einfach"~"verwenden.
 	 */
-	public PaintableDescription(String desc) {
+	public PaintableDescription(String desc, int maxLineLength) {
 		content = desc;
+		this.maxLineLength = maxLineLength;
 	}
 
 	public void init(FontMetrics fm) {
@@ -41,7 +43,6 @@ public class PaintableDescription {
 		}
 
 		ArrayList<String> storeLines = new ArrayList<String>();
-		final int maxLineLength = ShopSecBuy.DESCRIPTION_WIDTH;
 		String currentLine = "";
 		int currentLineLength = 0;
 

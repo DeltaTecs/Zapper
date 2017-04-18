@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
+import corecase.MainZap;
 import io.TextureBuffer;
 
 public class PaintableStats {
@@ -14,11 +15,13 @@ public class PaintableStats {
 	protected static final BufferedImage IMG_HEALTH = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_HEALTH);
 	protected static final BufferedImage IMG_SPEED = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_SPEED);
 	protected static final BufferedImage IMG_EFFICIENCY = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_EFFICIENCY);
-	protected static final BufferedImage IMG_RELOAD_WITH = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_RELOAD_WITH);
+	protected static final BufferedImage IMG_RELOAD_WITH = TextureBuffer
+			.get(TextureBuffer.NAME_SYMBOL_STAT_RELOAD_WITH);
 	protected static final BufferedImage IMG_RELOAD_WITHOUT = TextureBuffer
 			.get(TextureBuffer.NAME_SYMBOL_STAT_RELOAD_WITHOUT);
 	protected static final BufferedImage IMG_DAMAGE = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_DAMAGE);
-	protected static final BufferedImage IMG_BULLETSPEED = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_BULLETSPEED);
+	protected static final BufferedImage IMG_BULLETSPEED = TextureBuffer
+			.get(TextureBuffer.NAME_SYMBOL_STAT_BULLETSPEED);
 	protected static final BufferedImage IMG_RANGE = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_STAT_RANGE);
 
 	protected static final Color COLOR_HEALTH = new Color(247, 0, 0);
@@ -85,7 +88,7 @@ public class PaintableStats {
 		g.setColor(COLOR_RANGE);
 		g.fillRect(POS_BAR_X, y + 2, (int) (thisConfig.getProjRange() * WIDTH), HEIGHT);
 
-		if (thisConfig.getConfig().getName() != baseConfig.getConfig().getName()) {
+		if (thisConfig.getConfig().getName() != baseConfig.getConfig().getName() || MainZap.getPlayer().isUpgraded()) {
 			// Nur Unterschied einzeichnen, wenn es einen gibt
 
 			y = POS_Y;

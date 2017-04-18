@@ -102,6 +102,7 @@ public class Player extends InteractiveObject {
 	private boolean outOfAmmo = false;
 	// ---VVV Waffen-konfig --- !!! Wenn geändert: Auch in totalReset()
 	// ändern!!!
+	private boolean upgraded = false;
 	private float ammoUsageFac = 1.8f;
 	private float maxWeaponCooldownWithout = 4.5f;
 	private float maxWeaponCooldownWith = 3.0f;
@@ -989,6 +990,14 @@ public class Player extends InteractiveObject {
 		textureTransform = new AffineTransform();
 		textureTransform.translate(Frame.HALF_SCREEN_SIZE - midSizeX, Frame.HALF_SCREEN_SIZE - midSizeY);
 		textureTransform.scale(textureScale, textureScale);
+	}
+
+	public boolean isUpgraded() {
+		return upgraded;
+	}
+
+	public void setUpgraded(boolean upgraded) {
+		this.upgraded = upgraded;
 	}
 
 }

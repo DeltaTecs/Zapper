@@ -65,9 +65,6 @@ public class ShipStartConfig {
 		configs.add(new AshshliderShipConfig());
 		configs.add(new DeltaVIIShipConfig());
 		// ... weitere eintragen
-
-		if (ShipConfigGraphCalc.LINEAR_MODE)
-			ShipConfigGraphCalc.scanForStatMaximas();
 	}
 
 	public static ShipStartConfig get(int id) {
