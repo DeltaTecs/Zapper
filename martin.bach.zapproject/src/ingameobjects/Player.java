@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -12,7 +13,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
+import battle.WeaponPositioning;
 import battle.collect.BulletDamageUp;
 import battle.collect.BulletRangeUp;
 import battle.collect.BulletSpeedUp;
@@ -23,6 +26,7 @@ import battle.projectile.ProjectileDesign;
 import collision.Collideable;
 import collision.CollisionInformation;
 import collision.CollisionType;
+import corecase.Cmd;
 import corecase.MainZap;
 import gui.Frame;
 import gui.Hud;
@@ -102,12 +106,20 @@ public class Player extends InteractiveObject {
 	private boolean outOfAmmo = false;
 	// ---VVV Waffen-konfig --- !!! Wenn geändert: Auch in totalReset()
 	// ändern!!!
+	private WeaponPositioning singleWeaponPositioning = new WeaponPositioning((byte) 1, new int[] { 0 },
+			new int[] { -20 });
+	private WeaponPositioning doubleWeaponPositioning = new WeaponPositioning((byte) 2, new int[] { -10, 10 },
+			new int[] { -15, -15 });
+	private WeaponPositioning tripleWeaponPositioning = new WeaponPositioning((byte) 3, new int[] { -15, 0, 15 },
+			new int[] { -15, -20, -15 });
+	private WeaponPositioning activeWeaponPositioning = singleWeaponPositioning;
+	private int nextWeapon = 0;
 	private boolean upgraded = false;
 	private float ammoUsageFac = 1.8f;
 	private float maxWeaponCooldownWithout = 4.5f;
 	private float maxWeaponCooldownWith = 3.0f;
 	private float maxWeaponCooldown = maxWeaponCooldownWith;
-	private float weaponCooldown = maxWeaponCooldown;
+	private float[] weaponCooldown = new float[] { maxWeaponCooldown };
 	// !!! Waffen-Cooldown wird in 0.1 - Schritten ab gezogen.
 	// Alles andere in 1er!
 	private int bulletDamage = 300; // eig. 300
@@ -194,6 +206,25 @@ public class Player extends InteractiveObject {
 			g.drawOval((int) (-collisionInfo.getRadius()), (int) (-collisionInfo.getRadius()),
 					(int) (2 * collisionInfo.getRadius()), (int) (2 * collisionInfo.getRadius()));
 			g.translate(-Frame.SIZE / 2, -Frame.SIZE / 2);
+			g.setColor(Color.CYAN);
+			for (Point p : activeWeaponPositioning.getRotated((float) rotation)) {
+				g.fillRect(Frame.HALF_SCREEN_SIZE - 2 + (int) p.getX(), Frame.HALF_SCREEN_SIZE - 2 + (int) p.getY(), 4,
+						4);
+			}
+			if (new Random().nextInt(20) == 0) {
+				switch (new Random().nextInt(3)) {
+				case 0:
+					activeWeaponPositioning = singleWeaponPositioning;
+					break;
+				case 1:
+					activeWeaponPositioning = doubleWeaponPositioning;
+					break;
+				case 2:
+					activeWeaponPositioning = tripleWeaponPositioning;
+					break;
+				}
+				nextWeapon = 0;
+			}
 
 		}
 
@@ -382,15 +413,23 @@ public class Player extends InteractiveObject {
 		if (warping) // im Warp
 			return;
 
-		if (weaponCooldown > 0) {
-			weaponCooldown -= 0.1f;
-		} else if (shooting) {
-			if (!boostsActive[4]) {
-				weaponCooldown = maxWeaponCooldown;
+		int i = 0;
+		for (float cooldown : weaponCooldown) {
+
+			if (cooldown > 0) {
+				weaponCooldown[i] -= 0.1f;
+			} else if (shooting) {
+				if (!boostsActive[4]) {
+					weaponCooldown[i] = maxWeaponCooldown;
+				} else {
+					weaponCooldown[i] = maxWeaponCooldown * BOOST_FAC_RELOAD;
+				}
+				shoot();
 			} else {
-				weaponCooldown = maxWeaponCooldown * BOOST_FAC_RELOAD;
+				// Schießt nicht. Cooldown aber 0
+				break;
 			}
-			shoot();
+			i++;
 		}
 
 	}
@@ -399,9 +438,29 @@ public class Player extends InteractiveObject {
 
 		Projectile proj = new Projectile(bulletSpeed, projDesign, bulletDamage);
 		if (REALISTIC_PROJ_VELO) {
-			proj.launch((int) getPosX(), (int) getPosY(), getMapAimX(), getMapAimY(), getVelocity(), projRange, this);
+			if (activeWeaponPositioning == null) {
+				proj.launch((int) getPosX(), (int) getPosY(), getMapAimX(), getMapAimY(), getVelocity(), projRange,
+						this);
+			} else {
+				Point wp = activeWeaponPositioning.getRotated((float) rotation, nextWeapon);
+				nextWeapon++;
+				if (nextWeapon > activeWeaponPositioning.getWeaponAmount() - 1)
+					nextWeapon = 0;
+				proj.launch((int) (getPosX() + wp.getX()), (int) (getPosY() + wp.getY()),
+						getMapAimX() + (int) (wp.getX()), getMapAimY() + (int) (wp.getY()), getVelocity(), projRange,
+						this);
+			}
 		} else {
-			proj.launch((int) getPosX(), (int) getPosY(), getMapAimX(), getMapAimY(), projRange, this);
+			if (activeWeaponPositioning == null) {
+				proj.launch((int) getPosX(), (int) getPosY(), getMapAimX(), getMapAimY(), projRange, this);
+			} else {
+				Point wp = activeWeaponPositioning.getRotated((float) rotation, nextWeapon);
+				nextWeapon++;
+				if (nextWeapon > activeWeaponPositioning.getWeaponAmount() - 1)
+					nextWeapon = 0;
+				proj.launch((int) (getPosX() + wp.getX()), (int) (getPosY() + wp.getY()),
+						getMapAimX() + (int) (wp.getX()), getMapAimY() + (int) (wp.getY()), projRange, this);
+			}
 		}
 		if (boostsActive[1]) { // Bullet-speed-boost
 			proj.setSpeed(proj.getSpeed() * BOOST_FAC_BULLET_SPEED);
@@ -585,6 +644,10 @@ public class Player extends InteractiveObject {
 		maxHp = c.getHp();
 		hp = c.getHp();
 		collisionInfo = c.getCollInfo();
+		singleWeaponPositioning = c.getWeaponPosSingle();
+		doubleWeaponPositioning = c.getWeaponPosDouble();
+		tripleWeaponPositioning = c.getWeaponPosTriple();
+		activeWeaponPositioning = singleWeaponPositioning;
 
 		texture = c.getTexture();
 		midSizeX = (int) ((texture.getWidth() * textureScale) / 2);
@@ -613,7 +676,10 @@ public class Player extends InteractiveObject {
 		velocity.setY(0);
 
 		maxWeaponCooldown = maxWeaponCooldownWith;
-		weaponCooldown = maxWeaponCooldown;
+		weaponCooldown = new float[activeWeaponPositioning.getWeaponAmount()];
+		for (int i = 0; i != activeWeaponPositioning.getWeaponAmount(); i++) {
+			weaponCooldown[i] = i * (maxWeaponCooldown / activeWeaponPositioning.getWeaponAmount());
+		}
 
 	}
 
@@ -628,7 +694,8 @@ public class Player extends InteractiveObject {
 		shooting = false;
 		outOfAmmo = false;
 		maxWeaponCooldown = maxWeaponCooldownWith;
-		weaponCooldown = maxWeaponCooldown;
+		weaponCooldown = new float[] { maxWeaponCooldown };
+		activeWeaponPositioning = singleWeaponPositioning;
 		alive = true;
 		visibile = true;
 		boostsActive = new boolean[] { false, false, false, false, false };
@@ -641,7 +708,8 @@ public class Player extends InteractiveObject {
 	public ShipStartConfig genConfig() {
 		return new ShipStartConfig(texture, textureScale, bulletDamage, speed, bulletSpeed, maxWeaponCooldownWith,
 				maxWeaponCooldownWithout, maxHp, collisionInfo, projRange, projDesign, explPattern, ammoUsageFac,
-				lastApplyedConfig.getName(), lastApplyedConfig.getDescription(), lastApplyedConfig.getPrice());
+				lastApplyedConfig.getName(), lastApplyedConfig.getDescription(), lastApplyedConfig.getPrice(),
+				singleWeaponPositioning, doubleWeaponPositioning, tripleWeaponPositioning);
 	}
 
 	private MouseMotionListener motionListener = new MouseMotionListener() {
@@ -696,7 +764,10 @@ public class Player extends InteractiveObject {
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			shooting = false;
-			weaponCooldown = maxWeaponCooldown;
+			weaponCooldown = new float[activeWeaponPositioning.getWeaponAmount()];
+			for (int i = 0; i != activeWeaponPositioning.getWeaponAmount(); i++) {
+				weaponCooldown[i] = (i + 1) * (maxWeaponCooldown / activeWeaponPositioning.getWeaponAmount());
+			}
 		}
 
 	};
@@ -751,6 +822,26 @@ public class Player extends InteractiveObject {
 		}
 
 	};
+
+	public void setWeaponAmount(byte i) {
+		if (i < 1 || i > 3) {
+			Cmd.err("Player:828 impossible. Only up to 3 Weapons allowed");
+			return;
+		}
+
+		if (i == 1) {
+			activeWeaponPositioning = singleWeaponPositioning;
+		} else if (i == 2) {
+			activeWeaponPositioning = doubleWeaponPositioning;
+		} else {
+			activeWeaponPositioning = tripleWeaponPositioning;
+		}
+		weaponCooldown = new float[activeWeaponPositioning.getWeaponAmount()];
+		for (int j = 0; j != activeWeaponPositioning.getWeaponAmount(); j++) {
+			weaponCooldown[j] = j * (maxWeaponCooldown / activeWeaponPositioning.getWeaponAmount());
+		}
+
+	}
 
 	public BufferedImage getTexture() {
 		return texture;

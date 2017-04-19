@@ -175,6 +175,7 @@ public abstract class Hud {
 				String s = " E. reg.: " + (MainZap.getMap().getForegroundPaintElements().size()
 						+ MainZap.getMap().getBackgroundPaintElements().size());
 				g.drawString(s, 150, 70);
+
 			}
 
 		}

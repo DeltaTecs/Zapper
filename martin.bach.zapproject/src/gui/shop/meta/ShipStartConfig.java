@@ -3,11 +3,11 @@ package gui.shop.meta;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import battle.WeaponPositioning;
 import battle.projectile.ProjectileDesign;
 import collision.CollisionInformation;
 import corecase.Cmd;
 import gui.effect.ExplosionEffectPattern;
-import gui.shop.ShipConfigGraphCalc;
 
 public class ShipStartConfig {
 
@@ -34,11 +34,15 @@ public class ShipStartConfig {
 	private String name;
 	private String description;
 	private int price;
+	private WeaponPositioning weaponPosSingle;
+	private WeaponPositioning weaponPosDouble;
+	private WeaponPositioning weaponPosTriple;
 
 	public ShipStartConfig(BufferedImage texture, float scale, int damage, float speed, float projSpeed,
 			float reloadTimeWithAmmo, float reloadTimeOutOfAmmo, int hp, CollisionInformation collInfo, int projRange,
 			ProjectileDesign projDesign, ExplosionEffectPattern explPattern, float ammoUsageFac, String name,
-			String description, int price) {
+			String description, int price, WeaponPositioning weaponPosSingle, WeaponPositioning weaponPosDouble,
+			WeaponPositioning weaponPosTriple) {
 		super();
 		this.texture = texture;
 		this.scale = scale;
@@ -56,6 +60,10 @@ public class ShipStartConfig {
 		this.name = name;
 		this.description = description;
 		this.price = price;
+		this.weaponPosSingle = weaponPosSingle;
+		this.weaponPosDouble = weaponPosDouble;
+		this.weaponPosTriple = weaponPosTriple;
+
 	}
 
 	public static void loadAll() {
@@ -153,4 +161,17 @@ public class ShipStartConfig {
 	public ExplosionEffectPattern getExplPattern() {
 		return explPattern;
 	}
+
+	public WeaponPositioning getWeaponPosSingle() {
+		return weaponPosSingle;
+	}
+
+	public WeaponPositioning getWeaponPosDouble() {
+		return weaponPosDouble;
+	}
+
+	public WeaponPositioning getWeaponPosTriple() {
+		return weaponPosTriple;
+	}
+
 }

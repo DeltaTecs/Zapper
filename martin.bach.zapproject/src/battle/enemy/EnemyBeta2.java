@@ -70,15 +70,7 @@ public class EnemyBeta2 extends Enemy {
 			
 			
 			Projectile p = new ProjectileBeta2();
-			if (getAiProtocol().isMoving()) {
-				p.launch(getLocX(), getLocY(), getShootingAim().getLocX(), getShootingAim().getLocY(), getVelocity(),
-						PROJECTILE_RANGE, this);
-			} else {
-				p.launch(getLocX(), getLocY(), getShootingAim().getLocX(), getShootingAim().getLocY(), PROJECTILE_RANGE,
-						this);
-			}
-			p.register();
-			getWeaponConfiguration().resetCooldown();
+			getWeaponConfiguration().fire(p, this);
 			
 			shootingPreperationTime = SHOOT_STOPPING_TIME / 2;
 			getAiProtocol().waitTicks(shootingPreperationTime);

@@ -152,20 +152,11 @@ public class Enemy extends InteractiveObject {
 		// Technischer Teil ---------
 		if (shootingAim == null)
 			return; // Kein ziel
+		if (!weaponConfiguration.isReady())
+			return;
 		if (!shootingAim.isInRange(getLocX(), getLocY(), weaponConfiguration.getRange()))
 			return; // Auﬂer Reichweite
-		if (weaponConfiguration.isReady()) {
-			Projectile p = (Projectile) projectilePattern.getClone();
-			if (aiProtocol.isMoving()) {
-				p.launch(getLocX(), getLocY(), shootingAim.getLocX(), shootingAim.getLocY(), getVelocity(), projRange,
-						this);
-			} else {
-				p.launch(getLocX(), getLocY(), shootingAim.getLocX(), shootingAim.getLocY(), projRange, this);
-			}
-			p.register();
-			weaponConfiguration.resetCooldown();
-		}
-
+		weaponConfiguration.fire((Projectile) projectilePattern.getClone(), this);
 	}
 
 	public void updateRotation() {
@@ -450,7 +441,5 @@ public class Enemy extends InteractiveObject {
 	public void setFriend(boolean friend) {
 		this.friend = friend;
 	}
-	
-	
 
 }
