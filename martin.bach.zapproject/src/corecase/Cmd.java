@@ -17,6 +17,7 @@ import battle.enemy.Enemy;
 import battle.projectile.Projectile;
 import battle.stage.StageManager;
 import gui.Frame;
+import gui.Mirroring;
 import ingameobjects.Collectable;
 import ingameobjects.InteractiveObject;
 import ingameobjects.Player;
@@ -36,7 +37,7 @@ public abstract class Cmd {
 
 	protected static final String[] COMMANDLIST = new String[] { "passlvl", "exelvl <int>", "heal", "setspeed <float>",
 			"wipeout", "debug <bool>", "griddebug <bool>", "restart", "exit", "enablesexygraphics", "enabledopeschiff",
-			"throwerr", "rescale <float>", "addcash <int>" };
+			"throwerr", "rescale <float>", "addcash <int>", "activatemirror" };
 
 	protected static int canvasDx;
 	protected static int canvasDy;
@@ -498,6 +499,18 @@ class CommandLibrary {
 			}
 			MainZap.setCrystals(MainZap.getCrystals() + Integer.parseInt(in[1]));
 			Cmd.print(in[1] + " crystals added.");
+			break;
+		case "activatemirror":
+			if (parts != 1) {
+				printInvalidArgs("No args requiered");
+				return;
+			}
+			if (Mirroring.isActive()) {
+				Mirroring.cancel();
+				Cmd.print("Mirroring was already active. Cancled.");
+			}
+			Mirroring.activate();
+			Cmd.print("Effect Mirror executed.");
 			break;
 		default:
 			printInvalidCommand();

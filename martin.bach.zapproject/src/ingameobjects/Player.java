@@ -31,6 +31,7 @@ import corecase.MainZap;
 import gui.Frame;
 import gui.Hud;
 import gui.Map;
+import gui.Mirroring;
 import gui.PlayerAmmoIndicator;
 import gui.PlayerHpBar;
 import gui.effect.ExplosionEffect;
@@ -173,10 +174,15 @@ public class Player extends InteractiveObject {
 
 		// Explosion (falls tot)
 		if (explEffect != null) {
-			g.translate(-getLocX() + Frame.HALF_SCREEN_SIZE, -getLocY() + Frame.HALF_SCREEN_SIZE);
+			int x = getLocX();
+			int y = getLocY();
+			g.translate(-x + Frame.HALF_SCREEN_SIZE, -y + Frame.HALF_SCREEN_SIZE);
 			explEffect.paint(g);
-			g.translate(getLocX() - Frame.HALF_SCREEN_SIZE, getLocY() - Frame.HALF_SCREEN_SIZE);
+			g.translate(x - Frame.HALF_SCREEN_SIZE, y - Frame.HALF_SCREEN_SIZE);
 		}
+
+		// Spiegel-Effekt
+		Mirroring.paint(g);
 
 		if (!alive || warping)
 			return; // TOT oder im Warp
@@ -287,6 +293,7 @@ public class Player extends InteractiveObject {
 
 	@Override
 	public void update() {
+		Mirroring.update();
 		if (alive && !warping) {
 			updateBoosts();
 			updatePosition();
@@ -436,6 +443,8 @@ public class Player extends InteractiveObject {
 
 	private void shoot() {
 
+		Mirroring.fireImages();
+
 		Projectile proj = new Projectile(bulletSpeed, projDesign, bulletDamage);
 		if (REALISTIC_PROJ_VELO) {
 			if (activeWeaponPositioning == null) {
@@ -462,6 +471,11 @@ public class Player extends InteractiveObject {
 						getMapAimX() + (int) (wp.getX()), getMapAimY() + (int) (wp.getY()), projRange, this);
 			}
 		}
+		applyBoostsOnProjectile(proj);
+		proj.register();
+	}
+
+	public void applyBoostsOnProjectile(Projectile proj) {
 		if (boostsActive[1]) { // Bullet-speed-boost
 			proj.setSpeed(proj.getSpeed() * BOOST_FAC_BULLET_SPEED);
 			int[] rgba = new int[] { proj.getColor().getRed(), proj.getColor().getGreen(), proj.getColor().getBlue(),
@@ -480,8 +494,6 @@ public class Player extends InteractiveObject {
 			proj.setDamage((int) (proj.getDamage() * BOOST_FAC_BULLET_DMG));
 			proj.setSquare(true); // sexy? dann quadrat?
 		}
-
-		proj.register();
 	}
 
 	public void heal(int h) {
@@ -723,6 +735,8 @@ public class Player extends InteractiveObject {
 						// Bewegung
 			screenAimX = (int) (arg0.getX() / MainZap.getScale());
 			screenAimY = (int) (arg0.getY() / MainZap.getScale());
+
+			Mirroring.checkMirrorStateChange();
 		}
 
 		@Override
@@ -734,6 +748,8 @@ public class Player extends InteractiveObject {
 						// Bewegung
 			screenAimX = (int) (arg0.getX() / MainZap.getScale());
 			screenAimY = (int) (arg0.getY() / MainZap.getScale());
+
+			Mirroring.checkMirrorStateChange();
 		}
 
 	};
@@ -1089,6 +1105,14 @@ public class Player extends InteractiveObject {
 
 	public void setUpgraded(boolean upgraded) {
 		this.upgraded = upgraded;
+	}
+
+	public boolean isShooting() {
+		return shooting;
+	}
+
+	public WeaponPositioning getActiveWeaponPositioning() {
+		return activeWeaponPositioning;
 	}
 
 }

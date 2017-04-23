@@ -195,7 +195,7 @@ public class Enemy extends InteractiveObject {
 		}
 	}
 
-	private void updateAi() {
+	protected void updateAi() {
 		aiProtocol.update();
 	}
 

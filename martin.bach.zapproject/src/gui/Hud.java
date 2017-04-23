@@ -85,10 +85,10 @@ public abstract class Hud {
 		MainZap.getFrame().addClickable(clickObj);
 	}
 
-	private static final PaintingTask paintingTask = new PaintingTask() {
+	private static final PaintingTask PAINTING_TASK = new PaintingTask() {
 		@Override
 		public void paint(Graphics2D g) {
-
+			
 			if (MainZap.getPlayer().isWarping()) {
 				if (blendAlpha != 0) {
 					if (blendAlpha > 255)
@@ -258,8 +258,8 @@ public abstract class Hud {
 
 	}
 
-	public static PaintingTask getPaintingtask() {
-		return paintingTask;
+	public static PaintingTask getPaintingTask() {
+		return PAINTING_TASK;
 	}
 
 	public static boolean isShopIconVisible() {

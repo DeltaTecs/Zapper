@@ -13,7 +13,7 @@ public class AshshliderShipConfig extends ShipStartConfig {
 
 	private static final String NAME = "Ashslider";
 	private static final String DESCRIPTION = "One of the most powerful one-man battle ships ever made. Heavy on damage, but using up alot of ammunition.";
-	private static final int PRICE = 2500;
+	private static final int PRICE = 2000;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_ASHSLIDER);
 	private static final float SCALE = 0.5f;
 	private static final float AMMO_USAGE = 4.0f;
@@ -22,7 +22,7 @@ public class AshshliderShipConfig extends ShipStartConfig {
 	private static final float PROJ_SPEED = 14;
 	private static final float RELOAD_WITH = 2.0f;
 	private static final float RELOAD_WITHOUT = 4.5f;
-	private static final int HP = 19000;
+	private static final int HP = 27000;
 	private static final int HIT_RANGE = 52;
 	private static final int PROJ_RANGE = 800;
 	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignAshslider();

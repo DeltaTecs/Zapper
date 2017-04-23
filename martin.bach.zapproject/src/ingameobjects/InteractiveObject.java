@@ -183,4 +183,8 @@ public class InteractiveObject implements Collideable, PaintingTask, Updateable,
 		return listedObjects;
 	}
 
+	public void setStageBound(boolean stageBound) {
+		this.stageBound = stageBound;
+	}
+
 }

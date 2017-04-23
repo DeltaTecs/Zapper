@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 import corecase.Cmd;
 import corecase.MainZap;
+import corecase.StringConverter;
 import io.TextureBuffer;
 
 public abstract class ShopSecUpgrade {
@@ -39,6 +40,8 @@ public abstract class ShopSecUpgrade {
 	private static final Color COLOR_GREEN = new Color(30, 205, 30);
 	private static final Color COLOR_MAX = new Color(210, 30, 30);
 	private static final Color COLOR_EXT_ACTIVE_BASE = new Color(255, 127, 89);
+	private static final Color COLOR_CANNON_ACTIVE_BG = new Color(70, 85, 255, 30);
+	private static final Color COLOR_CANNON_ACTIVE_FG = new Color(70, 85, 255, 170);
 	private static final Font FONT_BALANCE = new Font("Arial", Font.BOLD, 35);
 	private static final Font FONT_VALUE = new Font("Arial", 0, 20);
 	private static final Font FONT_LVL = new Font("Arial", Font.BOLD, 25);
@@ -52,6 +55,7 @@ public abstract class ShopSecUpgrade {
 	private static final Font FONT_EXT_DESC_NAME = new Font("Arial", Font.BOLD, 18);
 	private static final Font FONT_EXT_DESC_DESC = new Font("Arial", 0, 15);
 	private static final Font FONT_EXT_DESC_PRICE = new Font("Arial", Font.BOLD, 20);
+	private static final Font FONT_CANNNONS_ACTIVE = new Font("Arial", Font.BOLD, 18);
 	private static final Stroke STROKE_UPGRADE = new BasicStroke(3);
 	private static final Stroke STROKE_HEADLINE_LINE = new BasicStroke(3);
 	private static final Stroke STROK_TOPIC_FRAME = new BasicStroke(1.4f);
@@ -75,15 +79,35 @@ public abstract class ShopSecUpgrade {
 	private static final String TEXT_TITEL_SHIELD = "Shield";
 	private static final String TEXT_TITEL_SHOCK = "Shock";
 	private static final String TEXT_TITEL_ADDCANNON = "+Cannon";
+	private static final String TEXT_CANNONS_ACTIVE = "installed:";
 	private static final String TEXT_DES_ONLY_ONE_EXTENTION = "You can only select one extention at a time!";
 	private static final String TEXT_DES_MIRROR = "No more alone! Duplicates your ship to an armee of three. Mirror images have the same meta like you, but can not be healed. Cooldown is 4 minutes. ";
 	private static final String TEXT_DES_SHIELD = "Temporary sentry mode. You are unable to move for 20 seconds, but damage is heavily absorbed and weapon cooldown buffed. ";
 	private static final String TEXT_DES_SHOCK = "Shock wave. Damages surrounding enemys and slows down their systems. ";
 	private static final String TEXT_DES_ADDCANNON = "Adds another cannon to the weapon system. You can only have 3 cannons at total. ";
+
+	// -- Dailog ----------
+	private static final Color COLOR_DIA_BG = new Color(255, 255, 255, 240);
+	private static final Color COLOR_DIA_BORDER = new Color(0, 0, 0, 100);
+	private static final Color COLOR_DIA_TEXT = new Color(0, 0, 0, 180);
+	private static final Font FONT_DIALOG = new Font("Arial", Font.BOLD, 22);
+	private static final Font FONT_DIALOG_OPTION = new Font("Arial", Font.BOLD, 40);
+	private static final Rectangle BOUNDS_DIALOG = new Rectangle(140, 250, 370, 150);
+	private static final int BORDERWIDTH_DIALOG = 8;
+	private static final Stroke STROKE_BUTTON_BORDER = new BasicStroke(5);
+	private static final Rectangle BOUNDS_DIA_YES = new Rectangle(180, 330, 120, 50);
+	private static final Rectangle BOUNDS_DIA_NO = new Rectangle(350, 330, 120, 50);
+	// ---
+
+	private static boolean inDialog = false;
+	private static String textDia = "";
+	private static int priceDia = 0;
 	// -- Hovers -------
 	private static boolean hoveringBack = false;
 	private static boolean[] hoveringBuys = new boolean[] { false, false, false, false };
 	private static boolean hoveringExtBuy = false;
+	private static boolean hoveringDiaYes = false;
+	private static boolean hoveringDiaNo = false;
 	// ---
 
 	// -- Mechanics -----
@@ -92,8 +116,8 @@ public abstract class ShopSecUpgrade {
 	private static int[] priceTable = new int[] { 100, 200, 400, 600, 1300 };
 	// Mirror, Shield, Shock, ExtraCannons
 	private static boolean[] extentionStates = new boolean[] { false, false, false, false };
-	private static int addedCannons = 0;
-	private static int selectedExtention = 0; // Mirror, Shield, Shock, Cannon
+	private static byte addedCannons = 0;
+	private static byte selectedExtention = 0; // Mirror, Shield, Shock, Cannon
 	private static PaintableDescription activeDescription = new PaintableDescription(TEXT_DES_MIRROR,
 			EXT_DESCRIPTIONWIDTH);
 	// ---
@@ -187,6 +211,12 @@ public abstract class ShopSecUpgrade {
 		// ---
 
 		paintExtentionUpgradeSection(g);
+
+		// --------------------------------------------
+		// Dialog
+		if (inDialog) {
+			paintDialog(g);
+		}
 	}
 
 	private static void paintExtentionUpgradeSection(Graphics2D g) {
@@ -233,11 +263,31 @@ public abstract class ShopSecUpgrade {
 		g.setFont(FONT_EXT_DESC_DESC);
 		description.paint(g, 425, 415);
 
-		if (active) {
+		if (active && index != 3) {
 			g.setColor(COLOR_MAX);
 			g.setFont(FONT_MAX);
 			g.drawString(TEXT_EXT_DESC_ACTIVE, 446, 570);
 			return;
+		}
+
+		if (index == 3) {
+			// Anzahl installierter Kannonen zeichnen
+			g.setColor(ShopSecBuy.COLOR_FG);
+			g.setFont(FONT_CANNNONS_ACTIVE);
+			g.drawString(TEXT_CANNONS_ACTIVE, 444, 522);
+			g.setColor(COLOR_CANNON_ACTIVE_BG);
+			g.fillRect(529, 503, 20, 25);
+			g.fillRect(551, 503, 20, 25);
+			g.fillRect(573, 503, 20, 25);
+			g.setColor(COLOR_CANNON_ACTIVE_FG);
+			g.fillRect(529, 503, 20, 25);
+			if (addedCannons > 0) {
+				g.fillRect(551, 503, 20, 25);
+				if (addedCannons > 1) {
+					g.fillRect(573, 503, 20, 25);
+					return; // Mann kan eh nix mehr kaufen
+				}
+			}
 		}
 
 		// Antialising deaktivieren
@@ -403,6 +453,30 @@ public abstract class ShopSecUpgrade {
 
 	protected static void callClick(int tx, int ty) {
 
+		if (inDialog) {
+			if (BOUNDS_DIA_YES.contains(tx, ty)) {
+				inDialog = false;
+				MainZap.setCrystals(MainZap.getCrystals() - priceDia);
+				extentionStates = new boolean[] { false, false, false, false };
+				extentionStates[selectedExtention] = true;
+				if (selectedExtention == 3) {
+					// Cannons
+					addedCannons++;
+					MainZap.getPlayer().setWeaponAmount((byte) ((byte) 1 + addedCannons));
+				} else if (selectedExtention == 0) {
+					// Mirror
+				} else if (selectedExtention == 1) {
+					// Shield
+				} else if (selectedExtention == 2) {
+					// Shock
+				}
+
+			} else if (BOUNDS_DIA_NO.contains(tx, ty)) {
+				inDialog = false;
+			}
+			return;
+		}
+
 		if (BOUNDS_BACK.contains(tx, ty)) {
 			Shop.setDirectory(ShopDirectory.MENU);
 			callMove(100000, 10000); // Hovers ausschalten
@@ -410,15 +484,14 @@ public abstract class ShopSecUpgrade {
 		}
 
 		if (BOUNDS_EXT_BUY.contains(tx, ty)) {
-			// Extention kaufen
-			return;
+			purchaseExtention();
 		}
 
 		// Irgend ein "Buy" geklickt?
-		int i = 0;
+		byte i = 0;
 		for (Rectangle r : BOUNDS_BUY) {
 			if (r.contains(tx, ty)) {
-				purchase(i); // Versuch zu kaufen
+				purchaseUpgrade(i); // Versuch zu kaufen
 				return;
 			}
 			i++;
@@ -438,12 +511,33 @@ public abstract class ShopSecUpgrade {
 
 	protected static void callMove(int tx, int ty) {
 
+		if (inDialog) {
+			if (BOUNDS_DIA_YES.contains(tx, ty)) {
+				hoveringDiaYes = true;
+				hoveringDiaNo = false;
+			} else if (BOUNDS_DIA_NO.contains(tx, ty)) {
+				hoveringDiaYes = false;
+				hoveringDiaNo = true;
+			}
+			hoveringBuys[0] = false;
+			hoveringBuys[1] = false;
+			hoveringBuys[2] = false;
+			hoveringBuys[3] = false;
+			hoveringDiaYes = false;
+			hoveringDiaNo = false;
+			hoveringBack = false;
+			hoveringExtBuy = false;
+			return;
+		}
+
 		if (BOUNDS_EXT_BUY.contains(tx, ty)) {
 			hoveringBack = false;
 			hoveringBuys[0] = false;
 			hoveringBuys[1] = false;
 			hoveringBuys[2] = false;
 			hoveringBuys[3] = false;
+			hoveringDiaYes = false;
+			hoveringDiaNo = false;
 			hoveringExtBuy = true;
 			return;
 		}
@@ -455,6 +549,8 @@ public abstract class ShopSecUpgrade {
 			hoveringBuys[2] = false;
 			hoveringBuys[3] = false;
 			hoveringExtBuy = false;
+			hoveringDiaYes = false;
+			hoveringDiaNo = false;
 			return;
 		}
 
@@ -464,6 +560,8 @@ public abstract class ShopSecUpgrade {
 		hoveringBuys[1] = false;
 		hoveringBuys[2] = false;
 		hoveringBuys[3] = false;
+		hoveringDiaYes = false;
+		hoveringDiaNo = false;
 		for (Rectangle r : BOUNDS_BUY) {
 			if (r.contains(tx, ty)) {
 				hoveringBuys[i] = true;
@@ -472,6 +570,8 @@ public abstract class ShopSecUpgrade {
 			i++;
 		}
 
+		hoveringDiaYes = false;
+		hoveringDiaNo = false;
 		hoveringBuys[0] = false;
 		hoveringBuys[1] = false;
 		hoveringBuys[2] = false;
@@ -481,20 +581,24 @@ public abstract class ShopSecUpgrade {
 
 	}
 
-	private static void clickExtention(int i) {
+	private static void clickExtention(byte i) {
 		selectedExtention = i;
 		switch (i) {
 		case 0:
-			activeDescription = new PaintableDescription(TEXT_DES_MIRROR + TEXT_DES_ONLY_ONE_EXTENTION, EXT_DESCRIPTIONWIDTH);
+			activeDescription = new PaintableDescription(TEXT_DES_MIRROR + TEXT_DES_ONLY_ONE_EXTENTION,
+					EXT_DESCRIPTIONWIDTH);
 			break;
 		case 1:
-			activeDescription = new PaintableDescription(TEXT_DES_SHIELD + TEXT_DES_ONLY_ONE_EXTENTION, EXT_DESCRIPTIONWIDTH);
+			activeDescription = new PaintableDescription(TEXT_DES_SHIELD + TEXT_DES_ONLY_ONE_EXTENTION,
+					EXT_DESCRIPTIONWIDTH);
 			break;
 		case 2:
-			activeDescription = new PaintableDescription(TEXT_DES_SHOCK + TEXT_DES_ONLY_ONE_EXTENTION, EXT_DESCRIPTIONWIDTH);
+			activeDescription = new PaintableDescription(TEXT_DES_SHOCK + TEXT_DES_ONLY_ONE_EXTENTION,
+					EXT_DESCRIPTIONWIDTH);
 			break;
 		case 3:
-			activeDescription = new PaintableDescription(TEXT_DES_ADDCANNON + TEXT_DES_ONLY_ONE_EXTENTION, EXT_DESCRIPTIONWIDTH);
+			activeDescription = new PaintableDescription(TEXT_DES_ADDCANNON + TEXT_DES_ONLY_ONE_EXTENTION,
+					EXT_DESCRIPTIONWIDTH);
 			break;
 		default:
 			Cmd.err("ShopSecUpgrade:397 impossible");
@@ -502,7 +606,83 @@ public abstract class ShopSecUpgrade {
 		}
 	}
 
-	private static void purchase(int index) {
+	private static void purchaseExtention() {
+
+		// Überhaupt gültig?
+		if ((extentionStates[selectedExtention] && selectedExtention != 3)
+				|| (selectedExtention == 3 && addedCannons == 2))
+			return; // Haste schon. Oder Kannonen ausgemaxt
+		// -Preis:
+		if (selectedExtention == 0) {
+			priceDia = PRICE_MIRROR;
+		} else if (selectedExtention == 1) {
+			priceDia = PRICE_SHIELD;
+		} else if (selectedExtention == 2) {
+			priceDia = PRICE_SHOCK;
+		} else if (selectedExtention == 3) {
+			priceDia = PRICE_CANNON[addedCannons];
+		}
+		if (MainZap.getCrystals() < priceDia)
+			return;
+
+		String sel = ""; // Ausgewählt
+		String res = ""; // Endergebniss
+		String act = ""; // Aktiv
+		boolean cannon = false; // Kannonen-Änderung
+
+		// Ausgewähltes Bestimmen
+		if (selectedExtention == 0) {
+			sel = TEXT_TITEL_MIRROR;
+		} else if (selectedExtention == 1) {
+			sel = TEXT_TITEL_SHIELD;
+		} else if (selectedExtention == 2) {
+			sel = TEXT_TITEL_SHOCK;
+		} else if (selectedExtention == 3) {
+			sel = TEXT_TITEL_ADDCANNON;
+			cannon = true;
+		}
+
+		// Aktives Bestimmen, falls da
+		boolean active = false;
+		int i = 0;
+		for (boolean b : extentionStates) {
+			if (b == true) {
+				active = true;
+				if (i == 0) {
+					sel = TEXT_TITEL_MIRROR;
+				} else if (i == 1) {
+					sel = TEXT_TITEL_SHIELD;
+				} else if (i == 2) {
+					sel = TEXT_TITEL_SHOCK;
+				} else if (i == 3) {
+					sel = TEXT_TITEL_ADDCANNON;
+				}
+				break;
+			}
+			i++;
+		}
+
+		// Aktion bestimmen
+		if (active) {
+			if (!cannon) {
+				res = "Exchange " + act + " by " + sel + "?";
+			} else {
+				res = "Add cannon " + StringConverter.inRoman(addedCannons + 1) + "?";
+			}
+		} else {
+			if (!cannon) {
+				res = "Activate " + sel + "?";
+			} else {
+				res = "Add cannon " + StringConverter.inRoman(addedCannons + 1) + "?";
+			}
+		}
+
+		textDia = res;
+		inDialog = true;
+		return;
+	}
+
+	private static void purchaseUpgrade(int index) {
 		if (priceTable[index] > MainZap.getCrystals() || activeUpgrades[index] == 5)
 			return; // Nicht genug Knete oder alle schon gekauft
 
@@ -537,6 +717,36 @@ public abstract class ShopSecUpgrade {
 		activeUpgrades = new byte[] { 0, 0, 0, 0 };
 		extentionStates = new boolean[] { false, false, false, false };
 		MainZap.getPlayer().setUpgraded(false);
+	}
+
+	private static void paintDialog(Graphics2D g) {
+		g.setColor(COLOR_DIA_BORDER);
+		g.fillRect(BOUNDS_DIALOG.x - BORDERWIDTH_DIALOG, BOUNDS_DIALOG.y - BORDERWIDTH_DIALOG,
+				BOUNDS_DIALOG.width + 2 * BORDERWIDTH_DIALOG, BOUNDS_DIALOG.height + 2 * BORDERWIDTH_DIALOG);
+		g.setColor(COLOR_DIA_BG);
+		g.fillRect(BOUNDS_DIALOG.x, BOUNDS_DIALOG.y, BOUNDS_DIALOG.width, BOUNDS_DIALOG.height);
+
+		g.setColor(new Color(0, 0, 0, 80));
+		if (hoveringDiaYes) {
+			// Maus über YES
+			g.fillRect(BOUNDS_DIA_YES.x, BOUNDS_DIA_YES.y, BOUNDS_DIA_YES.width, BOUNDS_DIA_YES.height);
+		} else if (hoveringDiaNo) {
+			// Maus über NO
+			g.fillRect(BOUNDS_DIA_NO.x, BOUNDS_DIA_NO.y, BOUNDS_DIA_NO.width, BOUNDS_DIA_NO.height);
+		}
+
+		g.setFont(FONT_DIALOG);
+		g.setColor(COLOR_DIA_TEXT);
+		g.drawString(textDia, BOUNDS_DIALOG.x + 9, BOUNDS_DIALOG.y + 50);
+
+		g.setStroke(STROKE_BUTTON_BORDER);
+		g.drawRect(BOUNDS_DIA_YES.x, BOUNDS_DIA_YES.y, BOUNDS_DIA_YES.width, BOUNDS_DIA_YES.height);
+		g.drawRect(BOUNDS_DIA_NO.x, BOUNDS_DIA_NO.y, BOUNDS_DIA_NO.width, BOUNDS_DIA_NO.height);
+
+		g.setFont(FONT_DIALOG_OPTION);
+		g.drawString("Yes", BOUNDS_DIA_YES.x + 22, BOUNDS_DIA_YES.y + FONT_DIALOG_OPTION.getSize());
+		g.drawString("No", BOUNDS_DIA_NO.x + 34, BOUNDS_DIA_NO.y + FONT_DIALOG_OPTION.getSize());
+
 	}
 
 }

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import corecase.MainZap;
 import gui.Frame;
+import gui.MirrorImage;
+import gui.Mirroring;
 import gui.shop.meta.ShipStartConfig;
 import io.TextureBuffer;
 
@@ -322,6 +324,7 @@ public abstract class ShopSecBuy {
 
 		if (inDialog) {
 			if (BOUNDS_DIA_YES.contains(tx, ty)) {
+				Mirroring.cancel();
 				inDialog = false;
 				activeConfig = selectedConfig;
 				shownStats.setConfigs(selectedConfig, activeConfig);

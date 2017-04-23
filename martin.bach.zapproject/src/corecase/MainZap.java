@@ -114,7 +114,7 @@ public class MainZap {
 		// Painting - Stuff
 		staticLayer = new PaintingLayer();
 		staticLayer.addTask(player);
-		staticLayer.addTask(Hud.getPaintingtask());
+		staticLayer.addTask(Hud.getPaintingTask());
 		staticLayer.addTask(DeathScreen.getPaintingtask());
 
 		dynamicLayer = new PaintingLayer();

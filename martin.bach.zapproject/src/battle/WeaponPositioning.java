@@ -42,6 +42,11 @@ public class WeaponPositioning {
 				(int) ((corex[index] * Math.sin(angle)) + (corey[index] * Math.cos(angle))));
 	}
 
+	public static Point rotate(float angle, Point base) {
+		return new Point((int) ((base.x * Math.cos(angle)) - (base.y * Math.sin(angle))),
+				(int) ((base.x * Math.sin(angle)) + (base.y * Math.cos(angle))));
+	}
+
 	public byte getWeaponAmount() {
 		return weapons;
 	}
