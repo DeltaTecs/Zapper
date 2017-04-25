@@ -17,7 +17,7 @@ import battle.enemy.Enemy;
 import battle.projectile.Projectile;
 import battle.stage.StageManager;
 import gui.Frame;
-import gui.Mirroring;
+import gui.extention.Mirroring;
 import ingameobjects.Collectable;
 import ingameobjects.InteractiveObject;
 import ingameobjects.Player;

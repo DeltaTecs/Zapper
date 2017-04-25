@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 
 import battle.stage.StageManager;
 import corecase.MainZap;
+import gui.extention.ExtentionManager;
 import gui.shop.Shop;
 import io.TextureBuffer;
 import library.ClickListener;
@@ -125,9 +126,9 @@ public abstract class Hud {
 
 				if (lvlUpSignVisible) {
 					if (MainZap.roundCorners) {
-						g.drawImage(LVL_UP_TEXTURE_R, 547, 580, 100, 69, null);
+						g.drawImage(LVL_UP_TEXTURE_R, 547, 578, 100, 69, null);
 					} else {
-						g.drawImage(LVL_UP_TEXTURE_C, 547, 580, 100, 69, null);
+						g.drawImage(LVL_UP_TEXTURE_C, 547, 578, 100, 69, null);
 					}
 				}
 
@@ -165,7 +166,13 @@ public abstract class Hud {
 
 				g.translate(-dx, -SPACE_Y_SHOP);
 			}
-
+			// ----
+			
+			
+			// --------- Fähigkeits-Aktivierungs-Knopf
+			ExtentionManager.paint(g);
+			
+			
 			// --------- DEBUG Stuff
 			if (MainZap.debug) {
 				// FPS-Anzeige
@@ -255,6 +262,10 @@ public abstract class Hud {
 				shopIconX += SHOP_BLEND_SPEED;
 			}
 		}
+		
+		// -- Fähigkeit-UI -------------
+		ExtentionManager.update();
+		// ---
 
 	}
 

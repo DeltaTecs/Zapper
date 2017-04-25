@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 import corecase.MainZap;
 import gui.Frame;
-import gui.MirrorImage;
-import gui.Mirroring;
+import gui.extention.Mirroring;
 import gui.shop.meta.ShipStartConfig;
 import io.TextureBuffer;
 

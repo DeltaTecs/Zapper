@@ -1,4 +1,4 @@
-package gui;
+package gui.extention;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -18,7 +18,7 @@ public class MirrorImage extends Enemy {
 	private static final boolean STAGE_BOUND = false;
 	private static final float ALPHA_START = 0.9f;
 	private static final float ALPHA_DELTA_DIEING = 0.02f;
-	private static final int MAX_DURATION = MainZap.inTicks(35000); // 30 Sek.
+	private static final int MAX_DURATION = MainZap.inTicks(15000); // 15 Sek.
 
 	private WeaponPositioning weaponPositioning;
 	private int duration = MAX_DURATION;

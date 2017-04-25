@@ -14,6 +14,8 @@ import gui.Frame;
 import gui.Hud;
 import gui.Map;
 import gui.PaintingLayer;
+import gui.extention.Extention;
+import gui.extention.ExtentionManager;
 import gui.screens.death.DeathScreen;
 import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
@@ -165,6 +167,7 @@ public class MainZap {
 
 		StageManager.setUp(4); // ### debug. Eig. setUp(1)
 		Hud.setUpClickListener();
+		ExtentionManager.setUpClickListener();
 		PauseScreen.setUp(false);
 		Shop.setUp();
 
@@ -172,6 +175,8 @@ public class MainZap {
 			Tutorial.show();
 
 		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
+		
+		ExtentionManager.setExtention(Extention.MIRROR); // ### DEBUG
 
 	}
 

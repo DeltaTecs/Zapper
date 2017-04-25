@@ -13,11 +13,13 @@ import java.awt.image.BufferedImage;
 import corecase.Cmd;
 import corecase.MainZap;
 import corecase.StringConverter;
+import gui.extention.Extention;
+import gui.extention.ExtentionManager;
 import io.TextureBuffer;
 
 public abstract class ShopSecUpgrade {
 
-	private static final int PRICE_MIRROR = 10000;
+	private static final int PRICE_MIRROR = 3000;
 	private static final int PRICE_SHIELD = 1160;
 	private static final int PRICE_SHOCK = 8750;
 	private static final int[] PRICE_CANNON = new int[] { 5000, 12000, -1 };
@@ -465,6 +467,7 @@ public abstract class ShopSecUpgrade {
 					MainZap.getPlayer().setWeaponAmount((byte) ((byte) 1 + addedCannons));
 				} else if (selectedExtention == 0) {
 					// Mirror
+					ExtentionManager.setExtention(Extention.MIRROR);
 				} else if (selectedExtention == 1) {
 					// Shield
 				} else if (selectedExtention == 2) {

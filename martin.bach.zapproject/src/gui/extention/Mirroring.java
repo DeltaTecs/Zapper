@@ -1,4 +1,4 @@
-package gui;
+package gui.extention;
 
 import java.awt.AlphaComposite;
 import java.awt.Composite;
@@ -9,6 +9,7 @@ import java.util.Random;
 
 import battle.WeaponPositioning;
 import corecase.MainZap;
+import gui.Frame;
 
 public abstract class Mirroring {
 
@@ -59,6 +60,7 @@ public abstract class Mirroring {
 
 		if (allFaded) {
 			active = false;
+			ExtentionManager.setBlocked(false); // Cooldown freigeben
 			return;
 		}
 
