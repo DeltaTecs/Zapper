@@ -36,6 +36,14 @@ public class InteractiveObject implements Collideable, PaintingTask, Updateable,
 		listedObjects.add(this);
 	}
 
+	public void unRegister(boolean removeFromGrid) {
+		MainZap.getMap().removePaintElement(this, background);
+		MainZap.getMap().removeUpdateElement(this);
+		if (removeFromGrid)
+			MainZap.getGrid().remove(this);
+		listedObjects.remove(this);
+	}
+
 	public void unRegister() {
 		MainZap.getMap().removePaintElement(this, background);
 		MainZap.getMap().removeUpdateElement(this);

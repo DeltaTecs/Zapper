@@ -470,6 +470,7 @@ public abstract class ShopSecUpgrade {
 					ExtentionManager.setExtention(Extention.MIRROR);
 				} else if (selectedExtention == 1) {
 					// Shield
+					ExtentionManager.setExtention(Extention.SHIELD);
 				} else if (selectedExtention == 2) {
 					// Shock
 				}

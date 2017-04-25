@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import collision.Collideable;
 import collision.CollisionInformation;
 import collision.CollisionType;
+import corecase.MainZap;
 import ingameobjects.InteractiveObject;
 import library.SpeedVector;
 
@@ -19,6 +20,7 @@ public class Projectile extends InteractiveObject {
 	private int damage;
 	private float travelDistance;
 	private InteractiveObject sender;
+	private boolean collided = false;
 
 	/**
 	 * Initialisiert das Projektil
@@ -180,6 +182,18 @@ public class Projectile extends InteractiveObject {
 
 	public void setSender(InteractiveObject sender) {
 		this.sender = sender;
+	}
+
+	public boolean collided() {
+		return collided;
+	}
+
+	public boolean isCollided() {
+		return collided;
+	}
+
+	public void setCollided(boolean collided) {
+		this.collided = collided;
 	}
 
 }

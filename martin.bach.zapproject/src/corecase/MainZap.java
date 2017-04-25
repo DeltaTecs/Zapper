@@ -16,6 +16,7 @@ import gui.Map;
 import gui.PaintingLayer;
 import gui.extention.Extention;
 import gui.extention.ExtentionManager;
+import gui.extention.Shielding;
 import gui.screens.death.DeathScreen;
 import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
@@ -176,8 +177,6 @@ public class MainZap {
 
 		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		
-		ExtentionManager.setExtention(Extention.MIRROR); // ### DEBUG
-
 	}
 
 	private static final Runnable TASK_UPDATE = new Runnable() {

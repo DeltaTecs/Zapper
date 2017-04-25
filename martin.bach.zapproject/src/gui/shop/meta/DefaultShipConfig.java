@@ -17,7 +17,7 @@ public class DefaultShipConfig extends ShipStartConfig {
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DEFAULT);
 	private static final float SCALE = 1.0f;
 	private static final float AMMO_USAGE = 1.8f;
-	private static final int DAMAGE = 30;
+	private static final int DAMAGE = 55;
 	private static final float SPEED = 3.5f;
 	private static final float PROJ_SPEED = 12;
 	private static final float RELOAD_WITH = 3.0f;

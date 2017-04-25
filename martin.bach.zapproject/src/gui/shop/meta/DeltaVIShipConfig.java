@@ -17,7 +17,7 @@ public class DeltaVIShipConfig extends ShipStartConfig {
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DELTAVI);
 	private static final float SCALE = 1.0f;
 	private static final float AMMO_USAGE = 3.0f;
-	private static final int DAMAGE = 40;
+	private static final int DAMAGE = 65;
 	private static final float SPEED = 4.2f;
 	private static final float PROJ_SPEED = 16;
 	private static final float RELOAD_WITH = 1.4f;

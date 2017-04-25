@@ -36,6 +36,7 @@ import gui.PlayerHpBar;
 import gui.effect.ExplosionEffect;
 import gui.effect.ExplosionEffectPattern;
 import gui.extention.Mirroring;
+import gui.extention.Shielding;
 import gui.screens.death.DeathScreen;
 import gui.shop.Shop;
 import gui.shop.meta.DefaultShipConfig;
@@ -66,6 +67,11 @@ public class Player extends InteractiveObject {
 	private static final BufferedImage IMG_RELOAD_BOOST_C = TextureBuffer
 			.get(TextureBuffer.NAME_COLLECT_RELOAD_UP_CORNER);
 	// ---
+
+	private static final float SHIELD_FAC_SPEED = 0.2f;
+	private static final float SHIELD_FAC_RANGE = 2.5f;
+	private static final float SHIELD_FAC_DAMAGE = 3.0f;
+	private static final float SHIELD_FAC_INBOUND_DAMAGE = 0.1f;
 
 	private static final int POS_BOOST_INDICATOR = 170;
 	private static final int SIZE_BOOST_INDICATOR = 53;
@@ -143,6 +149,7 @@ public class Player extends InteractiveObject {
 	private float boostAlphaAdd = 0.0f;
 	private float boostAlphaDelta = ALPHA_BOOST_IND_ADD_DELTA;
 	private ShipStartConfig lastApplyedConfig;
+	private boolean shielded = false; // Für Schild-Effekt
 
 	public Player() {
 		super(collisionInfo, false, false); // false -> nicht an Stage gebunden;
@@ -196,6 +203,9 @@ public class Player extends InteractiveObject {
 		// Boost-Indicator
 		paintBoostIndicator(g);
 
+		// Mögliches Schild
+		Shielding.paint(g);
+
 		if (MainZap.debug) {
 
 			// Pos
@@ -245,8 +255,17 @@ public class Player extends InteractiveObject {
 		if (c instanceof Projectile) {
 
 			Projectile p = (Projectile) c;
-			hp -= p.getDamage();
-			hpBar.remove(p.getDamage());
+			if (p.collided())
+				return;
+			p.setCollided(true);
+			Shielding.inboundProjectile(p.getLocX(), p.getLocY());
+			if (shielded) {
+				hp -= (int)(p.getDamage() * SHIELD_FAC_INBOUND_DAMAGE);
+				hpBar.remove((int)(p.getDamage() * SHIELD_FAC_INBOUND_DAMAGE));
+			} else {
+				hp -= p.getDamage();
+				hpBar.remove(p.getDamage());
+			}
 
 			if (hp <= 0 && alive)
 				die(); // rip
@@ -294,6 +313,7 @@ public class Player extends InteractiveObject {
 	@Override
 	public void update() {
 		Mirroring.update();
+		Shielding.update();
 		if (alive && !warping) {
 			updateBoosts();
 			updatePosition();
@@ -360,6 +380,9 @@ public class Player extends InteractiveObject {
 		float speed = this.speed;
 		if (boostsActive[0]) // speedboost
 			speed = this.speed * BOOST_FAC_SPEED;
+
+		if (shielded)
+			speed *= SHIELD_FAC_SPEED;
 
 		getVelocity().setX(0);
 		getVelocity().setY(0);
@@ -494,6 +517,11 @@ public class Player extends InteractiveObject {
 			proj.setDamage((int) (proj.getDamage() * BOOST_FAC_BULLET_DMG));
 			proj.setSquare(true); // sexy? dann quadrat?
 		}
+
+		if (shielded) {
+			proj.setDamage((int) (proj.getDamage() * SHIELD_FAC_DAMAGE));
+			proj.setRange((int) (proj.getRange() * SHIELD_FAC_RANGE));
+		}
 	}
 
 	public void heal(int h) {
@@ -513,11 +541,10 @@ public class Player extends InteractiveObject {
 
 	public void setRunningOnLowAmmo(boolean b) {
 
-		if (b) {
+		if (b)
 			maxWeaponCooldown = maxWeaponCooldownWithout;
-		} else {
+		else
 			maxWeaponCooldown = maxWeaponCooldownWith;
-		}
 
 		outOfAmmo = b;
 	}
@@ -1113,6 +1140,14 @@ public class Player extends InteractiveObject {
 
 	public WeaponPositioning getActiveWeaponPositioning() {
 		return activeWeaponPositioning;
+	}
+
+	public boolean isShielded() {
+		return shielded;
+	}
+
+	public void setShielded(boolean shielded) {
+		this.shielded = shielded;
 	}
 
 }

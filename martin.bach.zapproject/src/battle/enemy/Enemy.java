@@ -203,7 +203,10 @@ public class Enemy extends InteractiveObject {
 	public void collide(Collideable c) {
 
 		if (c instanceof Projectile) {
+			if (((Projectile) c).collided())
+				return;
 			damage(((Projectile) c).getDamage(), ((Projectile) c));
+			((Projectile) c).setCollided(true);
 		}
 	}
 

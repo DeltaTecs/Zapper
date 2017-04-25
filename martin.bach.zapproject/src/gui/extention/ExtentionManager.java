@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
@@ -42,26 +43,26 @@ public abstract class ExtentionManager {
 	private static boolean blocked = true;
 
 	public static void setUpClickListener() {
-		
+
 		ClickableObject clickable = new ClickableObject(POS_BG_X, POS_BG_Y, BG_SIZE, BG_SIZE);
 		clickable.setVisible(true);
-		
+
 		clickable.addClickListener(new ClickListener() {
-			
+
 			@Override
 			public void release(int dx, int dy) {
 				requestActivation();
 			}
-			
+
 			@Override
 			public void press(int dx, int dy) {
 			}
 		});
-		
+
 		MainZap.getFrame().addClickable(clickable);
-		
+
 	}
-	
+
 	public static void paint(Graphics2D g) {
 
 		if (extention == null)
@@ -78,7 +79,7 @@ public abstract class ExtentionManager {
 			} else {
 				g.fillRect(POS_BG_X, POS_BG_Y, BG_SIZE, BG_SIZE);
 			}
-			g.drawImage(image, POS_BG_X + POS_FG_D, POS_BG_Y + POS_FG_D, FG_SIZE, FG_SIZE, null);
+			drawImage(g);
 
 			g.setComposite(storeComp);
 
@@ -97,7 +98,7 @@ public abstract class ExtentionManager {
 			} else {
 				g.fillRect(POS_BG_X, POS_BG_Y, BG_SIZE, BG_SIZE);
 			}
-			g.drawImage(image, POS_BG_X + POS_FG_D, POS_BG_Y + POS_FG_D, FG_SIZE, FG_SIZE, null);
+			drawImage(g);
 
 			g.setComposite(storeComp);
 
@@ -116,6 +117,16 @@ public abstract class ExtentionManager {
 			g.setClip(null);
 		}
 
+	}
+
+	private static void drawImage(Graphics2D g) {
+		if (MainZap.generalAntialize) {
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+			g.drawImage(image, POS_BG_X + POS_FG_D, POS_BG_Y + POS_FG_D, FG_SIZE, FG_SIZE, null);
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		} else {
+			g.drawImage(image, POS_BG_X + POS_FG_D, POS_BG_Y + POS_FG_D, FG_SIZE, FG_SIZE, null);
+		}
 	}
 
 	public static void update() {
@@ -156,13 +167,15 @@ public abstract class ExtentionManager {
 			Mirroring.activate();
 			break;
 		case SHIELD:
+			blocked = true;
+			Shielding.activate();
 			break;
 		case SHOCK:
 			break;
 		default: // Braucht man nicht !
 			break;
 		}
-		
+
 		ready = false;
 		currentCooldown = currentMaxCooldown;
 	}
@@ -186,7 +199,7 @@ public abstract class ExtentionManager {
 
 		if (extention == null)
 			return;
-		
+
 		ready = true;
 		currentMaxCooldown = COOLDOWNS[extention.ordinal()];
 		currentCooldown = 0;

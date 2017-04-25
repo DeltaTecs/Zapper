@@ -29,8 +29,10 @@ public class MirrorImage extends Enemy {
 	private int dy;
 
 	public MirrorImage() {
-		super(0, 0, 0, MainZap.getPlayer().getTexture(), 0, new CollisionInformation(MainZap.getPlayer().getCollisionInfo().getRadius(),
-				CollisionType.COLLIDE_AS_PLAYER, false), null, null, 0, null, 0, 0, 0, false);
+		super(0, 0, 0, MainZap.getPlayer().getTexture(), 0,
+				new CollisionInformation(MainZap.getPlayer().getCollisionInfo().getRadius(),
+						CollisionType.COLLIDE_AS_PLAYER, false),
+				null, null, 0, null, 0, 0, 0, false);
 		super.setFriend(true);
 		super.setStageBound(STAGE_BOUND);
 		weaponPositioning = MainZap.getPlayer().getActiveWeaponPositioning();
@@ -64,6 +66,10 @@ public class MirrorImage extends Enemy {
 			return;
 
 		Projectile proj = (Projectile) c;
+
+		if (proj.collided())
+			return;
+		proj.setCollided(true);
 		hp -= proj.getDamage();
 		if (hp <= 0) // verpuffen
 			dieing = true;
@@ -142,5 +148,5 @@ public class MirrorImage extends Enemy {
 	public boolean isAlive() {
 		return (alpha > 0.001) && (duration > 0);
 	}
-	
+
 }
