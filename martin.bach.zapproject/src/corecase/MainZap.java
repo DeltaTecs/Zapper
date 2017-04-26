@@ -14,9 +14,8 @@ import gui.Frame;
 import gui.Hud;
 import gui.Map;
 import gui.PaintingLayer;
-import gui.extention.Extention;
 import gui.extention.ExtentionManager;
-import gui.extention.Shielding;
+import gui.extention.Shocking;
 import gui.screens.death.DeathScreen;
 import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
@@ -176,7 +175,7 @@ public class MainZap {
 			Tutorial.show();
 
 		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
-		
+
 	}
 
 	private static final Runnable TASK_UPDATE = new Runnable() {

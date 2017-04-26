@@ -235,7 +235,7 @@ public class Grid {
 				}
 			}
 		}
-		
+
 	}
 
 	private void resortObjects() {
@@ -345,7 +345,7 @@ public class Grid {
 
 	}
 
-	public ArrayList<Enemy> getSurrounding(int cx, int cy, int range) {
+	public ArrayList<Enemy> getEnemySurrounding(int cx, int cy, int range) {
 
 		int ix = cx / tileSizeX; // index-x
 		if (ix > colums - 1)
@@ -390,6 +390,48 @@ public class Grid {
 						collect.add((Enemy) c);
 
 				}
+			}
+		}
+		return collect;
+	}
+
+	public ArrayList<Collideable> getTotalSurrounding(int cx, int cy, int range) {
+
+		int ix = cx / tileSizeX; // index-x
+		if (ix > colums - 1)
+			ix = colums - 1;
+		if (ix < 0)
+			ix = 0;
+
+		int iy = cy / tileSizeY; // index-y
+		if (iy > rows - 1)
+			iy = rows - 1;
+		if (iy < 0)
+			iy = 0;
+
+		int ir; // index-range
+		if (range % tileSizeX == 0) {
+			ir = range / tileSizeX;
+		} else {
+			ir = (range / tileSizeX) + 1;
+		}
+
+		ArrayList<Collideable> collect = new ArrayList<Collideable>();
+
+		for (int dix = -ir; dix <= ir; dix++) {
+			// Delta-Index-X (von -range bis +range)
+
+			for (int diy = -ir; diy <= ir; diy++) {
+				// Delta-Index-Y (von -range bis +range)
+
+				int x = ix + dix; // finaler Kachel-Index
+				int y = iy + diy;
+
+				// Gibts es diese Kachel überhaupt?
+				if (x < 0 || x > colums - 1 || y < 0 || y > rows - 1)
+					continue; // nö. Außer Grid-Range
+
+				collect.addAll(tiles[x][y].getObjects());
 			}
 		}
 		return collect;

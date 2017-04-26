@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+import battle.Shockable;
 import battle.WeaponConfiguration;
 import battle.ai.AiProtocol;
 import battle.projectile.Projectile;
@@ -16,10 +17,12 @@ import gui.effect.Effect;
 import gui.effect.ExplosionEffect;
 import gui.effect.ExplosionEffectPattern;
 import gui.effect.WarpInEffect;
+import gui.extention.Shocking;
 import ingameobjects.InteractiveObject;
 
-public class Enemy extends InteractiveObject {
+public class Enemy extends InteractiveObject implements Shockable {
 
+	private static final int MAX_NORMAL_SPEED_COOLDOWN = MainZap.inTicks(5000);
 	private static final int DMG_INDICATING_MAX_TIME = MainZap.getMainLoop().inTicks(5000);
 	private static final Color COLOR_HP_BACKGROUND = new Color(174, 1, 2, 113);
 	private static final Color COLOR_HP_FOREGROUND = new Color(221, 22, 10);
@@ -53,6 +56,7 @@ public class Enemy extends InteractiveObject {
 	private int score;
 	private int crystals;
 	private boolean nodrops = false;
+	private int normalSpeedCooldown = -1;
 
 	public Enemy(float posX, float posY, float speed, BufferedImage texture, float scale,
 			CollisionInformation information, AiProtocol ai, WeaponConfiguration weaponconf, int health,
@@ -176,6 +180,15 @@ public class Enemy extends InteractiveObject {
 			updateWarp();
 			return;
 		}
+
+		// Geshockt?
+		if (normalSpeedCooldown > -1)
+			if (normalSpeedCooldown <= 0) {
+				normalSpeedCooldown = -1;
+				speed *= 5;
+			} else
+				normalSpeedCooldown--;
+
 		updateAi();
 		if (aiProtocol.isWaiting()) {
 			updateUI();
@@ -311,6 +324,15 @@ public class Enemy extends InteractiveObject {
 		MainZap.getMap().removeUpdateElement(this);
 		MainZap.getGrid().remove(this);
 		super.getListedObjects().remove(this);
+	}
+
+	@Override
+	public void shock() {
+		damage((int) (maxHealth * 0.4f), Shocking.getTagProjectile());
+		if (weaponConfiguration != null)
+			weaponConfiguration.setMaxCooldown(weaponConfiguration.getMaxCooldown() * 2);
+		speed *= 0.2f;
+		normalSpeedCooldown = MAX_NORMAL_SPEED_COOLDOWN;
 	}
 
 	public boolean isAlive() {

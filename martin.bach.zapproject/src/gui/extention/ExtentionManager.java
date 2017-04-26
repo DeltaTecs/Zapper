@@ -17,7 +17,7 @@ public abstract class ExtentionManager {
 
 	// Mirror, Shield, Shock
 	private static final int[] COOLDOWNS = new int[] { MainZap.inTicks(40000), MainZap.inTicks(30000),
-			MainZap.inTicks(30000) };
+			MainZap.inTicks(45000) };
 	private static final BufferedImage[] TEXTURES = new BufferedImage[] {
 			TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_MIRROR),
 			TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_SHIELD),
@@ -171,6 +171,7 @@ public abstract class ExtentionManager {
 			Shielding.activate();
 			break;
 		case SHOCK:
+			Shocking.activate();
 			break;
 		default: // Braucht man nicht !
 			break;

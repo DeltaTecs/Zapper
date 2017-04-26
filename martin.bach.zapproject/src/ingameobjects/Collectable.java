@@ -6,12 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+import battle.Shockable;
 import collision.Collideable;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 
-public class Collectable extends InteractiveObject {
+public class Collectable extends InteractiveObject implements Shockable {
 
 	private static final int MAGNET_RANGE = 180;
 	private static final float MAGNET_MAX_SPEED = 4.0f;
@@ -136,6 +137,11 @@ public class Collectable extends InteractiveObject {
 		super.unRegister();
 		if (unregisterTask != null)
 			unregisterTask.run();
+	}
+
+	@Override
+	public void shock() {
+		duration -= (maxDuration * 0.9f);
 	}
 
 	public void collect() {

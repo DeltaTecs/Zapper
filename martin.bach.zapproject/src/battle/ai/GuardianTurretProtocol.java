@@ -49,7 +49,7 @@ public class GuardianTurretProtocol extends AiProtocol {
 		ArrayList<InteractiveObject> possibleLocks = new ArrayList<InteractiveObject>();
 
 		// Umgebung holen
-		ArrayList<Enemy> surrounding = MainZap.getGrid().getSurrounding(getHost().getLocX(), getHost().getLocY(),
+		ArrayList<Enemy> surrounding = MainZap.getGrid().getEnemySurrounding(getHost().getLocX(), getHost().getLocY(),
 				DISTANCE_SHOOT);
 
 		// Umgebung abgehen

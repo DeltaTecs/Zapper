@@ -64,7 +64,9 @@ public class ArmyCombatProtocol extends AiProtocol {
 			public void damage(InteractiveObject source, Projectile proj, int dmg) {
 				if (!hadNoContactYet)
 					return; // preLock schon verpufft
-
+				if (source == MainZap.getPlayer() && getHost().isFriend())
+					return; // Friendly-Fire
+				
 				setLockOn(source);
 				getHost().setShootingAim(source);
 			}
@@ -229,7 +231,7 @@ public class ArmyCombatProtocol extends AiProtocol {
 		}
 
 		// Umgebung holen
-		ArrayList<Enemy> surrounding = MainZap.getGrid().getSurrounding(getHost().getLocX(), getHost().getLocY(),
+		ArrayList<Enemy> surrounding = MainZap.getGrid().getEnemySurrounding(getHost().getLocX(), getHost().getLocY(),
 				getLockRange());
 
 		// Umgebung abgehen

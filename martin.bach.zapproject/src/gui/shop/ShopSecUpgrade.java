@@ -473,6 +473,7 @@ public abstract class ShopSecUpgrade {
 					ExtentionManager.setExtention(Extention.SHIELD);
 				} else if (selectedExtention == 2) {
 					// Shock
+					ExtentionManager.setExtention(Extention.SHOCK);
 				}
 
 			} else if (BOUNDS_DIA_NO.contains(tx, ty)) {

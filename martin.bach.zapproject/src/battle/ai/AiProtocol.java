@@ -299,6 +299,9 @@ public class AiProtocol implements Updateable, CloneableObject {
 				if (!source.isInRange(host, lockPhysicalDetectionRange))
 					return;
 				
+				if (source == MainZap.getPlayer() && getHost().isFriend())
+					return; // Friendly-Fire
+				
 				// Alle Bedingungen erfüllt
 				if (parked) // Park-Bremse aufheben
 					parked = false;

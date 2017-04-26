@@ -3,6 +3,7 @@ package battle.projectile;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import battle.Shockable;
 import collision.Collideable;
 import collision.CollisionInformation;
 import collision.CollisionType;
@@ -10,7 +11,7 @@ import corecase.MainZap;
 import ingameobjects.InteractiveObject;
 import library.SpeedVector;
 
-public class Projectile extends InteractiveObject {
+public class Projectile extends InteractiveObject implements Shockable {
 
 	private float speed;
 	private int size;
@@ -121,6 +122,13 @@ public class Projectile extends InteractiveObject {
 			return; // Keine Kollision mit andere Projektilen erwünscht
 
 		unRegister();
+	}
+
+	@Override
+	public void shock() {
+		getVelocity().multiply(0.4f);
+		if (MainZap.rand(2) == 0)
+			unRegister();
 	}
 
 	@Override

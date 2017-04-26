@@ -9,6 +9,7 @@ import java.util.Random;
 
 import battle.enemy.Enemy;
 import corecase.MainZap;
+import gui.extention.Shocking;
 import library.PaintingTask;
 import library.ScheduledList;
 import library.Updateable;
@@ -115,6 +116,9 @@ public class Map implements PaintingTask, Updateable {
 				pt.paint(g);
 			}
 		}
+		
+		// Shock-Effekt
+		Shocking.paint(g);
 
 		// Zurück zu 0/0 Kontext
 		g.translate(dx, dy);
@@ -131,6 +135,8 @@ public class Map implements PaintingTask, Updateable {
 		for (Updateable u : updateElements) {
 			u.update();
 		}
+		// ShockEffekt
+		Shocking.update();
 
 	}
 
