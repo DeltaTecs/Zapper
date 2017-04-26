@@ -260,8 +260,8 @@ public class Player extends InteractiveObject {
 			p.setCollided(true);
 			Shielding.inboundProjectile(p.getLocX(), p.getLocY());
 			if (shielded) {
-				hp -= (int)(p.getDamage() * SHIELD_FAC_INBOUND_DAMAGE);
-				hpBar.remove((int)(p.getDamage() * SHIELD_FAC_INBOUND_DAMAGE));
+				hp -= (int) (p.getDamage() * SHIELD_FAC_INBOUND_DAMAGE);
+				hpBar.remove((int) (p.getDamage() * SHIELD_FAC_INBOUND_DAMAGE));
 			} else {
 				hp -= p.getDamage();
 				hpBar.remove(p.getDamage());
@@ -687,6 +687,7 @@ public class Player extends InteractiveObject {
 		doubleWeaponPositioning = c.getWeaponPosDouble();
 		tripleWeaponPositioning = c.getWeaponPosTriple();
 		activeWeaponPositioning = singleWeaponPositioning;
+		nextWeapon = 0;
 
 		texture = c.getTexture();
 		midSizeX = (int) ((texture.getWidth() * textureScale) / 2);

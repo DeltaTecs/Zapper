@@ -86,8 +86,7 @@ public abstract class Shop {
 
 		@Override
 		public void release(int dx, int dy) {
-			
-			
+
 			if (Hud.clickInShopButton(dx, dy))
 				return; // Nicht doppelt klicken
 
@@ -152,8 +151,8 @@ public abstract class Shop {
 	};
 
 	public static void open() {
-		if (open || PauseScreen.isOpen())
-			return; // Bereits offen
+		if (open || PauseScreen.isOpen() || !MainZap.getPlayer().isAlive())
+			return; // Bereits offen oder Spieler tot
 		open = true;
 		directory = ShopDirectory.MENU;
 		// &&& Öffnungsprozess

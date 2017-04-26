@@ -15,6 +15,8 @@ import corecase.MainZap;
 import corecase.StringConverter;
 import gui.extention.Extention;
 import gui.extention.ExtentionManager;
+import gui.extention.Mirroring;
+import gui.extention.Shielding;
 import io.TextureBuffer;
 
 public abstract class ShopSecUpgrade {
@@ -331,14 +333,14 @@ public abstract class ShopSecUpgrade {
 		// Nametag-Pricetag-BG
 		g.setColor(ShopSecBuy.COLOR_BG);
 		g.fillPolygon(new int[] { x + 90, x + 182, x + 164, x + 90 }, new int[] { y + 15, y + 15, y + 35, y + 35 }, 4);
-		if (!(img == IMG_EXT_ADDCANNON && addedCannons == 3))
+		if (!(img == IMG_EXT_ADDCANNON && addedCannons == 2))
 			g.fillRect(x + 105, y + 45, 52, 22);
 
 		// Nametag-Pricetag-FG
 		g.setColor(ShopSecBuy.COLOR_FG);
 		g.setFont(FONT_EXT_NAME);
 		g.drawString(name, x + 92, y + 32);
-		if (!(img == IMG_EXT_ADDCANNON && addedCannons == 3)) {
+		if (!(img == IMG_EXT_ADDCANNON && addedCannons == 2)) {
 			g.setFont(FONT_EXT_PRICE);
 			g.drawString(price + "", x + 106, y + 62);
 		}
@@ -348,8 +350,9 @@ public abstract class ShopSecUpgrade {
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
 		g.drawImage(img, x, y, 84, 84, null);
-		g.drawImage(IMG_CRYSTAL, x + 86, y + 45, (int) (IMG_CRYSTAL.getWidth() * 2f),
-				(int) (IMG_CRYSTAL.getHeight() * 2f), null);
+		if (!(img == IMG_EXT_ADDCANNON && addedCannons == 2))
+			g.drawImage(IMG_CRYSTAL, x + 86, y + 45, (int) (IMG_CRYSTAL.getWidth() * 2f),
+					(int) (IMG_CRYSTAL.getHeight() * 2f), null);
 
 		// Antialising reaktivieren
 		if (MainZap.generalAntialize)
@@ -460,11 +463,14 @@ public abstract class ShopSecUpgrade {
 				inDialog = false;
 				MainZap.setCrystals(MainZap.getCrystals() - priceDia);
 				extentionStates = new boolean[] { false, false, false, false };
+				byte cannonsBeforeReset = (byte) (addedCannons + 1);
+				resetExtentions();
 				extentionStates[selectedExtention] = true;
 				if (selectedExtention == 3) {
 					// Cannons
-					addedCannons++;
-					MainZap.getPlayer().setWeaponAmount((byte) ((byte) 1 + addedCannons));
+					addedCannons = cannonsBeforeReset;
+					MainZap.getPlayer().setWeaponAmount((byte) (1 + cannonsBeforeReset));
+					ExtentionManager.setExtention(null);
 				} else if (selectedExtention == 0) {
 					// Mirror
 					ExtentionManager.setExtention(Extention.MIRROR);
@@ -520,9 +526,11 @@ public abstract class ShopSecUpgrade {
 			if (BOUNDS_DIA_YES.contains(tx, ty)) {
 				hoveringDiaYes = true;
 				hoveringDiaNo = false;
+				return;
 			} else if (BOUNDS_DIA_NO.contains(tx, ty)) {
 				hoveringDiaYes = false;
 				hoveringDiaNo = true;
+				return;
 			}
 			hoveringBuys[0] = false;
 			hoveringBuys[1] = false;
@@ -672,13 +680,13 @@ public abstract class ShopSecUpgrade {
 			if (!cannon) {
 				res = "Exchange " + act + " by " + sel + "?";
 			} else {
-				res = "Add cannon " + StringConverter.inRoman(addedCannons + 1) + "?";
+				res = "Add cannon " + StringConverter.inRoman(addedCannons + 2) + " ?";
 			}
 		} else {
 			if (!cannon) {
 				res = "Activate " + sel + "?";
 			} else {
-				res = "Add cannon " + StringConverter.inRoman(addedCannons + 1) + "?";
+				res = "Add cannon " + StringConverter.inRoman(addedCannons + 2) + " ?";
 			}
 		}
 
@@ -722,6 +730,15 @@ public abstract class ShopSecUpgrade {
 		activeUpgrades = new byte[] { 0, 0, 0, 0 };
 		extentionStates = new boolean[] { false, false, false, false };
 		MainZap.getPlayer().setUpgraded(false);
+		resetExtentions();
+	}
+
+	protected static void resetExtentions() {
+		Shielding.cancel();
+		Mirroring.cancel();
+		ExtentionManager.setExtention(null);
+		MainZap.getPlayer().setWeaponAmount((byte) 1);
+		addedCannons = 0;
 	}
 
 	private static void paintDialog(Graphics2D g) {

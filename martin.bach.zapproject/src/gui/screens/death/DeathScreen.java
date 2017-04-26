@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import corecase.MainZap;
 import corecase.StringConverter;
 import gui.Frame;
+import gui.shop.Shop;
 import io.ScoreReader;
 import library.ClickListener;
 import library.ClickableObject;
@@ -54,7 +55,8 @@ public abstract class DeathScreen {
 
 		entrys = ScoreReader.load();
 		sortScoreEntrys();
-
+		Shop.close();
+		
 		// Überdeckt ganzen Frame
 		ClickableObject bg = new ClickableObject(0, 0, Frame.SIZE, Frame.SIZE);
 		bg.setVisible(true);
