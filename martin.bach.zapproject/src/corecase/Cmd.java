@@ -145,6 +145,7 @@ public abstract class Cmd {
 			System.exit(0);
 		}
 		print("Successfully verified.");
+		modeCoEditor = false;
 
 	}
 
@@ -341,10 +342,6 @@ class CommandLibrary {
 			p("Stage passed.");
 			break;
 		case "exelvl":
-			if (Cmd.modeCoEditor) { // Gesperrter Befehl
-				Cmd.err("Access denied.");
-				break;
-			}
 			if (parts != 2) {
 				printInvalidArgs("exelvl <int>");
 				return;

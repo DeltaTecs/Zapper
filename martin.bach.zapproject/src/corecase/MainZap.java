@@ -15,7 +15,6 @@ import gui.Hud;
 import gui.Map;
 import gui.PaintingLayer;
 import gui.extention.ExtentionManager;
-import gui.extention.Shocking;
 import gui.screens.death.DeathScreen;
 import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
@@ -27,10 +26,10 @@ import schedule.DynamicUpdateLoop;
 
 public class MainZap {
 
-	public static final String VERSION = "0.8.2 _ Alpha";
+	public static final String VERSION = "0.8.9 _ Alpha";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = false || !inWorkspace();
+	public static final boolean FINAL_RUN = true || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
@@ -165,7 +164,7 @@ public class MainZap {
 			collisionLoop.setBooster(collisionLoop.getTimeBetweenFramesMS() / 2);
 		// ----
 
-		StageManager.setUp(4); // ### debug. Eig. setUp(1)
+		StageManager.setUp(1);
 		Hud.setUpClickListener();
 		ExtentionManager.setUpClickListener();
 		PauseScreen.setUp(false);

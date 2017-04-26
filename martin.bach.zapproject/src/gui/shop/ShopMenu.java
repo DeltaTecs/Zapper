@@ -6,10 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
-import java.awt.image.BufferedImage;
 
 import gui.Frame;
-import io.TextureBuffer;
 
 public abstract class ShopMenu {
 
@@ -21,10 +19,7 @@ public abstract class ShopMenu {
 	private static final Rectangle BOUNDS_UPGRADE = new Rectangle(Shop.X + (Shop.BOUNDS.width / 2), Shop.Y,
 			Shop.BOUNDS.width / 2, Shop.BOUNDS.height);
 
-	private static final BufferedImage IMAGE_BUY_SHIP = TextureBuffer.get(TextureBuffer.NAME_GRAPHIC_BUY_NEW_SHIP);
-	private static final BufferedImage IMAGE_UPGRADE_SHIP = TextureBuffer.get(TextureBuffer.NAME_GRAPHIC_UPGRADE_SHIP);
-	private static final float IMAGE_SCALE_FAC = 1.4f;
-	private static final Font FONT_BUTTON = new Font("Arial", Font.BOLD, 40);
+	private static final Font FONT_BUTTON = new Font("Arial", Font.BOLD, 63);
 	private static final String TEXT_BUY = "Buy New";
 	private static final String TEXT_UPGRADE = "Upgrade";
 
@@ -59,7 +54,6 @@ public abstract class ShopMenu {
 
 	public static void paint(Graphics2D g) {
 
-
 		g.setColor(COLOR_HOVER);
 		if (hovering[0]) {
 			g.fillRect(BOUNDS_BUY.x, BOUNDS_BUY.y, BOUNDS_BUY.width, BOUNDS_BUY.height);
@@ -71,15 +65,10 @@ public abstract class ShopMenu {
 		g.setStroke(STROKE_BORDER_SELECT);
 		g.drawLine(Frame.SIZE / 2, Shop.Y + 2, Frame.SIZE / 2, Shop.Y + Shop.BOUNDS.height - 3);
 
-		g.drawImage(IMAGE_BUY_SHIP, 47, 240, (int) (IMAGE_BUY_SHIP.getWidth() * IMAGE_SCALE_FAC),
-				(int) (IMAGE_BUY_SHIP.getHeight() * IMAGE_SCALE_FAC), null);
-		g.drawImage(IMAGE_UPGRADE_SHIP, 430, 240, (int) (IMAGE_UPGRADE_SHIP.getWidth() * IMAGE_SCALE_FAC),
-				(int) (IMAGE_UPGRADE_SHIP.getHeight() * IMAGE_SCALE_FAC), null);
-
 		g.setColor(COLOR_SELECT_BORDER);
 		g.setFont(FONT_BUTTON);
-		g.drawString(TEXT_BUY, 80, 380);
-		g.drawString(TEXT_UPGRADE, 400, 380);
+		g.drawString(TEXT_BUY, 40, 355);
+		g.drawString(TEXT_UPGRADE, 347, 355);
 	}
 
 	public static void update() {
