@@ -16,7 +16,8 @@ import library.Updateable;
 
 public class Map implements PaintingTask, Updateable {
 
-	private static final int BACKGROUND_PARTICLE_AMOUNT = 200;
+	private static final int BG_CLASSIC_PARTICLE_AMOUNT = 200;
+	private static final int BG_GROUPED_CENTER_AMOUNT = 78;
 	public static final int SIZE = 3000;
 
 	private ArrayList<Rectangle> backgroundParticles = new ArrayList<Rectangle>();
@@ -116,7 +117,7 @@ public class Map implements PaintingTask, Updateable {
 				pt.paint(g);
 			}
 		}
-		
+
 		// Shock-Effekt
 		Shocking.paint(g);
 
@@ -142,8 +143,17 @@ public class Map implements PaintingTask, Updateable {
 
 	public void rebuildBgParticles() {
 		backgroundParticles.clear();
+
+		if (!MainZap.fancyGraphics)
+			buildClassicBgParticles();
+		else
+			buildGroupedBgParticles();
+
+	}
+
+	private void buildClassicBgParticles() {
 		Random r = new Random();
-		for (int i = 0; i != BACKGROUND_PARTICLE_AMOUNT; i++) {
+		for (int i = 0; i != BG_CLASSIC_PARTICLE_AMOUNT; i++) {
 
 			int x = r.nextInt(SIZE + 600) - 300 + 1;
 			int y = r.nextInt(SIZE + 600) - 300 + 1;
@@ -155,6 +165,48 @@ public class Map implements PaintingTask, Updateable {
 			}
 
 			backgroundParticles.add(new Rectangle(x, y, width, height));
+		}
+	}
+
+	private void buildGroupedBgParticles() {
+		Random r = new Random();
+		for (int i = 0; i != BG_GROUPED_CENTER_AMOUNT; i++) {
+
+			int x0 = r.nextInt(SIZE + 600) - 300 + 1;
+			int y0 = r.nextInt(SIZE + 600) - 300 + 1;
+			int width0 = r.nextInt(100) + 21;
+			int height0 = r.nextInt(100) + 21;
+
+			if (r.nextBoolean()) {
+				height0 = width0;
+			}
+
+			backgroundParticles.add(new Rectangle(x0, y0, width0, height0));
+			if (!(r.nextBoolean() && r.nextBoolean()))
+				backgroundParticles.add(new Rectangle(x0, y0, width0, height0));
+			if (!r.nextBoolean())
+				backgroundParticles.add(new Rectangle(x0, y0, width0, height0));
+
+			int secondObjects = r.nextInt(16) + 4;
+			for (int j = 0; j != secondObjects; j++) {
+				int x1 = x0 + r.nextInt(200) - 100;
+				int y1 = y0 + r.nextInt(200) - 100;
+				int width1 = r.nextInt(70) + 26;
+				int height1 = r.nextInt(70) + 26;
+				backgroundParticles.add(new Rectangle(x1, y1, width1, height1));
+
+				int thirdObjects = r.nextInt(4);
+				for (int k = 0; k != thirdObjects; k++) {
+					int x2 = x1 + r.nextInt(460) - 230;
+					int y2 = y1 + r.nextInt(460) - 230;
+					int width2 = r.nextInt(24) + 4;
+					int height2 = r.nextInt(24) + 4;
+					if (r.nextBoolean() || r.nextBoolean())
+						width2 = height2;
+					backgroundParticles.add(new Rectangle(x2, y2, width2, height2));
+				}
+			}
+
 		}
 	}
 

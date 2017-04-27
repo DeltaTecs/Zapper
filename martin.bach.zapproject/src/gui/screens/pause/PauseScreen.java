@@ -88,7 +88,7 @@ public abstract class PauseScreen {
 	private static final String TEXT_SET_GRAPH = "general graphics";
 	private static final String TEXT_SET_GRAPH_SCALE = "window size";
 	private static final String TEXT_SET_GRAPH_ROUNDCORNERS = "round corners";
-	private static final String TEXT_SET_GRAPH_FANCY = "fancy effects";
+	private static final String TEXT_SET_GRAPH_FANCY = "fancyness";
 	private static final String TEXT_SET_AA = "antialising";
 	private static final String TEXT_SET_AA_GENERAL = "general smoothness";
 	private static final String TEXT_SET_AA_SHIPS = "smooth ships";
@@ -273,6 +273,7 @@ public abstract class PauseScreen {
 				}
 				if (BOUNDS_SET_GRAPH_FANCY.contains(dx, dy)) {
 					MainZap.fancyGraphics = !MainZap.fancyGraphics;
+					MainZap.getMap().rebuildBgParticles();
 					SettingsInitReader.save();
 					return;
 				}
@@ -652,7 +653,7 @@ public abstract class PauseScreen {
 		// Fancy-Effekte:
 		g.setFont(FONT_SET_SUB);
 		g.setColor(COLOR_SETTINGS);
-		g.drawString(TEXT_SET_GRAPH_FANCY, BOUNDS_SET_GRAPH_FANCY.x - 145,
+		g.drawString(TEXT_SET_GRAPH_FANCY, BOUNDS_SET_GRAPH_FANCY.x - 119,
 				BOUNDS_SET_GRAPH_FANCY.y + FONT_SET_SUB.getSize() + 4);
 		// Fancy-Effekte-Button:
 		drawButton(g, BOUNDS_SET_GRAPH_FANCY, MainZap.fancyGraphics, hoveringFancygraphics);

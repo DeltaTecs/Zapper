@@ -51,7 +51,6 @@ public abstract class DeathScreen {
 	public static void popUp() {
 
 		// MainZap.getMainLoop().setPaused(true);
-		active = true;
 
 		entrys = ScoreReader.load();
 		sortScoreEntrys();
@@ -64,7 +63,8 @@ public abstract class DeathScreen {
 		MainZap.getFrame().addKeyListener(KEYLISTENER);
 		MainZap.getFrame().addClickable(bg);
 		clickObject = bg;
-
+		
+		active = true;
 	}
 
 	private static final PaintingTask PAINTINGTASK = new PaintingTask() {

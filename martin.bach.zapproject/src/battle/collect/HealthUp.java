@@ -3,7 +3,6 @@ package battle.collect;
 import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
-import ingameobjects.Collectable;
 import io.TextureBuffer;
 
 public class HealthUp extends Collectable {

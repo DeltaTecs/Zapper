@@ -1,4 +1,4 @@
-package ingameobjects;
+package battle.collect;
 
 import java.awt.AlphaComposite;
 import java.awt.Composite;
@@ -11,6 +11,8 @@ import collision.Collideable;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
+import ingameobjects.InteractiveObject;
+import ingameobjects.Player;
 
 public class Collectable extends InteractiveObject implements Shockable {
 
@@ -93,7 +95,7 @@ public class Collectable extends InteractiveObject implements Shockable {
 		}
 
 		// ---- Saug - Update
-		if (magnetic) {
+		if (magnetic && MainZap.getPlayer().isAlive()) {
 			if (distanceToPlayer() <= MAGNET_RANGE) {
 				// Ausrichten
 				getVelocity().aimFor(getLocX(), getLocY(),
