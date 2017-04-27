@@ -2,6 +2,7 @@ package gui.extention;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
 import gui.Frame;
@@ -10,7 +11,7 @@ import library.ScheduledList;
 public class Shielding {
 
 	private static final int MAX_DURATION = MainZap.inTicks(15000); // 15 Sek
-	private static final byte SHIPDISTANCE = 27;
+	private static final byte SHIPDISTANCE = 4;
 	private static final float FLICKER_TIME_PERCENTAGE = 0.2f;
 	private static final Color COLOR_SHIELD_BG = new Color(56, 164, 181, 35);
 	protected static final Color COLOR_SHIELD_FG = new Color(56, 164, 181, 198);
@@ -95,13 +96,7 @@ public class Shielding {
 
 	public static void activate() {
 
-		int textLength;
-		if (MainZap.getPlayer().getTexture().getWidth() > MainZap.getPlayer().getTexture().getHeight())
-			textLength = MainZap.getPlayer().getTexture().getWidth();
-		else
-			textLength = MainZap.getPlayer().getTexture().getHeight();
-
-		radian = (int) (textLength * MainZap.getPlayer().getTextureScale() * 0.5f) + SHIPDISTANCE;
+		radian = calcShieldRange(MainZap.getPlayer().getTexture(), MainZap.getPlayer().getTextureScale());
 
 		duration = MAX_DURATION;
 		active = true;
@@ -109,6 +104,14 @@ public class Shielding {
 		absoptions.update();
 		absoptions.clear();
 		MainZap.getPlayer().setShielded(true);
+	}
+
+	private static int calcShieldRange(BufferedImage img, float scale) {
+
+		float hWidth = img.getWidth() * scale * 0.5f; // halbe Weite
+		float hHeight = img.getHeight() * scale * 0.5f;
+
+		return SHIPDISTANCE + (int) Math.sqrt((hWidth * hWidth) + (hHeight * hHeight));
 	}
 
 	public static void inboundProjectile(int tx, int ty) {
