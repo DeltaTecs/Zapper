@@ -13,8 +13,9 @@ public class ShipStartConfig {
 
 	public static final int C_DEFAULT = 0;
 	public static final int C_DELTA_VI = 1;
-	public static final int C_ASHSLIDER = 2;
-	public static final int C_DELTA_VII = 3;
+	public static final int C_FALCON_III = 2;
+	public static final int C_ASHSLIDER = 3;
+	public static final int C_DELTA_VII = 4;
 
 	private static ArrayList<ShipStartConfig> configs = new ArrayList<ShipStartConfig>();
 
@@ -70,6 +71,7 @@ public class ShipStartConfig {
 		// Greift auf Texturen zurück. -> Benötigt TextureBuffer init
 		configs.add(new DefaultShipConfig());
 		configs.add(new DeltaVIShipConfig());
+		configs.add(new FalconIIIShipConfig());
 		configs.add(new AshshliderShipConfig());
 		configs.add(new DeltaVIIShipConfig());
 		// ... weitere eintragen

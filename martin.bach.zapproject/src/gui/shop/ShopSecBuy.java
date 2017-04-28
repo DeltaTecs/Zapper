@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import corecase.MainZap;
+import error.InitializationTimingException;
 import gui.Frame;
 import gui.extention.Mirroring;
 import gui.shop.meta.ShipStartConfig;
@@ -164,7 +165,7 @@ public abstract class ShopSecBuy {
 		// Rechte Seite
 		// Hintergrund und Trennung
 		g.setColor(COLOR_STATS_BG);
-		g.fillRect(Frame.SIZE / 2 + 15, Shop.Y, 275, Shop.BOUNDS.height);
+		g.fillRect(Frame.SIZE / 2 + 15, Shop.Y, 279, Shop.BOUNDS.height);
 		g.setColor(COLOR_SITE_BORDER);
 		g.setStroke(STROKE_SITE_BORDER);
 		g.drawLine(Frame.SIZE / 2 + 15, Shop.Y + 2, Frame.SIZE / 2 + 15, Shop.BOUNDS.height + Shop.Y - 2);
@@ -213,7 +214,11 @@ public abstract class ShopSecBuy {
 		selectedConfig.getDescription().paint(g, 352, 251);
 
 		// Statistiken
-		shownStats.paint(g);
+		try {
+			shownStats.paint(g);
+		} catch (NullPointerException e) {
+			throw new InitializationTimingException("Stats not ready yet!");
+		}
 
 		// --------------------------------------------
 		// Dialog

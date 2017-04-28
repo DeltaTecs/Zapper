@@ -12,7 +12,7 @@ import io.TextureBuffer;
 public class DeltaVIShipConfig extends ShipStartConfig {
 
 	private static final String NAME = "Delta VI";
-	private static final String DESCRIPTION = "The sixth generation of a fast fighter with powerful weapons, but less amour to be lighter.";
+	private static final String DESCRIPTION = "The sixth generation of a fast fighter with powerful weapons, but less amour to be lighter. The Delta VI is known to be a rather skill-based fighter.";
 	private static final int PRICE = 450;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DELTAVI);
 	private static final float SCALE = 1.0f;
