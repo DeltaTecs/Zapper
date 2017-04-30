@@ -1,4 +1,4 @@
-package library;
+package lib;
 
 import static java.lang.annotation.ElementType.METHOD;
 

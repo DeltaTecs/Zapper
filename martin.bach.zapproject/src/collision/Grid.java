@@ -11,9 +11,9 @@ import corecase.MainZap;
 import gui.Frame;
 import gui.Map;
 import ingameobjects.InteractiveObject;
-import library.PaintingTask;
-import library.ScheduledList;
-import library.SpeedVector;
+import lib.PaintingTask;
+import lib.ScheduledList;
+import lib.SpeedVector;
 
 public class Grid {
 

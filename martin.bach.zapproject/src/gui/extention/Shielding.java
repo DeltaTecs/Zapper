@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
 import gui.Frame;
-import library.ScheduledList;
+import lib.ScheduledList;
 
 public class Shielding {
 

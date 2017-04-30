@@ -1,1 +1,1 @@
-Arthur Dent<42>fuck<0>jackpott<0>DEEZ FOKIN DRUGERZ<0>
+Arthur Dent<42

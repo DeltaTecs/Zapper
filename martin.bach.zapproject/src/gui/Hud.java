@@ -17,9 +17,9 @@ import corecase.MainZap;
 import gui.extention.ExtentionManager;
 import gui.shop.Shop;
 import io.TextureBuffer;
-import library.ClickListener;
-import library.ClickableObject;
-import library.PaintingTask;
+import lib.ClickListener;
+import lib.ClickableObject;
+import lib.PaintingTask;
 
 public abstract class Hud {
 

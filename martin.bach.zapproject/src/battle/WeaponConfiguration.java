@@ -4,8 +4,8 @@ import battle.enemy.Enemy;
 import battle.projectile.Projectile;
 import ingameobjects.InteractiveObject;
 import ingameobjects.Player;
-import library.SpeedVector;
-import library.Updateable;
+import lib.SpeedVector;
+import lib.Updateable;
 
 public class WeaponConfiguration implements Updateable {
 

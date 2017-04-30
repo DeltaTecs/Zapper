@@ -1,4 +1,4 @@
-package library;
+package lib;
 
 public interface Updateable {
 

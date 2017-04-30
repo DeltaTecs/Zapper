@@ -6,7 +6,7 @@ import battle.stage.StageManager;
 import collision.Grid;
 import corecase.MainZap;
 import gui.Hud;
-import library.Updateable;
+import lib.Updateable;
 
 public class ShopLocation implements Updateable {
 

@@ -43,7 +43,7 @@ import gui.shop.meta.DefaultShipConfig;
 import gui.shop.meta.ProjDesignDefault;
 import gui.shop.meta.ShipStartConfig;
 import io.TextureBuffer;
-import library.SpeedVector;
+import lib.SpeedVector;
 
 public class Player extends InteractiveObject {
 

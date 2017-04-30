@@ -3,9 +3,9 @@ package gui;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import library.ListContaining;
-import library.PaintingTask;
-import library.ScheduledList;
+import lib.ListContaining;
+import lib.PaintingTask;
+import lib.ScheduledList;
 
 public class PaintingLayer implements ListContaining {
 

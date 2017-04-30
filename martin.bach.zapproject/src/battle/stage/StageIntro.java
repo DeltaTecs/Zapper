@@ -9,8 +9,8 @@ import corecase.MainZap;
 import corecase.StringConverter;
 import gui.Frame;
 import gui.screens.pause.PauseScreen;
-import library.PaintingTask;
-import library.Updateable;
+import lib.PaintingTask;
+import lib.Updateable;
 
 public class StageIntro implements PaintingTask, Updateable {
 

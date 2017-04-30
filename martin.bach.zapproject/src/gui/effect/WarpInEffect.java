@@ -6,7 +6,7 @@ import java.util.Random;
 
 import battle.enemy.Enemy;
 import corecase.MainZap;
-import library.SpeedVector;
+import lib.SpeedVector;
 
 public class WarpInEffect extends Effect {
 

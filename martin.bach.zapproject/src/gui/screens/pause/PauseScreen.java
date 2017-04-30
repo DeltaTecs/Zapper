@@ -17,9 +17,9 @@ import gui.Frame;
 import gui.shop.Shop;
 import io.SettingsInitReader;
 import io.TextureBuffer;
-import library.ClickListener;
-import library.ClickableObject;
-import library.MotionListener;
+import lib.ClickListener;
+import lib.ClickableObject;
+import lib.MotionListener;
 
 public abstract class PauseScreen {
 

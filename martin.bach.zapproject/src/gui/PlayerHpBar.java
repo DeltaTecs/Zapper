@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import corecase.MainZap;
-import library.PaintingTask;
-import library.ScheduledList;
-import library.Updateable;
+import lib.PaintingTask;
+import lib.ScheduledList;
+import lib.Updateable;
 
 public class PlayerHpBar implements PaintingTask, Updateable {
 

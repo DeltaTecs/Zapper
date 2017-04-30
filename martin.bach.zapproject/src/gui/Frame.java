@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 
 import corecase.MainZap;
 import io.TextureBuffer;
-import library.ClickableObject;
+import lib.ClickableObject;
 
 public class Frame extends JFrame {
 

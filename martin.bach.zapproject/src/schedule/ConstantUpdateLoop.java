@@ -3,7 +3,7 @@ package schedule;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import library.ScheduledList;
+import lib.ScheduledList;
 
 // Alles was seit Initialisierung vergangen ist, wird bei start aufgeholt
 public class ConstantUpdateLoop implements Runnable {

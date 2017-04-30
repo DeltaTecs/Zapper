@@ -10,7 +10,7 @@ import collision.Grid;
 import corecase.MainZap;
 import gui.Map;
 import ingameobjects.InteractiveObject;
-import library.ScheduledList;
+import lib.ScheduledList;
 
 public class ArmyCombatProtocol extends AiProtocol {
 

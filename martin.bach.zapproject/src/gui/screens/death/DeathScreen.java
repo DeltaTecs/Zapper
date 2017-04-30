@@ -13,9 +13,9 @@ import corecase.StringConverter;
 import gui.Frame;
 import gui.shop.Shop;
 import io.ScoreReader;
-import library.ClickListener;
-import library.ClickableObject;
-import library.PaintingTask;
+import lib.ClickListener;
+import lib.ClickableObject;
+import lib.PaintingTask;
 
 public abstract class DeathScreen {
 

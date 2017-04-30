@@ -12,7 +12,7 @@ import collision.Grid;
 import corecase.MainZap;
 import ingameobjects.CloneableObject;
 import ingameobjects.InteractiveObject;
-import library.Updateable;
+import lib.Updateable;
 
 public class AiProtocol implements Updateable, CloneableObject {
 

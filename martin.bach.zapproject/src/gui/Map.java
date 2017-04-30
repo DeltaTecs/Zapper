@@ -10,9 +10,9 @@ import java.util.Random;
 import battle.enemy.Enemy;
 import corecase.MainZap;
 import gui.extention.Shocking;
-import library.PaintingTask;
-import library.ScheduledList;
-import library.Updateable;
+import lib.PaintingTask;
+import lib.ScheduledList;
+import lib.Updateable;
 
 public class Map implements PaintingTask, Updateable {
 

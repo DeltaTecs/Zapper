@@ -10,7 +10,7 @@ import collision.CollisionInformation;
 import collision.CollisionType;
 import gui.effect.ExplosionEffectPattern;
 import io.TextureBuffer;
-import library.ScheduledList;
+import lib.ScheduledList;
 
 public class FriendAlpha1 extends Enemy {
 

@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
 import io.TextureBuffer;
-import library.ClickListener;
-import library.ClickableObject;
+import lib.ClickListener;
+import lib.ClickableObject;
 
 // Schnittstelle fürs HUD. Erweiterungs-Button (Fähigkeit) und so
 public abstract class ExtentionManager {

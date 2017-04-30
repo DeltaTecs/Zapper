@@ -8,9 +8,9 @@ import corecase.MainZap;
 import gui.Frame;
 import gui.Hud;
 import gui.screens.pause.PauseScreen;
-import library.ClickListener;
-import library.ClickableObject;
-import library.MotionListener;
+import lib.ClickListener;
+import lib.ClickableObject;
+import lib.MotionListener;
 
 public abstract class Shop {
 

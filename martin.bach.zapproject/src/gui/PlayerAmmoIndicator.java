@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import corecase.MainZap;
-import library.PaintingTask;
+import lib.PaintingTask;
 
 public class PlayerAmmoIndicator implements PaintingTask {
 

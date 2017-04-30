@@ -1,4 +1,4 @@
-package library;
+package lib;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;

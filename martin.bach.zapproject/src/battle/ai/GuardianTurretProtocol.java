@@ -6,7 +6,7 @@ import battle.GuardianTurret;
 import battle.enemy.Enemy;
 import corecase.MainZap;
 import ingameobjects.InteractiveObject;
-import library.ScheduledList;
+import lib.ScheduledList;
 
 public class GuardianTurretProtocol extends AiProtocol {
 

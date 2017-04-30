@@ -9,7 +9,7 @@ import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 import ingameobjects.InteractiveObject;
-import library.SpeedVector;
+import lib.SpeedVector;
 
 public class Projectile extends InteractiveObject implements Shockable {
 

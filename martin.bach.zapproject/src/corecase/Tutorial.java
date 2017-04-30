@@ -7,9 +7,9 @@ import battle.stage.StageIntro;
 import battle.stage.StageManager;
 import gui.Frame;
 import io.TextureBuffer;
-import library.ClickListener;
-import library.ClickableObject;
-import library.PaintingTask;
+import lib.ClickListener;
+import lib.ClickableObject;
+import lib.PaintingTask;
 
 public abstract class Tutorial {
 

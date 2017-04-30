@@ -9,9 +9,9 @@ import battle.stage.StageManager;
 import corecase.MainZap;
 import gui.effect.ExplosionEffect;
 import io.TextureBuffer;
-import library.PaintingTask;
-import library.SpeedVector;
-import library.Updateable;
+import lib.PaintingTask;
+import lib.SpeedVector;
+import lib.Updateable;
 
 public class Crystal implements PaintingTask, Updateable {
 

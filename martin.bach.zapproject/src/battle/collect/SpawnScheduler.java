@@ -9,7 +9,7 @@ import battle.enemy.Enemy;
 import corecase.MainZap;
 import gui.Map;
 import ingameobjects.InteractiveObject;
-import library.Updateable;
+import lib.Updateable;
 
 public class SpawnScheduler implements Updateable {
 

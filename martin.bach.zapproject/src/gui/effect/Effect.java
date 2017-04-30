@@ -3,8 +3,8 @@ package gui.effect;
 import java.awt.Graphics2D;
 
 import corecase.MainZap;
-import library.PaintingTask;
-import library.Updateable;
+import lib.PaintingTask;
+import lib.Updateable;
 
 public class Effect implements PaintingTask, Updateable {
 

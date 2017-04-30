@@ -324,7 +324,12 @@ public abstract class ShopSecBuy {
 
 	protected static void callClick(int tx, int ty) {
 
+		
+		
 		scrollDelta = 0;
+		
+		if (BOUNDS_SCROLL_DOWN.contains(tx, ty) || BOUNDS_SCROLL_UP.contains(tx, ty))
+			return; // Scroll-Buttons werden über PRESS angesprochen
 
 		if (inDialog) {
 			if (BOUNDS_DIA_YES.contains(tx, ty)) {

@@ -26,10 +26,10 @@ import schedule.DynamicUpdateLoop;
 
 public class MainZap {
 
-	public static final String VERSION = "0.8.9 _ Alpha";
+	public static final String VERSION = "0.9.0 _ Alpha";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = false || !inWorkspace();
+	public static final boolean FINAL_RUN = true || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
@@ -178,7 +178,7 @@ public class MainZap {
 		if (FINAL_RUN)
 			Tutorial.show();
 
-		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
+		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 
 	}
 

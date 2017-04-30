@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
 import io.TextureBuffer;
-import library.PaintingTask;
+import lib.PaintingTask;
 
 public class EnemyBaseAlpha0 implements PaintingTask {
 

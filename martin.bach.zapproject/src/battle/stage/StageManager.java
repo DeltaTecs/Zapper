@@ -1,6 +1,5 @@
 package battle.stage;
 
-import corecase.Cmd;
 import corecase.MainZap;
 import gui.Hud;
 import ingameobjects.InteractiveObject;
@@ -29,10 +28,6 @@ public abstract class StageManager {
 			setUpLvlThree();
 			break;
 		case 4:
-			if (MainZap.FINAL_RUN && !Cmd.isActive()) { // ### DEBUG
-				setUpLvlZero();
-				break;
-			}
 			setUpLvlFour();
 			break;
 		default:

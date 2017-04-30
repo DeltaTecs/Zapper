@@ -6,8 +6,8 @@ import java.util.Random;
 import corecase.MainZap;
 import gui.Map;
 import ingameobjects.InteractiveObject;
-import library.PaintingTask;
-import library.Updateable;
+import lib.PaintingTask;
+import lib.Updateable;
 
 public class Stage implements Updateable {
 

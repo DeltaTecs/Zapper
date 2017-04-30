@@ -12,7 +12,7 @@ import battle.stage._3.EnemyBasecoreAlpha0;
 import battle.stage._3.EnemyTurretAlpha0;
 import battle.stage._3.FriendAlpha1;
 import corecase.MainZap;
-import library.ScheduledList;
+import lib.ScheduledList;
 
 public class Stage3 extends Stage {
 

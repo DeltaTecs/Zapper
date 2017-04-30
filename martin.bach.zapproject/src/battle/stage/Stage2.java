@@ -16,7 +16,7 @@ public class Stage2 extends Stage {
 	private static final int LVL = 2;
 	private static final String NAME = "District 4";
 	private static final String DESCRIPTION = "Obj: kill 75 % of all enemys";
-	private static final StageDifficulty DIFFICULTY = StageDifficulty.EASY;
+	private static final StageDifficulty DIFFICULTY = StageDifficulty.HARD;
 
 	private static final int AMOUNT_BETA0 = 4;
 	private static final int AMOUNT_BETA1 = 10;

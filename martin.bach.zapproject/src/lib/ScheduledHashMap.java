@@ -1,9 +1,9 @@
-package library;
+package lib;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 
-public class ScheduledHashtable<Key extends Object, Value extends Object> extends Hashtable<Key, Value> {
+public class ScheduledHashMap<Key extends Object, Value extends Object> extends HashMap<Key, Value> {
 
 	/**
 	 * 
@@ -11,7 +11,7 @@ public class ScheduledHashtable<Key extends Object, Value extends Object> extend
 	private static final long serialVersionUID = 1L;
 
 	private final ArrayList<Key> removeList = new ArrayList<Key>();
-	private final Hashtable<Key, Value> addTable = new Hashtable<Key, Value>();
+	private final HashMap<Key, Value> addMap = new HashMap<Key, Value>();
 
 	/**
 	 * Updates the Map
@@ -24,11 +24,11 @@ public class ScheduledHashtable<Key extends Object, Value extends Object> extend
 			removeList.clear();
 		}
 
-		if (!addTable.keySet().isEmpty()) {
-			for (Key k : addTable.keySet()) {
-				this.put(k, addTable.get(k));
+		if (!addMap.isEmpty()) {
+			for (Key k : addMap.keySet()) {
+				this.put(k, addMap.get(k));
 			}
-			addTable.clear();
+			addMap.clear();
 		}
 
 	}
@@ -40,7 +40,7 @@ public class ScheduledHashtable<Key extends Object, Value extends Object> extend
 	 * @param value
 	 */
 	public void schedPut(Key key, Value value) {
-		addTable.put(key, value);
+		addMap.put(key, value);
 	}
 
 	/**
