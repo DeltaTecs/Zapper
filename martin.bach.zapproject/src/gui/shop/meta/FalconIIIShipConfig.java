@@ -18,14 +18,14 @@ public class FalconIIIShipConfig extends ShipStartConfig {
 	private static final float SCALE = 0.85f;
 	private static final float AMMO_USAGE = 1.8f;
 	private static final int DAMAGE = 85;
-	private static final float SPEED = 3.8f;
+	private static final float SPEED = 3.5f;
 	private static final float PROJ_SPEED = 13;
 	private static final float RELOAD_WITH = 2.5f;
 	private static final float RELOAD_WITHOUT = 4.3f;
 	private static final int HP = 14000;
 	private static final int HIT_RANGE = 40;
 	private static final int PROJ_RANGE = 840;
-	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignDefault();
+	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignFalconIII();
 	private static final ExplosionEffectPattern EXPL_PATTERN = new ExplosionEffectPattern(60, 600);
 	private static final CollisionInformation COLL_INFO = new CollisionInformation(HIT_RANGE,
 			CollisionType.COLLIDE_AS_PLAYER, true);

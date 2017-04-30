@@ -8,6 +8,7 @@ import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
+import gui.shop.meta.RainmakerShipConfig;
 import io.TextureBuffer;
 
 public class PaintableStats {
@@ -35,6 +36,7 @@ public class PaintableStats {
 	private static final Color COLOR_DETAIL_BG = ShopSecBuy.COLOR_BG;
 	private static final Stroke STOKE_CLASSIC = new BasicStroke(1);
 	private static final Font FONT_DETAIL = new Font("Arial", Font.BOLD, 15);
+	private static final Font FONT_RAINMAKER = new Font("Arial", Font.ITALIC, 15);
 
 	private static final int POS_Y = 330;
 	private static final int POS_X = 350;
@@ -46,15 +48,55 @@ public class PaintableStats {
 
 	private ShipConfigGraphCalc thisConfig;
 	private ShipConfigGraphCalc baseConfig;
+	private boolean displayingRainmaker = false;
 
 	private StatHoverOption hoveringOver = StatHoverOption.NONE;
 
 	public PaintableStats(ShipConfigGraphCalc selected, ShipConfigGraphCalc base) {
 		thisConfig = selected;
 		baseConfig = base;
+		displayingRainmaker = (selected.getConfig().getTexture() == RainmakerShipConfig.TEXTURE);
 	}
 
 	public void paint(Graphics2D g) {
+
+		if (displayingRainmaker) {
+			int y = POS_Y;
+			g.setFont(FONT_RAINMAKER);
+			g.drawImage(IMG_HEALTH, POS_X, y, 20, 20, null);
+			g.setColor(Color.BLACK);
+			g.drawString("Enough", POS_BAR_X + 2, y  + FONT_RAINMAKER.getSize());
+			y += HEIGHT + SPACE_Y;
+			g.drawImage(IMG_SPEED, POS_X, y, 20, 20, null);
+			g.setColor(COLOR_SPEED);
+			g.setColor(Color.BLACK);
+			g.drawString("Enough", POS_BAR_X + 2, y  + FONT_RAINMAKER.getSize());
+			y += HEIGHT + SPACE_Y;
+			g.drawImage(IMG_EFFICIENCY, POS_X, y, 20, 20, null);
+			g.setColor(COLOR_EFFICIENCY);
+			g.fillRect(POS_BAR_X, y + 2, (int) (thisConfig.getEfficiency() * WIDTH), HEIGHT);
+			y += HEIGHT + SPACE_Y;
+			g.drawImage(IMG_RELOAD_WITH, POS_X, y, 20, 20, null);
+			g.setColor(COLOR_RELOAD);
+			g.setColor(Color.BLACK);
+			g.drawString("Let it rain!", POS_BAR_X + 2, y  + FONT_RAINMAKER.getSize());
+			y += HEIGHT + SPACE_Y;
+			g.drawImage(IMG_RELOAD_WITHOUT, POS_X, y, 20, 20, null);
+			g.drawString("Enough", POS_BAR_X + 2, y  + FONT_RAINMAKER.getSize());
+			y += HEIGHT + SPACE_Y;
+			g.drawImage(IMG_DAMAGE, POS_X, y, 20, 20, null);
+			g.setColor(COLOR_DAMAGE);
+			g.fillRect(POS_BAR_X, y + 2, (int) (thisConfig.getDamage() * WIDTH), HEIGHT);
+			y += HEIGHT + SPACE_Y;
+			g.drawImage(IMG_BULLETSPEED, POS_X, y, 20, 20, null);
+			g.setColor(COLOR_BULLETSPEED);
+			g.fillRect(POS_BAR_X, y + 2, (int) (thisConfig.getProjSpeed() * WIDTH), HEIGHT);
+			y += HEIGHT + SPACE_Y;
+			g.drawImage(IMG_RANGE, POS_X, y, 20, 20, null);
+			g.setColor(COLOR_RANGE);
+			g.fillRect(POS_BAR_X, y + 2, (int) (thisConfig.getProjRange() * WIDTH), HEIGHT);
+			return;
+		}
 
 		int y = POS_Y;
 		g.drawImage(IMG_HEALTH, POS_X, y, 20, 20, null);
@@ -256,5 +298,6 @@ public class PaintableStats {
 	public void setConfigs(ShipConfigGraphCalc selected, ShipConfigGraphCalc base) {
 		thisConfig = selected;
 		baseConfig = base;
+		displayingRainmaker = (selected.getConfig().getTexture() == RainmakerShipConfig.TEXTURE);
 	}
 }

@@ -1,6 +1,7 @@
 package gui.shop;
 
 import corecase.MainZap;
+import gui.shop.meta.RainmakerShipConfig;
 import gui.shop.meta.ShipStartConfig;
 
 public class ShipConfigGraphCalc {
@@ -66,6 +67,9 @@ public class ShipConfigGraphCalc {
 		maxProjRange = 0;
 		minReloadWith = 1000000.0f;
 		for (ShipStartConfig c : ShipStartConfig.getConfigs()) {
+			
+			if (c.getTexture() == RainmakerShipConfig.TEXTURE)
+				continue; // Der Rainmaker ist außen vor
 
 			if (c.getHp() > maxHealth)
 				maxHealth = c.getHp();

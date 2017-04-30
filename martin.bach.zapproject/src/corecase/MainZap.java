@@ -31,7 +31,7 @@ public class MainZap {
 
 	public static final boolean FINAL_RUN = false || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
-	public static boolean debug = true;
+	public static boolean debug = false;
 	public static boolean grid_debug = false;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static boolean speedMode = false;
@@ -178,7 +178,7 @@ public class MainZap {
 		if (FINAL_RUN)
 			Tutorial.show();
 
-		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_FALCON_III));
+		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
 
 	}
 

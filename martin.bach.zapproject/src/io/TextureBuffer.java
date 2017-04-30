@@ -20,6 +20,8 @@ public abstract class TextureBuffer {
 	public static final String NAME_PLAYERSHIP_DELTAVII = "playerShipDeltaVII.png";
 	public static final String NAME_PLAYERSHIP_ASHSLIDER = "playerShipAshslider.png";
 	public static final String NAME_PLAYERSHIP_FALCONIII = "playerShipFalconIII.png";
+	public static final String NAME_PLAYERSHIP_DARKPERL = "playerShipDarkPerl.png";
+	public static final String NAME_PLAYERSHIP_RAINMAKER = "playerShipRainmaker.png";
 	public static final String NAME_ENEMYSHIP_ALPHA0 = "enemyShipAlpha0.png";
 	public static final String NAME_FRIENDSHIP_ALPHA1 = "friendShipAlpha1.png";
 	public static final String NAME_FRIENDTURRET_SHOP0 = "friendTurretShop0.png";
@@ -80,6 +82,8 @@ public abstract class TextureBuffer {
 		names.add(NAME_PLAYERSHIP_DEFAULT);
 		names.add(NAME_PLAYERSHIP_ASHSLIDER);
 		names.add(NAME_PLAYERSHIP_FALCONIII);
+		names.add(NAME_PLAYERSHIP_DARKPERL);
+		names.add(NAME_PLAYERSHIP_RAINMAKER);
 		names.add(NAME_ENEMYSHIP_ALPHA0);
 		names.add(NAME_FRIENDSHIP_ALPHA1);
 		names.add(NAME_FRIENDTURRET_SHOP0);

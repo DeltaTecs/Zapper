@@ -17,6 +17,7 @@ import gui.extention.Extention;
 import gui.extention.ExtentionManager;
 import gui.extention.Mirroring;
 import gui.extention.Shielding;
+import gui.shop.meta.RainmakerShipConfig;
 import io.TextureBuffer;
 
 public abstract class ShopSecUpgrade {
@@ -662,13 +663,13 @@ public abstract class ShopSecUpgrade {
 			if (b == true) {
 				active = true;
 				if (i == 0) {
-					sel = TEXT_TITEL_MIRROR;
+					act = TEXT_TITEL_MIRROR;
 				} else if (i == 1) {
-					sel = TEXT_TITEL_SHIELD;
+					act = TEXT_TITEL_SHIELD;
 				} else if (i == 2) {
-					sel = TEXT_TITEL_SHOCK;
+					act = TEXT_TITEL_SHOCK;
 				} else if (i == 3) {
-					sel = TEXT_TITEL_ADDCANNON;
+					act = TEXT_TITEL_ADDCANNON;
 				}
 				break;
 			}
@@ -680,13 +681,20 @@ public abstract class ShopSecUpgrade {
 			if (!cannon) {
 				res = "Exchange " + act + " by " + sel + "?";
 			} else {
-				res = "Add cannon " + StringConverter.inRoman(addedCannons + 2) + " ?";
+				if (MainZap.getPlayer().getTexture() == RainmakerShipConfig.TEXTURE)
+					res = "Add cannon " + StringConverter.inRoman(addedCannons + 6) + " ?";
+				else
+					res = "Add cannon " + StringConverter.inRoman(addedCannons + 2) + " ?";
+
 			}
 		} else {
 			if (!cannon) {
 				res = "Activate " + sel + "?";
 			} else {
-				res = "Add cannon " + StringConverter.inRoman(addedCannons + 2) + " ?";
+				if (MainZap.getPlayer().getTexture() == RainmakerShipConfig.TEXTURE)
+					res = "Add cannon " + StringConverter.inRoman(addedCannons + 6) + " ?";
+				else
+					res = "Add cannon " + StringConverter.inRoman(addedCannons + 2) + " ?";
 			}
 		}
 
