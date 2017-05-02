@@ -1,5 +1,5 @@
 # Zapper
-A 2D-Space-Shooter (y not) (just a hobby)
+A rogue like 2D-Space-Shooter
 
 Zapper is a short single player 2d space shooter. It is meant to entertain the player for about 30 min.
 Little bit like a Rogue-Like:
@@ -9,5 +9,5 @@ Little bit like a Rogue-Like:
 - Shops
 - Upgrades
 
-Game-Launguage is english.
+Game-Language is english.
 Code is commented in german.
