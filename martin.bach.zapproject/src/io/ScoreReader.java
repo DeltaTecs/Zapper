@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Formatter;
 
 import corecase.MainZap;
-import gui.screens.death.ScoreEntry;
+import gui.screens.end.ScoreEntry;
 
 public class ScoreReader {
 

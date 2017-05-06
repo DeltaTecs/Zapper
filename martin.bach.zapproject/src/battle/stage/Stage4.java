@@ -2,6 +2,7 @@ package battle.stage;
 
 import java.awt.Rectangle;
 
+import battle.CombatObject;
 import battle.GuardianTurret;
 import battle.ai.AiProtocol;
 import battle.ai.ArmyCombatProtocol;
@@ -19,7 +20,6 @@ import battle.stage._4.Shop0;
 import corecase.MainZap;
 import gui.Map;
 import gui.shop.ShopLocation;
-import ingameobjects.InteractiveObject;
 
 public class Stage4 extends Stage {
 
@@ -58,7 +58,7 @@ public class Stage4 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_RELOAD_PACK, PackType.RELOAD),
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED),
 				new SpawnScheduler(MAX_AMOUNT_BETA1, 0, new EnemyBeta1(0, 0)) };
-		
+
 		pass();
 
 		Shop0 shop = new Shop0();
@@ -126,11 +126,11 @@ public class Stage4 extends Stage {
 		((ArmyCombatProtocol) friend5.getAiProtocol()).setPreLocked(false);
 		friend5.register();
 		friend5.setRotation(rot1);
-		
+
 		DamageCall awakeFriends = new DamageCall() {
-			
+
 			@Override
-			public void damage(InteractiveObject source, Projectile proj, int dmg) {
+			public void damage(CombatObject source, Projectile proj, int dmg) {
 				friend0.getAiProtocol().setParked(false);
 				friend1.getAiProtocol().setParked(false);
 				friend2.getAiProtocol().setParked(false);
@@ -139,7 +139,7 @@ public class Stage4 extends Stage {
 				friend5.getAiProtocol().setParked(false);
 			}
 		};
-		
+
 		friend0.getAiProtocol().addCall(AiProtocol.KEY_CALL_GETTING_DAMAGED, awakeFriends);
 		friend1.getAiProtocol().addCall(AiProtocol.KEY_CALL_GETTING_DAMAGED, awakeFriends);
 		friend2.getAiProtocol().addCall(AiProtocol.KEY_CALL_GETTING_DAMAGED, awakeFriends);

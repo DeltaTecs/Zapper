@@ -64,6 +64,17 @@ public class Projectile extends InteractiveObject implements Shockable {
 	/**
 	 * Feuert das Projektil ab
 	 */
+	public void launch(int posX, int posY, SpeedVector projVelo, int range, InteractiveObject sender) {
+		travelDistance = 0;
+		this.range = range;
+		this.sender = sender;
+		setPosition(posX, posY);
+		setVelocity(projVelo);
+	}
+
+	/**
+	 * Feuert das Projektil ab
+	 */
 	public void launch(int posX, int posY, int aimX, int aimY, SpeedVector base, int range, InteractiveObject sender) {
 		travelDistance = 0;
 		this.range = range;

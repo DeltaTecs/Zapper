@@ -2,9 +2,9 @@ package battle.ai;
 
 import java.util.ArrayList;
 
+import battle.CombatObject;
 import battle.enemy.Enemy;
 import corecase.MainZap;
-import ingameobjects.InteractiveObject;
 import lib.ScheduledList;
 
 public class BasicTurretProtocol extends AiProtocol {
@@ -25,10 +25,10 @@ public class BasicTurretProtocol extends AiProtocol {
 	@Override
 	public void updateLockOn() {
 
-		InteractiveObject lock = getLockOn();
+		CombatObject lock = getLockOn();
 
 		if (lock instanceof Enemy) {
-			if (!((Enemy) lock).isAlive()) {
+			if (!lock.isAlive()) {
 				lock = null;
 				setLockOn(null);
 				getHost().setShootingAim(null);
@@ -47,10 +47,10 @@ public class BasicTurretProtocol extends AiProtocol {
 		}
 	}
 
-	public InteractiveObject searchForLock() {
+	public CombatObject searchForLock() {
 
 		// Alle wirklich möglichen locks
-		ArrayList<InteractiveObject> possibleLocks = new ArrayList<InteractiveObject>();
+		ArrayList<CombatObject> possibleLocks = new ArrayList<CombatObject>();
 
 		// Auch der Spieler ist Lockbar, wenn in Range
 		if (getHost().distanceToPlayer() <= DISTANCE_SHOOT && MainZap.getPlayer().isAlive()) {
@@ -66,7 +66,7 @@ public class BasicTurretProtocol extends AiProtocol {
 		// Umgebung abgehen
 		for (Enemy e : surrounding) {
 
-			if (e.isFriend() == getHost().isFriend())
+			if (e.isFriend() == getHost().isFriend() || !e.isAlive())
 				continue; // Keinen der eigenen Sippschaft anvisieren
 
 			// Da is was in Range

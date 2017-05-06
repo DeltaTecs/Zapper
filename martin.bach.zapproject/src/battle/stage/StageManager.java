@@ -30,6 +30,9 @@ public abstract class StageManager {
 		case 4:
 			setUpLvlFour();
 			break;
+		case 5:
+			setUpLvlFive();
+			break;
 		default:
 			System.err.println("[Err] Level not existing: lvl " + lvl);
 			setUpLvlZero();
@@ -90,9 +93,15 @@ public abstract class StageManager {
 		registerStage();
 	}
 
+	private static void setUpLvlFive() {
+		clearStage();
+		activeStage = new Stage5();
+		registerStage();
+	}
+
 	private static void registerStage() {
 		if (activeStage != null) {
-			if (!MainZap.FINAL_RUN)
+			if (MainZap.FINAL_RUN)
 				new StageIntro(activeStage).register();
 			MainZap.getMap().addUpdateElement(activeStage);
 			currentLvl = activeStage.getLvl();

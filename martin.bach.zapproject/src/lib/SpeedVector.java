@@ -101,6 +101,16 @@ public class SpeedVector {
 	}
 
 	/**
+	 * Simple addition x = x1 + x2; y = y1 + y2
+	 * 
+	 * @param v
+	 */
+	public void add(SpeedVector v) {
+		x += v.getX();
+		y += v.getY();
+	}
+
+	/**
 	 * Returns the sum of x and y
 	 */
 	public float getSpeed() {

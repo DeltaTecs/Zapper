@@ -15,6 +15,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import battle.CombatObject;
 import battle.WeaponPositioning;
 import battle.collect.BulletDamageUp;
 import battle.collect.BulletRangeUp;
@@ -37,7 +38,7 @@ import gui.effect.ExplosionEffect;
 import gui.effect.ExplosionEffectPattern;
 import gui.extention.Mirroring;
 import gui.extention.Shielding;
-import gui.screens.death.DeathScreen;
+import gui.screens.end.EndScreen;
 import gui.shop.Shop;
 import gui.shop.meta.DefaultShipConfig;
 import gui.shop.meta.ProjDesignDefault;
@@ -45,7 +46,7 @@ import gui.shop.meta.ShipStartConfig;
 import io.TextureBuffer;
 import lib.SpeedVector;
 
-public class Player extends InteractiveObject {
+public class Player extends CombatObject {
 
 	// -- Texturen für Boost-Indicator -------
 	private static final BufferedImage IMG_SPEED_BOOST_R = TextureBuffer.get(TextureBuffer.NAME_COLLECT_SPEEDUP_ROUND);
@@ -140,8 +141,8 @@ public class Player extends InteractiveObject {
 	private int hp = HP_MAX_DEFAULT;
 	private ExplosionEffectPattern explPattern = new ExplosionEffectPattern(60, 600);
 	private ExplosionEffect explEffect;
-	private boolean alive = true;
 	private boolean visibile = true;
+	private boolean blocked = false; // nicht mehr spielbar
 	// speed-boost?, bullet-speed-boost?, bullet-range-boost?, bullet-dmg-boost?
 	// reload-boost?
 	private boolean[] boostsActive = new boolean[] { false, false, false, false, false };
@@ -191,7 +192,7 @@ public class Player extends InteractiveObject {
 		// Spiegel-Effekt
 		Mirroring.paint(g);
 
-		if (!alive || warping)
+		if (!isAlive() || warping)
 			return; // TOT oder im Warp
 
 		// HP-Leiste
@@ -267,7 +268,7 @@ public class Player extends InteractiveObject {
 				hpBar.remove(p.getDamage());
 			}
 
-			if (hp <= 0 && alive)
+			if (hp <= 0 && isAlive())
 				die(); // rip
 
 		}
@@ -276,7 +277,7 @@ public class Player extends InteractiveObject {
 
 	private void die() {
 
-		alive = false;
+		setAlive(false);
 		MainZap.getGrid().remove(this);
 
 		explEffect = new ExplosionEffect(explPattern, this);
@@ -291,7 +292,7 @@ public class Player extends InteractiveObject {
 					@Override
 					public void run() {
 
-						DeathScreen.popUp();
+						EndScreen.popUp(EndScreen.TEXT_RIP);
 
 					}
 
@@ -314,12 +315,14 @@ public class Player extends InteractiveObject {
 	public void update() {
 		Mirroring.update();
 		Shielding.update();
-		if (alive && !warping) {
+		if (isAlive() && !warping) {
+			if (!blocked) {
+				updatePosition();
+				updateRotation();
+				updateShooting();
+				updateAmmo();
+			}
 			updateBoosts();
-			updatePosition();
-			updateRotation();
-			updateShooting();
-			updateAmmo();
 			hpBar.update();
 			updateBoostIndicatorAlpha();
 		}
@@ -695,7 +698,6 @@ public class Player extends InteractiveObject {
 		textureTransform = new AffineTransform();
 		textureTransform.translate(Frame.HALF_SCREEN_SIZE - midSizeX, Frame.HALF_SCREEN_SIZE - midSizeY);
 		textureTransform.scale(textureScale, textureScale);
-		setPosition(Map.SIZE / 2, Map.SIZE / 2);
 
 		reset();
 
@@ -736,7 +738,7 @@ public class Player extends InteractiveObject {
 		maxWeaponCooldown = maxWeaponCooldownWith;
 		weaponCooldown = new float[] { maxWeaponCooldown };
 		activeWeaponPositioning = singleWeaponPositioning;
-		alive = true;
+		setAlive(true);
 		visibile = true;
 		boostsActive = new boolean[] { false, false, false, false, false };
 		boostDurations = new int[] { 0, 0, 0, 0, 0 };
@@ -1022,10 +1024,6 @@ public class Player extends InteractiveObject {
 		hpBar.setMaxHp(maxHp);
 	}
 
-	public boolean isAlive() {
-		return alive;
-	}
-
 	public float getAmmoUsageFac() {
 		return ammoUsageFac;
 	}
@@ -1149,6 +1147,14 @@ public class Player extends InteractiveObject {
 
 	public void setShielded(boolean shielded) {
 		this.shielded = shielded;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 
 }

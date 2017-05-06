@@ -70,7 +70,7 @@ public class EnemyBeta2 extends Enemy {
 			
 			
 			Projectile p = new ProjectileBeta2();
-			getWeaponConfiguration().fire(p, this);
+			getWeaponConfiguration().fire(p, this, false);
 			
 			shootingPreperationTime = SHOOT_STOPPING_TIME / 2;
 			getAiProtocol().waitTicks(shootingPreperationTime);

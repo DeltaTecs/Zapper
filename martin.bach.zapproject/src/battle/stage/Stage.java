@@ -29,11 +29,11 @@ public class Stage implements Updateable {
 		this.difficulty = difficulty;
 		this.description = description;
 		MainZap.getPlayer().setPosition(Map.SIZE / 2, Map.SIZE / 2);
-		
+
 		passed = MainZap.debug; // in Debug alle Skippen können
-			
+
 	}
-	
+
 	public Stage(int lvl, String name, StageDifficulty difficulty, String description, int x, int y) {
 		super();
 		this.lvl = lvl;
@@ -41,7 +41,7 @@ public class Stage implements Updateable {
 		this.difficulty = difficulty;
 		this.description = description;
 		MainZap.getPlayer().setPosition(x, y);
-		
+
 		passed = MainZap.debug; // in Debug alle Skippen können
 	}
 
@@ -91,6 +91,10 @@ public class Stage implements Updateable {
 
 	public ArrayList<Updateable> getUpdateTasks() {
 		return updateTasks;
+	}
+
+	public static Random getRandom() {
+		return RANDOM;
 	}
 
 }

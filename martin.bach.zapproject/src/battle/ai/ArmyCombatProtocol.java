@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import battle.CombatObject;
 import battle.enemy.Enemy;
 import battle.projectile.Projectile;
 import collision.Grid;
@@ -61,12 +62,12 @@ public class ArmyCombatProtocol extends AiProtocol {
 		addCall(KEY_CALL_GETTING_DAMAGED, new DamageCall() {
 
 			@Override
-			public void damage(InteractiveObject source, Projectile proj, int dmg) {
+			public void damage(CombatObject source, Projectile proj, int dmg) {
 				if (!hadNoContactYet)
 					return; // preLock schon verpufft
 				if (source == MainZap.getPlayer() && getHost().isFriend())
 					return; // Friendly-Fire
-				
+
 				setLockOn(source);
 				getHost().setShootingAim(source);
 			}
@@ -165,7 +166,7 @@ public class ArmyCombatProtocol extends AiProtocol {
 				getHost().setShootingAim(getLockOn());
 			}
 
-		} else if (!isParked()){ // Wenn nicht geparkt...
+		} else if (!isParked()) { // Wenn nicht geparkt (z.b.shopen)...
 
 			if (preLocked && !preLockedYet) { // erster Durchlauf
 				preLock();
@@ -199,7 +200,7 @@ public class ArmyCombatProtocol extends AiProtocol {
 
 	public void preLock() {
 
-		ArrayList<InteractiveObject> possibleLocks = new ArrayList<InteractiveObject>();
+		ArrayList<CombatObject> possibleLocks = new ArrayList<CombatObject>();
 
 		for (Enemy e : enemysAround) {
 
@@ -213,14 +214,14 @@ public class ArmyCombatProtocol extends AiProtocol {
 		if (possibleLocks.size() == 0)
 			return; // nix da zum locken
 
-		InteractiveObject lock = possibleLocks.get(rand(possibleLocks.size()));
+		CombatObject lock = possibleLocks.get(rand(possibleLocks.size()));
 		setLockOn(lock);
 		getHost().setShootingAim(lock);
 	}
 
-	public InteractiveObject searchForLock() {
+	public CombatObject searchForLock() {
 
-		ArrayList<InteractiveObject> possibleLocks = new ArrayList<InteractiveObject>();
+		ArrayList<CombatObject> possibleLocks = new ArrayList<CombatObject>();
 
 		if (!getHost().isFriend()) {
 			if (getHost().distanceToPlayer() <= lockRange && MainZap.getPlayer().isAlive()) {

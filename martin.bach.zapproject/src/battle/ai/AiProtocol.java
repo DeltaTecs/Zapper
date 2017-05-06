@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import battle.CombatObject;
 import battle.enemy.Enemy;
 import battle.projectile.Projectile;
 import collision.Grid;
@@ -16,7 +17,7 @@ import lib.Updateable;
 
 public class AiProtocol implements Updateable, CloneableObject {
 
-	private static final int TOLERANCE_DESTINATION = 10;
+	private static final int TOLERANCE_DESTINATION = 100;
 
 	public static final String KEY_CALL_REACHED_DESTINATION = "call:destination-reached";
 	public static final String KEY_CALL_GETTING_DAMAGED = "call:getting-damage";
@@ -36,7 +37,8 @@ public class AiProtocol implements Updateable, CloneableObject {
 	private int lockOutOfRangeRange = 400;
 	private int lockPhysicalDetectionRange = 300;
 	private int lockStopRange = 100;
-	private InteractiveObject lockOn;
+	private CombatObject lockOn;
+	private boolean nonAutoLockon = false;
 	private boolean prioritisePlayerAsLockOn = false;
 	private boolean mayFacePlayer = false;
 	private boolean mayFollowLock = true;
@@ -72,6 +74,9 @@ public class AiProtocol implements Updateable, CloneableObject {
 
 	public void updateLockOn() {
 
+		if (nonAutoLockon)
+			return;
+
 		int playerDistance = host.distanceToPlayer();
 
 		if (lockOn == null) {
@@ -98,7 +103,7 @@ public class AiProtocol implements Updateable, CloneableObject {
 				} else { // Lock
 					// Kein Spieler in der Nähe / keine Prio
 					// Lock noch in Range oder lebendig?
-					if (!host.isInRange(lockOn, lockOutOfRangeRange) || !((Enemy)lockOn).isAlive()) {
+					if (!host.isInRange(lockOn, lockOutOfRangeRange) || !lockOn.isAlive()) {
 						// Lock außer Sicht
 						lockOn = null; // fallen lassen
 						host.setShootingAim(null);
@@ -144,6 +149,7 @@ public class AiProtocol implements Updateable, CloneableObject {
 		if (reachedDestination()) { // Angekommen
 			moving = false;
 			call(KEY_CALL_REACHED_DESTINATION, formDestinationReachesArgs(destinationX, destinationY));
+
 			return;
 		}
 
@@ -201,7 +207,7 @@ public class AiProtocol implements Updateable, CloneableObject {
 
 			// args sind: [0]: Inter.Obj. source; [1]: Proj. proj; [2]: int
 			// damage
-			InteractiveObject source = (InteractiveObject) args[0];
+			CombatObject source = (CombatObject) args[0];
 			Projectile proj = (Projectile) args[1];
 			int dmg = (int) args[2];
 
@@ -289,7 +295,7 @@ public class AiProtocol implements Updateable, CloneableObject {
 		DamageCall call = new DamageCall() {
 
 			@Override
-			public void damage(InteractiveObject source, Projectile proj, int dmg) {
+			public void damage(CombatObject source, Projectile proj, int dmg) {
 
 				// Zur Quelle gehen, falls lockon nicht schon vorhanden
 				if (lockOn != null)
@@ -298,10 +304,10 @@ public class AiProtocol implements Updateable, CloneableObject {
 				// Distanz prüfen
 				if (!source.isInRange(host, lockPhysicalDetectionRange))
 					return;
-				
+
 				if (source == MainZap.getPlayer() && getHost().isFriend())
 					return; // Friendly-Fire
-				
+
 				// Alle Bedingungen erfüllt
 				if (parked) // Park-Bremse aufheben
 					parked = false;
@@ -335,6 +341,8 @@ public class AiProtocol implements Updateable, CloneableObject {
 
 		// Ausrichten
 		host.getVelocity().aimFor(host.getPosX(), host.getPosY(), host.getSpeed(), x, y);
+		destinationX = x;
+		destinationY = y;
 		moving = true;
 	}
 
@@ -438,12 +446,13 @@ public class AiProtocol implements Updateable, CloneableObject {
 		return lockOn != null;
 	}
 
-	public InteractiveObject getLockOn() {
+	public CombatObject getLockOn() {
 		return lockOn;
 	}
 
-	public void setLockOn(InteractiveObject lockOn) {
+	public void setLockOn(CombatObject lockOn) {
 		this.lockOn = lockOn;
+		getHost().setShootingAim(lockOn);
 	}
 
 	public boolean isPrioritisePlayerAsLockOn() {
@@ -464,6 +473,14 @@ public class AiProtocol implements Updateable, CloneableObject {
 
 	public void setParked(boolean parked) {
 		this.parked = parked;
+	}
+
+	public boolean isNonAutoLockon() {
+		return nonAutoLockon;
+	}
+
+	public void setNonAutoLockon(boolean nonAutoLockon) {
+		this.nonAutoLockon = nonAutoLockon;
 	}
 
 	@Override

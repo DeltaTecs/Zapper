@@ -1,7 +1,10 @@
 package battle;
 
+import java.awt.Point;
+
 import battle.enemy.Enemy;
 import battle.projectile.Projectile;
+import collision.Grid;
 import ingameobjects.InteractiveObject;
 import ingameobjects.Player;
 import lib.SpeedVector;
@@ -18,13 +21,12 @@ public class WeaponConfiguration implements Updateable {
 		this.maxCooldown = maxCooldown;
 		this.range = range;
 	}
-	
 
 	@Override
 	public void update() {
 
 		if (currentCooldown > 0) {
-			currentCooldown --;
+			currentCooldown--;
 		} else if (!ready) {
 			ready = true;
 		}
@@ -43,13 +45,42 @@ public class WeaponConfiguration implements Updateable {
 
 	}
 
-	public void fire(Projectile p, Enemy e) {
+	public void fire(Projectile p, Enemy e, boolean preAim) {
 
-		if (!e.getAiProtocol().isMoving()) {
-			p.launch(e.getLocX(), e.getLocY(), e.getShootingAim().getLocX(), e.getShootingAim().getLocY(), range, e);
+		if (preAim) {
+
+			if (!e.getAiProtocol().isMoving()) {
+
+				float ticksTilImpact = Grid.distance(
+						new Point((int) e.getShootingAim().getPosX(), (int) e.getShootingAim().getPosY()),
+						new Point((int) e.getPosX(), (int) e.getPosY())) / p.getSpeed();
+				p.launch(e.getLocX(), e.getLocY(),
+						e.getShootingAim().getLocX() + (int) (e.getShootingAim().getVelocity().getX() * ticksTilImpact),
+						e.getShootingAim().getLocY() + (int) (e.getShootingAim().getVelocity().getY() * ticksTilImpact),
+						e.getVelocity(), range, e);
+			} else {
+
+				SpeedVector relativEnemyVelocity = new SpeedVector(
+						e.getShootingAim().getVelocity().getX() - e.getVelocity().getX(),
+						e.getShootingAim().getVelocity().getY() - e.getVelocity().getY());
+				float ticksTilImpact = Grid.distance(
+						new Point((int) e.getShootingAim().getPosX(), (int) e.getShootingAim().getPosY()),
+						new Point((int) e.getPosX(), (int) e.getPosY())) / p.getSpeed();
+
+				p.launch(e.getLocX(), e.getLocY(),
+						e.getShootingAim().getLocX() + (int) (relativEnemyVelocity.getX() * ticksTilImpact),
+						e.getShootingAim().getLocY() + (int) (relativEnemyVelocity.getY() * ticksTilImpact),
+						e.getVelocity(), range, e);
+			}
+
 		} else {
-			p.launch(e.getLocX(), e.getLocY(), e.getShootingAim().getLocX(), e.getShootingAim().getLocY(),
-					e.getVelocity(), range, e);
+			if (!e.getAiProtocol().isMoving()) {
+				p.launch(e.getLocX(), e.getLocY(), e.getShootingAim().getLocX(), e.getShootingAim().getLocY(), range,
+						e);
+			} else {
+				p.launch(e.getLocX(), e.getLocY(), e.getShootingAim().getLocX(), e.getShootingAim().getLocY(),
+						e.getVelocity(), range, e);
+			}
 		}
 
 		p.register();
@@ -95,10 +126,5 @@ public class WeaponConfiguration implements Updateable {
 	public void setRange(int range) {
 		this.range = range;
 	}
-
-	
-	
-	
-	
 
 }

@@ -195,4 +195,8 @@ public class InteractiveObject implements Collideable, PaintingTask, Updateable,
 		this.stageBound = stageBound;
 	}
 
+	public void setVelocity(SpeedVector velocity) {
+		this.velocity = velocity;
+	}
+
 }

@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+import battle.CombatObject;
 import battle.Shockable;
 import battle.WeaponConfiguration;
 import battle.ai.AiProtocol;
@@ -20,7 +21,7 @@ import gui.effect.WarpInEffect;
 import gui.extention.Shocking;
 import ingameobjects.InteractiveObject;
 
-public class Enemy extends InteractiveObject implements Shockable {
+public class Enemy extends CombatObject implements Shockable {
 
 	private static final int MAX_NORMAL_SPEED_COOLDOWN = MainZap.inTicks(5000);
 	private static final int DMG_INDICATING_MAX_TIME = MainZap.getMainLoop().inTicks(5000);
@@ -30,8 +31,8 @@ public class Enemy extends InteractiveObject implements Shockable {
 	private static final int HEIGHT_HP_BAR = 6;
 
 	private boolean warping = false;
-	private boolean alive = true;
 	private boolean friend = false;
+	private boolean exploded = false;
 	private int aimX;
 	private int aimY;
 	private float speed;
@@ -46,6 +47,7 @@ public class Enemy extends InteractiveObject implements Shockable {
 	private AiProtocol aiProtocol;
 	private int projRange;
 	private boolean mayShoot;
+	private boolean preAiming = false;
 	private Projectile projectilePattern = null;
 	private InteractiveObject shootingAim;
 	private WeaponConfiguration weaponConfiguration;
@@ -56,6 +58,7 @@ public class Enemy extends InteractiveObject implements Shockable {
 	private int score;
 	private int crystals;
 	private boolean nodrops = false;
+	private boolean noWaitAfterWarp = false;
 	private int normalSpeedCooldown = -1;
 
 	public Enemy(float posX, float posY, float speed, BufferedImage texture, float scale,
@@ -160,7 +163,7 @@ public class Enemy extends InteractiveObject implements Shockable {
 			return;
 		if (!shootingAim.isInRange(getLocX(), getLocY(), weaponConfiguration.getRange()))
 			return; // Auﬂer Reichweite
-		weaponConfiguration.fire((Projectile) projectilePattern.getClone(), this);
+		weaponConfiguration.fire((Projectile) projectilePattern.getClone(), this, preAiming);
 	}
 
 	public void updateRotation() {
@@ -235,7 +238,7 @@ public class Enemy extends InteractiveObject implements Shockable {
 			aiProtocol.call(AiProtocol.KEY_CALL_GETTING_DAMAGED,
 					AiProtocol.formDamageCallArgs(p.getSender(), p, damage));
 
-		if (health <= 0 && alive) {
+		if (health <= 0 && isAlive()) {
 			// Kaputt gehen
 			explode();
 		}
@@ -258,11 +261,14 @@ public class Enemy extends InteractiveObject implements Shockable {
 	public void warpIn() {
 		warpEffect = new WarpInEffect(this);
 		warping = true;
-		getAiProtocol().waitTicks(MainZap.getMainLoop().inTicks(1000));
+		if (!noWaitAfterWarp)
+			getAiProtocol().waitTicks(MainZap.getMainLoop().inTicks(1000));
 	}
 
 	public void explode() {
-		alive = false;
+		if (exploded)
+			return;
+		exploded = true;
 		ExplosionEffect explEffect = new ExplosionEffect(explosionEffectPattern, this);
 		explEffect.setFinishTask(new Runnable() {
 			@Override
@@ -277,6 +283,7 @@ public class Enemy extends InteractiveObject implements Shockable {
 	}
 
 	public void die() {
+		setAlive(false);
 		if (aiProtocol != null)
 			aiProtocol.call(AiProtocol.KEY_CALL_DIEING, null);
 		unRegister();
@@ -333,14 +340,6 @@ public class Enemy extends InteractiveObject implements Shockable {
 			weaponConfiguration.setMaxCooldown(weaponConfiguration.getMaxCooldown() * 2);
 		speed *= 0.2f;
 		normalSpeedCooldown = MAX_NORMAL_SPEED_COOLDOWN;
-	}
-
-	public boolean isAlive() {
-		return alive;
-	}
-
-	public void setAlive(boolean alive) {
-		this.alive = alive;
 	}
 
 	public int getScore() {
@@ -465,6 +464,22 @@ public class Enemy extends InteractiveObject implements Shockable {
 
 	public void setFriend(boolean friend) {
 		this.friend = friend;
+	}
+
+	public boolean isPreAiming() {
+		return preAiming;
+	}
+
+	public void setPreAiming(boolean preAiming) {
+		this.preAiming = preAiming;
+	}
+
+	public boolean isNoWaitAfterWarp() {
+		return noWaitAfterWarp;
+	}
+
+	public void setNoWaitAfterWarp(boolean noWaitAfterWarp) {
+		this.noWaitAfterWarp = noWaitAfterWarp;
 	}
 
 }

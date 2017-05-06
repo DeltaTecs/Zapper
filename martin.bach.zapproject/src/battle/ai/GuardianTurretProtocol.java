@@ -2,10 +2,10 @@ package battle.ai;
 
 import java.util.ArrayList;
 
+import battle.CombatObject;
 import battle.GuardianTurret;
 import battle.enemy.Enemy;
 import corecase.MainZap;
-import ingameobjects.InteractiveObject;
 import lib.ScheduledList;
 
 public class GuardianTurretProtocol extends AiProtocol {
@@ -25,10 +25,10 @@ public class GuardianTurretProtocol extends AiProtocol {
 	@Override
 	public void updateLockOn() {
 
-		InteractiveObject lock = getLockOn();
+		CombatObject lock = getLockOn();
 
 		if (lock instanceof Enemy) {
-			if (!((Enemy) lock).isAlive()) {
+			if (!lock.isAlive()) {
 				lock = null;
 				setLockOn(null);
 				getHost().setShootingAim(null);
@@ -43,10 +43,10 @@ public class GuardianTurretProtocol extends AiProtocol {
 		}
 	}
 
-	public InteractiveObject searchForLock() {
+	public CombatObject searchForLock() {
 
 		// Alle wirklich möglichen locks
-		ArrayList<InteractiveObject> possibleLocks = new ArrayList<InteractiveObject>();
+		ArrayList<CombatObject> possibleLocks = new ArrayList<CombatObject>();
 
 		// Umgebung holen
 		ArrayList<Enemy> surrounding = MainZap.getGrid().getEnemySurrounding(getHost().getLocX(), getHost().getLocY(),
@@ -55,7 +55,7 @@ public class GuardianTurretProtocol extends AiProtocol {
 		// Umgebung abgehen
 		for (Enemy e : surrounding) {
 
-			if (e.isFriend())
+			if (e.isFriend() || !e.isAlive())
 				continue; // nur Feinde beschießen
 
 			// Da is was in Range
@@ -67,10 +67,10 @@ public class GuardianTurretProtocol extends AiProtocol {
 			return null; // nix da
 
 		// Zufälliges Lock wählen
-		InteractiveObject choise = possibleLocks.get(rand(possibleLocks.size()));
+		CombatObject choise = possibleLocks.get(rand(possibleLocks.size()));
 		if (!MainZap.fittsMap(choise.getLocX(), choise.getLocY())) {
 			// Nicht in der Grid
-			for (InteractiveObject o : possibleLocks) {
+			for (CombatObject o : possibleLocks) {
 				// Nimm einfach irgendeins
 				if (MainZap.fittsMap(o.getLocX(), o.getLocY()))
 					return o;

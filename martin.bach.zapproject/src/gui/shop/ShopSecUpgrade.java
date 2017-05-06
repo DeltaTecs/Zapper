@@ -118,7 +118,7 @@ public abstract class ShopSecUpgrade {
 	// -- Mechanics -----
 	// Health, Damage, Ammo-Efficiency, Proj.Speed
 	private static byte[] activeUpgrades = new byte[] { 0, 0, 0, 0 };
-	private static int[] priceTable = new int[] { 100, 200, 400, 600, 1300 };
+	private static int[] priceTable = new int[] { 60, 120, 350, 550, 1100 };
 	// Mirror, Shield, Shock, ExtraCannons
 	private static boolean[] extentionStates = new boolean[] { false, false, false, false };
 	private static byte addedCannons = 0;
@@ -704,10 +704,10 @@ public abstract class ShopSecUpgrade {
 	}
 
 	private static void purchaseUpgrade(int index) {
-		if (priceTable[index] > MainZap.getCrystals() || activeUpgrades[index] == 5)
+		if (priceTable[activeUpgrades[index]] > MainZap.getCrystals() || activeUpgrades[index] == 5)
 			return; // Nicht genug Knete oder alle schon gekauft
 
-		MainZap.setCrystals(MainZap.getCrystals() - priceTable[index]);
+		MainZap.setCrystals(MainZap.getCrystals() - priceTable[activeUpgrades[index]]);
 		activeUpgrades[index]++;
 		MainZap.getPlayer().setUpgraded(true);
 

@@ -1,4 +1,4 @@
-package gui.screens.death;
+package gui.screens.end;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,7 +17,7 @@ import lib.ClickListener;
 import lib.ClickableObject;
 import lib.PaintingTask;
 
-public abstract class DeathScreen {
+public abstract class EndScreen {
 
 	private static final Color COLOR_BORDER = new Color(0, 0, 0, 50);
 	private static final Color COLOR_BACKGROUND = new Color(255, 255, 255, 190);
@@ -27,7 +27,7 @@ public abstract class DeathScreen {
 	private static final Font FONT_SUBMIT = new Font("Arial", Font.BOLD, 30);
 	private static final Font FONT_NAME = new Font("Arial", Font.ITALIC, 28);
 	private static final Font FONT_ENTRY = new Font("Arial", Font.BOLD, 18);
-	private static final String TEXT_RIP = "Your ship has been destroyed";
+	public static final String TEXT_RIP = "Your ship has been destroyed";
 	private static final String TEXT_YOUR_SCORE = "Your score:";
 	private static final String TEXT_SUBMIT = "SUBMIT";
 	private static final String TEXT_RETRY = "RETRY";
@@ -45,17 +45,17 @@ public abstract class DeathScreen {
 	private static int scorePanelPullOut = 0;
 	private static int scorePanelPullOutDelta = 0;
 	private static boolean scoreSubmitted = false;
-	
+
 	private static ClickableObject clickObject;
+	private static String message;
 
-	public static void popUp() {
+	public static void popUp(String message) {
 
-		// MainZap.getMainLoop().setPaused(true);
-
+		EndScreen.message = message;
 		entrys = ScoreReader.load();
 		sortScoreEntrys();
 		Shop.close();
-		
+
 		// Überdeckt ganzen Frame
 		ClickableObject bg = new ClickableObject(0, 0, Frame.SIZE, Frame.SIZE);
 		bg.setVisible(true);
@@ -63,7 +63,7 @@ public abstract class DeathScreen {
 		MainZap.getFrame().addKeyListener(KEYLISTENER);
 		MainZap.getFrame().addClickable(bg);
 		clickObject = bg;
-		
+
 		active = true;
 	}
 
@@ -86,8 +86,8 @@ public abstract class DeathScreen {
 			// Überschrift
 			g.setColor(COLOR_FOREGROUND);
 			g.setFont(FONT_RIP);
-			int ripPos = Frame.HALF_SCREEN_SIZE - g.getFontMetrics().stringWidth(TEXT_RIP) / 2;
-			g.drawString(TEXT_RIP, ripPos, 110);
+			int ripPos = Frame.HALF_SCREEN_SIZE - g.getFontMetrics().stringWidth(message) / 2;
+			g.drawString(message, ripPos, 110);
 
 			// Score
 			g.setFont(FONT_SCORE);
@@ -133,7 +133,7 @@ public abstract class DeathScreen {
 			g.setColor(COLOR_FOREGROUND);
 			g.setFont(FONT_SUBMIT);
 			g.drawString(TEXT_RETRY, 82, 397);
-			
+
 			if (scoreSubmitted)
 				return;
 
@@ -143,7 +143,7 @@ public abstract class DeathScreen {
 			g.setColor(COLOR_FOREGROUND);
 			g.setFont(FONT_SUBMIT);
 			g.drawString(TEXT_SUBMIT, 82, 337);
-			
+
 		}
 
 	};
@@ -187,7 +187,8 @@ public abstract class DeathScreen {
 			return; // Ist doch garnich an
 
 		updateScoreAlpha();
-		if (((entrys.size() * 40) + scorePanelPullOut > 440 && scorePanelPullOutDelta < 0) || (scorePanelPullOut <= 0 && scorePanelPullOutDelta > 0)) {
+		if (((entrys.size() * 40) + scorePanelPullOut > 440 && scorePanelPullOutDelta < 0)
+				|| (scorePanelPullOut <= 0 && scorePanelPullOutDelta > 0)) {
 			scorePanelPullOut += scorePanelPullOutDelta;
 		}
 
@@ -210,7 +211,7 @@ public abstract class DeathScreen {
 				active = false;
 				return;
 			}
-			
+
 			scorePanelPullOutDelta = 0;
 		}
 

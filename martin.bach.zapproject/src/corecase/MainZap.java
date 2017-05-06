@@ -15,7 +15,7 @@ import gui.Hud;
 import gui.Map;
 import gui.PaintingLayer;
 import gui.extention.ExtentionManager;
-import gui.screens.death.DeathScreen;
+import gui.screens.end.EndScreen;
 import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
 import gui.shop.meta.ShipStartConfig;
@@ -31,9 +31,9 @@ public class MainZap {
 
 	public static final boolean FINAL_RUN = true || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
+	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
-	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static boolean speedMode = false;
 	public static boolean generalAntialize = true;
 	public static boolean antializeShips = true;
@@ -116,7 +116,7 @@ public class MainZap {
 		staticLayer = new PaintingLayer();
 		staticLayer.addTask(player);
 		staticLayer.addTask(Hud.getPaintingTask());
-		staticLayer.addTask(DeathScreen.getPaintingtask());
+		staticLayer.addTask(EndScreen.getPaintingtask());
 
 		dynamicLayer = new PaintingLayer();
 		dynamicLayer.addTask(map);
@@ -144,6 +144,22 @@ public class MainZap {
 			frame.getContentPane().remove(stamp);
 		}
 
+		if (FINAL_RUN)
+			StageManager.setUp(1);
+		else {
+			StageManager.setUp(4);
+			crystals = 500;
+		}
+		Hud.setUpClickListener();
+		ExtentionManager.setUpClickListener();
+		PauseScreen.setUp(false);
+		Shop.setUp();
+
+		if (FINAL_RUN)
+			Tutorial.show();
+
+		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
+		
 		// -- Loop ----------
 		new Thread(mainLoop, "Zapper Update Thread").start();
 
@@ -164,22 +180,6 @@ public class MainZap {
 			collisionLoop.setBooster(collisionLoop.getTimeBetweenFramesMS() / 2);
 		// ----
 
-		if (FINAL_RUN)
-			StageManager.setUp(1);
-		else {
-			StageManager.setUp(4);
-			crystals = 34567890;
-		}
-		Hud.setUpClickListener();
-		ExtentionManager.setUpClickListener();
-		PauseScreen.setUp(false);
-		Shop.setUp();
-
-		if (FINAL_RUN)
-			Tutorial.show();
-
-		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
-
 	}
 
 	private static final Runnable TASK_UPDATE = new Runnable() {
@@ -193,7 +193,7 @@ public class MainZap {
 				map.update();
 				Hud.update();
 				Shop.update();
-				DeathScreen.update();
+				EndScreen.update();
 				if (debug)
 					fps = fpsDiagnosis.update();
 				// Weitere updates....
@@ -501,6 +501,12 @@ public class MainZap {
 
 	public static AffineTransform getScaleTransform() {
 		return scaleTransform;
+	}
+
+	public static void pushLoops() {
+		collisionLoop.pushUpdate();
+		mainLoop.pushUpdate();
+		paintLoop.pushUpdate();
 	}
 
 }

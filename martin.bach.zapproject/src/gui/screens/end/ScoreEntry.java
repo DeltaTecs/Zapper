@@ -1,4 +1,4 @@
-package gui.screens.death;
+package gui.screens.end;
 
 public class ScoreEntry {
 
