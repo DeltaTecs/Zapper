@@ -567,12 +567,18 @@ public abstract class PauseScreen {
 	private static void drawDirMain(Graphics2D g) {
 		if (hoveringMain[0]) { // Maus über "CONTINUE"
 			g.setColor(Color.WHITE);
-			g.fillRoundRect(BOUNDS_CONTINUE.x, BOUNDS_CONTINUE.y, BOUNDS_CONTINUE.width, BOUNDS_CONTINUE.height,
-					BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+			if (MainZap.roundCorners)
+				g.fillRoundRect(BOUNDS_CONTINUE.x, BOUNDS_CONTINUE.y, BOUNDS_CONTINUE.width, BOUNDS_CONTINUE.height,
+						BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+			else
+				g.fillRect(BOUNDS_CONTINUE.x, BOUNDS_CONTINUE.y, BOUNDS_CONTINUE.width, BOUNDS_CONTINUE.height);
 		}
 		g.setColor(COLOR_BORDER);
-		g.drawRoundRect(BOUNDS_CONTINUE.x, BOUNDS_CONTINUE.y, BOUNDS_CONTINUE.width, BOUNDS_CONTINUE.height,
-				BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+		if (MainZap.roundCorners)
+			g.drawRoundRect(BOUNDS_CONTINUE.x, BOUNDS_CONTINUE.y, BOUNDS_CONTINUE.width, BOUNDS_CONTINUE.height,
+					BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+		else
+			g.drawRect(BOUNDS_CONTINUE.x, BOUNDS_CONTINUE.y, BOUNDS_CONTINUE.width, BOUNDS_CONTINUE.height);
 		g.setColor(COLOR_CONTINUE);
 		g.drawString(TEXT_CONTINUE, BOUNDS_CONTINUE.x + 100, BOUNDS_CONTINUE.y + BOUNDS_CONTINUE.height - 12);
 		// ----- Continue - Symbol --
@@ -581,12 +587,18 @@ public abstract class PauseScreen {
 
 		if (hoveringMain[1]) { // Maus über "RESTART"
 			g.setColor(Color.WHITE);
-			g.fillRoundRect(BOUNDS_RESTART.x, BOUNDS_RESTART.y, BOUNDS_RESTART.width, BOUNDS_RESTART.height,
-					BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+			if (MainZap.roundCorners)
+				g.fillRoundRect(BOUNDS_RESTART.x, BOUNDS_RESTART.y, BOUNDS_RESTART.width, BOUNDS_RESTART.height,
+						BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+			else
+				g.fillRect(BOUNDS_RESTART.x, BOUNDS_RESTART.y, BOUNDS_RESTART.width, BOUNDS_RESTART.height);
 		}
 		g.setColor(COLOR_BORDER);
-		g.drawRoundRect(BOUNDS_RESTART.x, BOUNDS_RESTART.y, BOUNDS_RESTART.width, BOUNDS_RESTART.height,
-				BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+		if (MainZap.roundCorners)
+			g.drawRoundRect(BOUNDS_RESTART.x, BOUNDS_RESTART.y, BOUNDS_RESTART.width, BOUNDS_RESTART.height,
+					BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+		else
+			g.drawRect(BOUNDS_RESTART.x, BOUNDS_RESTART.y, BOUNDS_RESTART.width, BOUNDS_RESTART.height);
 		g.setColor(COLOR_RESTART);
 		g.drawString(TEXT_RESTART, BOUNDS_RESTART.x + 100, BOUNDS_RESTART.y + BOUNDS_RESTART.height - 12);
 		// ------ Restart - Symbol --
@@ -595,12 +607,18 @@ public abstract class PauseScreen {
 
 		if (hoveringMain[2]) { // Maus über "SETTINGS"
 			g.setColor(Color.WHITE);
-			g.fillRoundRect(BOUNDS_SETTINGS.x, BOUNDS_SETTINGS.y, BOUNDS_SETTINGS.width, BOUNDS_SETTINGS.height,
-					BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+			if (MainZap.roundCorners)
+				g.fillRoundRect(BOUNDS_SETTINGS.x, BOUNDS_SETTINGS.y, BOUNDS_SETTINGS.width, BOUNDS_SETTINGS.height,
+						BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+			else
+				g.fillRect(BOUNDS_SETTINGS.x, BOUNDS_SETTINGS.y, BOUNDS_SETTINGS.width, BOUNDS_SETTINGS.height);
 		}
 		g.setColor(COLOR_BORDER);
-		g.drawRoundRect(BOUNDS_SETTINGS.x, BOUNDS_SETTINGS.y, BOUNDS_SETTINGS.width, BOUNDS_SETTINGS.height,
-				BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+		if (MainZap.roundCorners)
+			g.drawRoundRect(BOUNDS_SETTINGS.x, BOUNDS_SETTINGS.y, BOUNDS_SETTINGS.width, BOUNDS_SETTINGS.height,
+					BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+		else
+			g.drawRect(BOUNDS_SETTINGS.x, BOUNDS_SETTINGS.y, BOUNDS_SETTINGS.width, BOUNDS_SETTINGS.height);
 		g.setColor(COLOR_SETTINGS);
 		g.drawString(TEXT_SETTINGS, BOUNDS_SETTINGS.x + 100, BOUNDS_SETTINGS.y + BOUNDS_SETTINGS.height - 12);
 		// ------ Settings - Symbol --
@@ -609,12 +627,18 @@ public abstract class PauseScreen {
 
 		if (hoveringMain[3]) { // Maus über "EXIT"
 			g.setColor(Color.WHITE);
-			g.fillRoundRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height, BORDER_ROUND_DEEPTH,
-					BORDER_ROUND_DEEPTH);
+			if (MainZap.roundCorners)
+				g.fillRoundRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height,
+						BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+			else
+				g.fillRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height);
 		}
 		g.setColor(COLOR_BORDER);
-		g.drawRoundRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height, BORDER_ROUND_DEEPTH,
-				BORDER_ROUND_DEEPTH);
+		if (MainZap.roundCorners)
+			g.drawRoundRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height,
+					BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+		else
+			g.drawRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height);
 		g.setColor(COLOR_EXIT);
 		g.drawString(TEXT_EXIT, BOUNDS_EXIT.x + 100, BOUNDS_EXIT.y + BOUNDS_EXIT.height - 12);
 		// ------ Exit - Symbol --
@@ -633,19 +657,25 @@ public abstract class PauseScreen {
 		g.drawLine(SYMBOL_SET_BACK_LOCS[1], SYMBOL_SET_BACK_LOCS[3], SYMBOL_SET_BACK_LOCS[0], SYMBOL_SET_BACK_LOCS[4]);
 
 		g.setColor(Color.WHITE);
-		g.fillRect(BOUNDS_SET_GRAPH_SCALE.x, BOUNDS_SET_GRAPH_SCALE.y, BOUNDS_SET_GRAPH_SCALE.width, BOUNDS_SET_GRAPH_SCALE.height);
+		g.fillRect(BOUNDS_SET_GRAPH_SCALE.x, BOUNDS_SET_GRAPH_SCALE.y, BOUNDS_SET_GRAPH_SCALE.width,
+				BOUNDS_SET_GRAPH_SCALE.height);
 		g.setColor(COLOR_SETTINGS);
 		g.setStroke(STROKE_SET_SCALE);
-		g.drawRect(BOUNDS_SET_GRAPH_SCALE.x, BOUNDS_SET_GRAPH_SCALE.y, BOUNDS_SET_GRAPH_SCALE.width, BOUNDS_SET_GRAPH_SCALE.height);
+		g.drawRect(BOUNDS_SET_GRAPH_SCALE.x, BOUNDS_SET_GRAPH_SCALE.y, BOUNDS_SET_GRAPH_SCALE.width,
+				BOUNDS_SET_GRAPH_SCALE.height);
 		g.setColor(COLOR_BORDER);
 		g.setFont(FONT_SET_SCL_INPUT);
-		g.drawString(strScale, BOUNDS_SET_GRAPH_SCALE.x + 5, BOUNDS_SET_GRAPH_SCALE.y + FONT_SET_SCL_INPUT.getSize() - 1);
+		g.drawString(strScale, BOUNDS_SET_GRAPH_SCALE.x + 5,
+				BOUNDS_SET_GRAPH_SCALE.y + FONT_SET_SCL_INPUT.getSize() - 1);
 		g.setFont(FONT_SET);
-		g.drawString("%", BOUNDS_SET_GRAPH_SCALE.x + BOUNDS_SET_GRAPH_SCALE.width + 6, BOUNDS_SET_GRAPH_SCALE.y + FONT_SET.getSize() + 4);
+		g.drawString("%", BOUNDS_SET_GRAPH_SCALE.x + BOUNDS_SET_GRAPH_SCALE.width + 6,
+				BOUNDS_SET_GRAPH_SCALE.y + FONT_SET.getSize() + 4);
 		g.setColor(COLOR_SETTINGS);
-		g.drawString(TEXT_SET_GRAPH, BOUNDS_SET_GRAPH_SCALE.x - 210, BOUNDS_SET_GRAPH_SCALE.y - FONT_SET.getSize() + 16);
+		g.drawString(TEXT_SET_GRAPH, BOUNDS_SET_GRAPH_SCALE.x - 210,
+				BOUNDS_SET_GRAPH_SCALE.y - FONT_SET.getSize() + 16);
 		g.setFont(FONT_SET_SUB);
-		g.drawString(TEXT_SET_GRAPH_SCALE, BOUNDS_SET_GRAPH_SCALE.x - 142, BOUNDS_SET_GRAPH_SCALE.y + FONT_SET.getSize() - 4);
+		g.drawString(TEXT_SET_GRAPH_SCALE, BOUNDS_SET_GRAPH_SCALE.x - 142,
+				BOUNDS_SET_GRAPH_SCALE.y + FONT_SET.getSize() - 4);
 
 		g.setFont(FONT_SET);
 		g.drawString(TEXT_SET_AA, BOUNDS_SET_GRAPH_SCALE.x - 208, BOUNDS_SET_AA_GENERAL.y + FONT_SET.getSize() - 40);

@@ -1,47 +1,48 @@
-package battle.stage._5;
+package battle.stage;
 
 import java.awt.image.BufferedImage;
 
-import battle.WeaponConfiguration;
+import battle.MultiCannonWeaponConfiguration;
+import battle.WeaponPositioning;
 import battle.ai.AdvancedSingleProtocol;
 import battle.ai.FindLockAction;
 import battle.enemy.Enemy;
-import battle.projectile.ProjectileRaiderBasic;
+import battle.projectile.ProjectileRaiderHeavy;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 import gui.effect.ExplosionEffectPattern;
 import io.TextureBuffer;
 
-public class EnemyBasicRaider extends Enemy {
+public class EnemyHeavyRaider extends Enemy {
 
-	private static final float SPEED = 3.5f;
-	private static final int MAX_HP = 400;
-	private static final int SHOOTING_RANGE = 900;
+	private static final float SPEED = 1.6f;
+	private static final int MAX_HP = 1200;
+	private static final int SHOOTING_RANGE = 1000;
 	private static final BufferedImage[] TEXTURES = new BufferedImage[] {
-			TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_RAIDER_BASIC_0),
-			TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_RAIDER_BASIC_1),
-			TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_RAIDER_BASIC_2),
-			TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_RAIDER_BASIC_3) };
-	private static final float SCALE = 0.5f;
-	private static final float RADIUS = 24.0f;
+			TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_RAIDER_HEAVY_0),
+			TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_RAIDER_HEAVY_1), };
+	private static final float SCALE = 0.8f;
+	private static final float RADIUS = 40.0f;
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, true);
-	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(30, 60);
-	private static final float COOLDOWN = 30.0f;
-	private static final int SCORE = 20;
-	private static final int CRYSTALS = 10;
+	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(30, 150);
+	private static final float COOLDOWN = 20.0f;
+	private static final WeaponPositioning WEAPON_POSITIONING = new WeaponPositioning((byte) 2, new int[] { -10, 10 },
+			new int[] { -20, -20 });
+	private static final int SCORE = 30;
+	private static final int CRYSTALS = 28;
 	private static final int PROJECTILE_RANGE = 900;
 	private static final boolean FRIEND = false;
 
-	public EnemyBasicRaider() {
+	public EnemyHeavyRaider() {
 		super(0, 0, SPEED, TEXTURES[MainZap.rand(TEXTURES.length)], SCALE, COLINFO, new AdvancedSingleProtocol(),
-				new WeaponConfiguration(COOLDOWN, SHOOTING_RANGE), MAX_HP, EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE,
-				CRYSTALS, FRIEND);
+				new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONING), MAX_HP,
+				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND);
 		setNoWaitAfterWarp(true);
 		setPreAiming(true);
 		setMayShoot(true);
-		setProjectilePattern(new ProjectileRaiderBasic());
+		setProjectilePattern(new ProjectileRaiderHeavy());
 		getAiProtocol().setDamageRecognizeable();
 		getAiProtocol().setLockFaceDistance(300);
 		getAiProtocol().setLockOutOfRangeRange(400);

@@ -13,7 +13,7 @@ import io.TextureBuffer;
 public class FriendTransporter extends Enemy {
 
 	private static final float SPEED = 1f;
-	private static final int MAX_HP = 50000;
+	private static final int MAX_HP = 55000;
 	private static final int SHOOTING_RANGE = 900;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_FRIENDSHIP_TRANSPORTER);
 	private static final float SCALE = 0.9f;

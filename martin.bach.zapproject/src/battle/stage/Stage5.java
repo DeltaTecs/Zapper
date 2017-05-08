@@ -8,8 +8,6 @@ import battle.ai.DieCall;
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
 import battle.enemy.Enemy;
-import battle.stage._5.EnemyBasicRaider;
-import battle.stage._5.EnemyHeavyRaider;
 import battle.stage._5.FriendTransporter;
 import corecase.MainZap;
 import gui.screens.end.EndScreen;
@@ -108,6 +106,9 @@ public class Stage5 extends Stage {
 
 		int spawnRadius = 200;
 
+		int warpAimX = transporter.getLocX() - 150 + rand(300);
+		int warpAimY = transporter.getLocY() - 150 + rand(300);
+
 		for (final CombatObject raider : raiders) {
 			raider.setPosition(transporter.getLocX() - spawnRadius + rand(2 * spawnRadius),
 					transporter.getLocY() - spawnRadius + rand(2 * spawnRadius));
@@ -118,7 +119,7 @@ public class Stage5 extends Stage {
 					raiders.schedRemove(raider);
 				}
 			});
-			((EnemyBasicRaider) raider).warpIn();
+			((EnemyBasicRaider) raider).warpIn(warpAimX - raider.getLocX(), warpAimY - raider.getLocY());
 			if (getRandom().nextBoolean())
 				((EnemyBasicRaider) raider).getAiProtocol().setLockOn(transporter);
 			else
@@ -138,6 +139,9 @@ public class Stage5 extends Stage {
 			raiders.add(new EnemyHeavyRaider());
 
 		int spawnRadius = 300;
+		
+		int warpAimX = transporter.getLocX() - 150 + rand(300);
+		int warpAimY = transporter.getLocY() - 150 + rand(300);
 
 		for (final CombatObject raider : raiders) {
 			raider.setPosition(transporter.getLocX() - spawnRadius + rand(2 * spawnRadius),
@@ -149,7 +153,7 @@ public class Stage5 extends Stage {
 					raiders.schedRemove(raider);
 				}
 			});
-			((Enemy) raider).warpIn();
+			((Enemy) raider).warpIn(warpAimX - raider.getLocX(), warpAimY - raider.getLocY());
 			if (getRandom().nextBoolean())
 				((Enemy) raider).getAiProtocol().setLockOn(transporter);
 			else
@@ -169,6 +173,9 @@ public class Stage5 extends Stage {
 			raiders.add(new EnemyHeavyRaider());
 
 		int spawnRadius = 300;
+		
+		int warpAimX = transporter.getLocX() - 150 + rand(300);
+		int warpAimY = transporter.getLocY() - 150 + rand(300);
 
 		for (final CombatObject raider : raiders) {
 			raider.setPosition(transporter.getLocX() - spawnRadius + rand(2 * spawnRadius),
@@ -180,7 +187,7 @@ public class Stage5 extends Stage {
 					raiders.schedRemove(raider);
 				}
 			});
-			((Enemy) raider).warpIn();
+			((Enemy) raider).warpIn(warpAimX - raider.getLocX(), warpAimY - raider.getLocY());
 			if (getRandom().nextBoolean())
 				((Enemy) raider).getAiProtocol().setLockOn(transporter);
 			else

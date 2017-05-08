@@ -223,7 +223,8 @@ public class AdvancedSingleProtocol extends AiProtocol {
 			ArrayList<CombatObject> possibleLocks1 = new ArrayList<CombatObject>();
 			for (CombatObject e : linkedAllies)
 				if (e instanceof Enemy)
-					if (((Enemy) e).getAiProtocol().getLockOn() != null && e.isAlive())
+					if (((Enemy) e).getAiProtocol().getLockOn() != null && e.isAlive()
+							&& ((Enemy) e).getAiProtocol().getLockOn().isAlive())
 						possibleLocks1.add(((Enemy) e).getAiProtocol().getLockOn());
 
 			if (possibleLocks1.size() == 0)

@@ -50,7 +50,7 @@ public class WarpInEffect extends Effect {
 	 * @param x
 	 * @param y
 	 */
-	public WarpInEffect(int aimX, int aimY, Enemy host, float scale) {
+	public WarpInEffect(int aimX, int aimY, Enemy host) {
 		super(DURATION);
 		this.aimX = host.getPosX();
 		this.aimY = host.getPosY();

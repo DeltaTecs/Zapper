@@ -265,6 +265,13 @@ public class Enemy extends CombatObject implements Shockable {
 			getAiProtocol().waitTicks(MainZap.getMainLoop().inTicks(1000));
 	}
 
+	public void warpIn(int warpAimX, int warpAimY) {
+		warpEffect = new WarpInEffect(warpAimX, warpAimY, this);
+		warping = true;
+		if (!noWaitAfterWarp)
+			getAiProtocol().waitTicks(MainZap.getMainLoop().inTicks(1000));
+	}
+
 	public void explode() {
 		if (exploded)
 			return;
