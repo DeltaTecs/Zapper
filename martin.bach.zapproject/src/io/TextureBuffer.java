@@ -37,6 +37,7 @@ public abstract class TextureBuffer {
 	public static final String NAME_ENEMYSHIP_RAIDER_BASIC_3 = "enemyShipRaider3.png";
 	public static final String NAME_ENEMYSHIP_RAIDER_HEAVY_0 = "enemyShipRaider4.png";
 	public static final String NAME_ENEMYSHIP_RAIDER_HEAVY_1 = "enemyShipRaider5.png";
+	public static final String NAME_ENEMYSHIP_RAIDER_DELTAVI = "enemyShipRaiderDeltaVI.png";
 	public static final String NAME_ENEMYSHIP_RAIDER_DELTAVII = "enemyShipRaiderDeltaVII.png";
 	public static final String NAME_ENEMYTURRET_ALPHA0 = "enemyTurretAlpha0.png";
 	public static final String NAME_ENEMYBASE_ALPHA0 = "enemyBaseAlpha0.png";
@@ -107,6 +108,7 @@ public abstract class TextureBuffer {
 		names.add(NAME_ENEMYSHIP_RAIDER_BASIC_3);
 		names.add(NAME_ENEMYSHIP_RAIDER_HEAVY_0);
 		names.add(NAME_ENEMYSHIP_RAIDER_HEAVY_1);
+		names.add(NAME_ENEMYSHIP_RAIDER_DELTAVI);
 		names.add(NAME_ENEMYSHIP_RAIDER_DELTAVII);
 		names.add(NAME_ENEMYTURRET_ALPHA0);
 		names.add(NAME_ENEMYBASE_ALPHA0);

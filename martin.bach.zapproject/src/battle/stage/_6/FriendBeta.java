@@ -26,7 +26,7 @@ public class FriendBeta extends Enemy {
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_ENEMYS, true);
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(15, 80);
-	private static final float COOLDOWN = 20;
+	private static final float COOLDOWN = 80;
 	private static final int SCORE = 0;
 	private static final int CRYSTALS = 0;
 	private static final int PROJECTILE_RANGE = 800;

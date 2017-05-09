@@ -1,28 +1,27 @@
-package battle.stage._3;
+package battle.projectile;
 
 import java.awt.Color;
 
-import battle.projectile.Projectile;
 import collision.CollisionInformation;
 import collision.CollisionType;
 
-public class ProjectileFriendBeta extends Projectile {
+public class ProjectileRaiderDeltaVI extends Projectile {
 
 	private static final float RADIUS = 9.0f;
-	private static final int DAMAGE = 200;
+	private static final int DAMAGE = 65;
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, false);
-	private static final float SPEED = 8.0f;
-	private static final Color COLOR = new Color(180, 20, 20);
+	private static final float SPEED = 20.0f;
+	private static final Color COLOR = new Color(180, 4, 4);
 	private static final boolean SQUARE = false;
 
-	public ProjectileFriendBeta() {
+	public ProjectileRaiderDeltaVI() {
 		super(COLINFO, SPEED, (int) RADIUS, SQUARE, COLOR, DAMAGE);
 	}
 
 	@Override
 	public Object getClone() {
-		return new ProjectileFriendBeta();
+		return new ProjectileRaiderDeltaVI();
 	}
 
 }

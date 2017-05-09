@@ -248,6 +248,8 @@ public class Grid {
 		}
 
 		for (Collideable c : totalObjects) {
+			if (c == null) // Glitch
+				continue;
 			int x = c.getLocation()[0];
 			int y = c.getLocation()[1];
 			if (x < 0 || x >= Map.SIZE || y < 0 || y >= Map.SIZE) {
