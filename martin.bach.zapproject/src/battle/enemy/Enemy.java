@@ -18,6 +18,7 @@ import gui.effect.Effect;
 import gui.effect.ExplosionEffect;
 import gui.effect.ExplosionEffectPattern;
 import gui.effect.WarpInEffect;
+import gui.effect.WarpOutEffect;
 import gui.extention.Shocking;
 import ingameobjects.InteractiveObject;
 
@@ -272,6 +273,26 @@ public class Enemy extends CombatObject implements Shockable {
 			getAiProtocol().waitTicks(MainZap.getMainLoop().inTicks(1000));
 	}
 
+	public void warpOut() {
+		warpEffect = new WarpOutEffect(this, 1);
+		warping = true;
+	}
+
+	public void warpOut(int warpAimX, int warpAimY) {
+		warpEffect = new WarpOutEffect(warpAimX, warpAimY, this, 1);
+		warping = true;
+	}
+
+	public void warpOut(int moveRand) {
+		warpEffect = new WarpOutEffect(this, moveRand);
+		warping = true;
+	}
+
+	public void warpOut(int warpAimX, int warpAimY, int moveRand) {
+		warpEffect = new WarpOutEffect(warpAimX, warpAimY, this, moveRand);
+		warping = true;
+	}
+
 	public void explode() {
 		if (exploded)
 			return;
@@ -487,6 +508,10 @@ public class Enemy extends CombatObject implements Shockable {
 
 	public void setNoWaitAfterWarp(boolean noWaitAfterWarp) {
 		this.noWaitAfterWarp = noWaitAfterWarp;
+	}
+
+	public Effect getWarpEffect() {
+		return warpEffect;
 	}
 
 }

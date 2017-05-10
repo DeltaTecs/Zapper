@@ -64,6 +64,10 @@ public class SpeedVector {
 		y = y /= sum;
 	}
 
+	public double angle() {
+		return (Math.PI * 0.5f) - Math.atan(y / x);
+	}
+
 	/**
 	 * Lässt einen aktuellen Vektor sich dem anderen annähern.
 	 * 

@@ -7,9 +7,11 @@ import battle.ai.DieCall;
 import battle.ai.FindLockAction;
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
+import battle.enemy.Enemy;
 import battle.stage._6.EnemyRaiderDeltaVI;
 import battle.stage._6.FriendBeta;
 import corecase.MainZap;
+import gui.effect.WarpOutEffect;
 import lib.ScheduledList;
 
 public class Stage6 extends Stage {
@@ -40,6 +42,7 @@ public class Stage6 extends Stage {
 	private ScheduledList<CombatObject> raiders = new ScheduledList<CombatObject>();
 	private ScheduledList<CombatObject> friends = new ScheduledList<CombatObject>();
 	private EnemyRaiderDeltaVI deltaVI;
+	private boolean fightFinished = false;
 
 	public Stage6() {
 		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 1800);
@@ -116,6 +119,9 @@ public class Stage6 extends Stage {
 	@Override
 	public void update() {
 
+		if (fightFinished)
+			return;
+
 		if (!deltaVI.isAlive())
 			pass();
 
@@ -180,6 +186,20 @@ public class Stage6 extends Stage {
 
 		raiders.update();
 		friends.update();
+
+		// Freunde verlassen das Kampf-gebiet
+		if (isPassed() && raiders.size() == 1) {
+
+			fightFinished = true;
+			int aimX = rand(500) - 250;
+			int aimY = rand(500) - 250;
+
+			for (CombatObject e : friends)
+				if (e instanceof Enemy) {
+					((Enemy) e).warpOut(aimX + e.getLocX(), aimY + e.getLocY(), 60);
+					((WarpOutEffect) ((Enemy) e).getWarpEffect()).setWaitingTime(MainZap.inTicks(900));
+				}
+		}
 
 		for (SpawnScheduler s : spawner) {
 			s.update();

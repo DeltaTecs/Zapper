@@ -34,8 +34,8 @@ public class Map implements PaintingTask, Updateable {
 	public void paint(Graphics2D g) {
 
 		// Von 0/0 Kontext zu Karte Kontext
-		int dx = (int) MainZap.getPlayer().getPosX() - Frame.HALF_SCREEN_SIZE;
-		int dy = (int) MainZap.getPlayer().getPosY() - Frame.HALF_SCREEN_SIZE;
+		float dx = MainZap.getPlayer().getPosX() - Frame.HALF_SCREEN_SIZE;
+		float dy = MainZap.getPlayer().getPosY() - Frame.HALF_SCREEN_SIZE;
 		g.translate(-dx, -dy);
 
 		g.setColor(Color.WHITE);

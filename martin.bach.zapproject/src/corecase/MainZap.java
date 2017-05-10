@@ -158,7 +158,7 @@ public class MainZap {
 		if (FINAL_RUN)
 			Tutorial.show();
 
-		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_FALCON_III));
+		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VI));
 		
 		// -- Loop ----------
 		new Thread(mainLoop, "Zapper Update Thread").start();
