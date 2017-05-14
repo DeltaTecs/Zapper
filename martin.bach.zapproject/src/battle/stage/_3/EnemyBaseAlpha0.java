@@ -53,7 +53,6 @@ public class EnemyBaseAlpha0 implements PaintingTask {
 
 		movedX = (int) (x - ((TEXTURE_ALIVE.getWidth() / 2) * SCALE));
 		movedY = (int) (y - ((TEXTURE_ALIVE.getHeight() / 2) * SCALE));
-
 	}
 
 	public int getPosX() {

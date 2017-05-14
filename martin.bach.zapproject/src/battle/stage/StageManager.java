@@ -10,6 +10,7 @@ public abstract class StageManager {
 
 	private static Stage activeStage;
 	private static int currentLvl = 0;
+	private static int amountActiveIntros = 0;
 	private static boolean nextStageReachable = true;
 
 	public static void setUp(int lvl) {
@@ -35,6 +36,9 @@ public abstract class StageManager {
 			break;
 		case 6:
 			setUpLvlSix();
+			break;
+		case 7:
+			setUpLvlSeven();
 			break;
 		default:
 			System.err.println("[Err] Level not existing: lvl " + lvl);
@@ -108,6 +112,12 @@ public abstract class StageManager {
 		registerStage();
 	}
 
+	private static void setUpLvlSeven() {
+		clearStage();
+		activeStage = new Stage7();
+		registerStage();
+	}
+
 	private static void registerStage() {
 		if (activeStage != null) {
 			if (MainZap.FINAL_RUN)
@@ -137,6 +147,14 @@ public abstract class StageManager {
 
 	public static Stage getActiveStage() {
 		return activeStage;
+	}
+
+	public static int getAmountActiveIntros() {
+		return amountActiveIntros;
+	}
+
+	public static void setAmountActiveIntros(int amountActiveIntros) {
+		StageManager.amountActiveIntros = amountActiveIntros;
 	}
 
 }

@@ -31,11 +31,13 @@ public class StageIntro implements PaintingTask, Updateable {
 	}
 
 	public void register() {
+		StageManager.setAmountActiveIntros(StageManager.getAmountActiveIntros() + 1);
 		MainZap.getMap().addUpdateElement(this);
 		MainZap.getStaticLayer().addTask(this);
 	}
 
 	public void unRegister() {
+		StageManager.setAmountActiveIntros(StageManager.getAmountActiveIntros() - 1);
 		MainZap.getMap().removeUpdateElement(this);
 		MainZap.getStaticLayer().removeTask(this);
 	}

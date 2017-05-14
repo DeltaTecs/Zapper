@@ -514,4 +514,8 @@ public class Enemy extends CombatObject implements Shockable {
 		return warpEffect;
 	}
 
+	public void setTexture(BufferedImage texture) {
+		this.texture = texture;
+	}
+
 }

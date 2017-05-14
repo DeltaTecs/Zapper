@@ -7,6 +7,7 @@ import battle.enemy.EnemyBeta2;
 import battle.stage._3.EnemyTurretAlpha0;
 import corecase.MainZap;
 import gui.Map;
+import gui.shop.ShopLocation;
 
 public class Stage0 extends Stage {
 
@@ -42,6 +43,9 @@ public class Stage0 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_RANGE_PACK, PackType.BULLET_RANGE),
 				new SpawnScheduler(50, SPAWN_RATE_RELOAD_PACK, PackType.RELOAD),
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED) };
+		
+		ShopLocation shop = new ShopLocation(1500, 1500, 3000, 0);
+		MainZap.getMap().addUpdateElement(shop);
 
 		for (int i = 0; i != 26; i++) {
 			EnemyTurretAlpha0 turret = new EnemyTurretAlpha0(rand(Map.SIZE), rand(Map.SIZE));

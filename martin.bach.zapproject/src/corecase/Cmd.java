@@ -119,9 +119,8 @@ public abstract class Cmd {
 				entrys.clear();
 				return;
 			}
-
 		}
-
+		
 		if (in.equalsIgnoreCase("player") || in.equalsIgnoreCase("implayer")) {
 			print("This is not your space.");
 			try {
