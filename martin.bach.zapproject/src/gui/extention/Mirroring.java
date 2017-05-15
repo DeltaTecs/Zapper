@@ -10,6 +10,7 @@ import java.util.Random;
 import battle.WeaponPositioning;
 import corecase.MainZap;
 import gui.Frame;
+import gui.screens.pause.PauseScreen;
 
 public abstract class Mirroring {
 
@@ -68,7 +69,7 @@ public abstract class Mirroring {
 
 	// Cosmetic
 	public static void checkMirrorStateChange() {
-		if (!active)
+		if (!active || PauseScreen.isOpen())
 			return;
 
 		if (RAND.nextInt(260) == 0)
