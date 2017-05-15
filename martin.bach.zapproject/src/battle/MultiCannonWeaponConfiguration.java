@@ -38,7 +38,7 @@ public class MultiCannonWeaponConfiguration extends WeaponConfiguration {
 						e.getShootingAim().getLocY() + (int) (e.getShootingAim().getVelocity().getY() * ticksTilImpact),
 						getRange(), e);
 			} else {
-				
+
 				SpeedVector relativEnemyVelocity = new SpeedVector(
 						e.getShootingAim().getVelocity().getX() - e.getVelocity().getX(),
 						e.getShootingAim().getVelocity().getY() - e.getVelocity().getY());
@@ -82,6 +82,18 @@ public class MultiCannonWeaponConfiguration extends WeaponConfiguration {
 		nextWeapon++;
 		if (nextWeapon > weapons - 1)
 			nextWeapon = 0;
+	}
+
+	public WeaponPositioning getPositioning() {
+		return positioning;
+	}
+
+	public void setPositioning(WeaponPositioning positioning) {
+		this.positioning = positioning;
+	}
+
+	public byte getWeapons() {
+		return weapons;
 	}
 
 }

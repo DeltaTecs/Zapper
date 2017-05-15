@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import battle.enemy.Enemy;
 import battle.stage.Stage;
+import battle.stage.Stage7;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
@@ -20,7 +21,7 @@ public class EnemyBasecoreRaider extends Enemy {
 	private static final float SCALE = 2.0f;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_ENEMYBASECORE_RAIDER);
 	private static final BufferedImage TEXTURE_DES = TextureBuffer.get(TextureBuffer.NAME_ENEMYBASECORE_RAIDER_DES);
-	private static final int MAX_HP = 40000;
+	private static final int MAX_HP = 30000;
 	private static final ExplosionEffectPattern EXPL_PATTERN = new ExplosionEffectPattern(120, 1500);
 	private static final int SCORE = 200;
 	private static final int CRYSTALS = 2200;
@@ -73,6 +74,12 @@ public class EnemyBasecoreRaider extends Enemy {
 		stage.getPaintingTasks().add(PAINTING_TASK_DESTROYED);
 		stage.pass();
 		MainZap.getMap().addPaintElement(PAINTING_TASK_DESTROYED, false);
+
+		if (stage instanceof Stage7) {
+			for (EnemyTurretRaider turret : ((Stage7) stage).getTurrets())
+				if (turret.isAlive())
+					turret.explode();
+		}
 	}
 
 	@Override

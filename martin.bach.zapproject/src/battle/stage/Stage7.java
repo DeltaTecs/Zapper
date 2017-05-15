@@ -1,9 +1,12 @@
 package battle.stage;
 
+import java.util.ArrayList;
+
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
 import battle.stage._7.EnemyBaseRaider;
 import battle.stage._7.EnemyBasecoreRaider;
+import battle.stage._7.EnemyTurretRaider;
 import corecase.MainZap;
 
 public class Stage7 extends Stage {
@@ -24,9 +27,10 @@ public class Stage7 extends Stage {
 
 	private SpawnScheduler[] spawner;
 	private EnemyBasecoreRaider core;
+	private ArrayList<EnemyTurretRaider> turrets = new ArrayList<EnemyTurretRaider>();
 
 	public Stage7() {
-		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 2400);
+		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 1500);
 
 		spawner = new SpawnScheduler[] { new SpawnScheduler(MAX_AMOUNT_AMMO_PACK_LARGE, 0, PackType.AMMO_LARGE),
 				new SpawnScheduler(MAX_AMOUNT_AMMO_PACK_SMALL, 0, PackType.AMMO_SMALL),
@@ -42,6 +46,29 @@ public class Stage7 extends Stage {
 		MainZap.getMap().addPaintElement(baseImg, true);
 		super.getPaintingTasks().add(baseImg); // Manuell als Stagebound
 												// registrieren
+
+		EnemyTurretRaider turret0 = new EnemyTurretRaider(1100, 2000);
+		EnemyTurretRaider turret1 = new EnemyTurretRaider(1010, 1020);
+		EnemyTurretRaider turret2 = new EnemyTurretRaider(1400, 1080);
+		EnemyTurretRaider turret3 = new EnemyTurretRaider(1900, 1030);
+		EnemyTurretRaider turret4 = new EnemyTurretRaider(1960, 1980);
+		EnemyTurretRaider turret5 = new EnemyTurretRaider(1550, 1850);
+		EnemyTurretRaider turret6 = new EnemyTurretRaider(1200, 1700);
+		turrets.add(turret0);
+		turrets.add(turret1);
+		turrets.add(turret2);
+		turrets.add(turret3);
+		turrets.add(turret4);
+		turrets.add(turret5);
+		turrets.add(turret6);
+		turret0.register();
+		turret1.register();
+		turret2.register();
+		turret3.register();
+		turret4.register();
+		turret5.register();
+		turret6.register();
+
 		core = new EnemyBasecoreRaider(this);
 		core.setPosition(1430, 1520);
 		core.register();
@@ -55,6 +82,10 @@ public class Stage7 extends Stage {
 			s.update();
 		}
 
+	}
+
+	public ArrayList<EnemyTurretRaider> getTurrets() {
+		return turrets;
 	}
 
 }

@@ -8,6 +8,8 @@ import battle.ai.DieCall;
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
 import battle.enemy.Enemy;
+import battle.enemy.EnemyBasicRaider;
+import battle.enemy.EnemyHeavyRaider;
 import battle.stage._5.FriendTransporter;
 import corecase.MainZap;
 import gui.screens.end.EndScreen;

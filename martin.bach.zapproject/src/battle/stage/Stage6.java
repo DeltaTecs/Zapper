@@ -8,6 +8,8 @@ import battle.ai.FindLockAction;
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
 import battle.enemy.Enemy;
+import battle.enemy.EnemyBasicRaider;
+import battle.enemy.EnemyHeavyRaider;
 import battle.stage._6.EnemyRaiderDeltaVI;
 import battle.stage._6.FriendBeta;
 import corecase.MainZap;

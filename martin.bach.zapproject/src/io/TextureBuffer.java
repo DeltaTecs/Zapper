@@ -40,6 +40,11 @@ public abstract class TextureBuffer {
 	public static final String NAME_ENEMYSHIP_RAIDER_DELTAVI = "enemyShipRaiderDeltaVI.png";
 	public static final String NAME_ENEMYSHIP_RAIDER_DELTAVII = "enemyShipRaiderDeltaVII.png";
 	public static final String NAME_ENEMYTURRET_ALPHA0 = "enemyTurretAlpha0.png";
+	public static final String NAME_ENEMYTURRET_RAIDER0 = "enemyTurretRaider0.png";
+	public static final String NAME_ENEMYTURRET_RAIDER1 = "enemyTurretRaider1.png";
+	public static final String NAME_ENEMYTURRET_RAIDER2 = "enemyTurretRaider2.png";
+	public static final String NAME_ENEMYTURRET_RAIDER3 = "enemyTurretRaider3.png";
+	public static final String NAME_ENEMYTURRET_RAIDER4 = "enemyTurretRaider4.png";
 	public static final String NAME_ENEMYBASE_ALPHA0 = "enemyBaseAlpha0.png";
 	public static final String NAME_ENEMYBASE_ALPHA0_DES = "enemyBaseAlpha0Des.png";
 	public static final String NAME_ENEMYBASECORE_ALPHA0 = "enemyBasecoreAlpha0.png";
@@ -114,6 +119,11 @@ public abstract class TextureBuffer {
 		names.add(NAME_ENEMYSHIP_RAIDER_DELTAVI);
 		names.add(NAME_ENEMYSHIP_RAIDER_DELTAVII);
 		names.add(NAME_ENEMYTURRET_ALPHA0);
+		names.add(NAME_ENEMYTURRET_RAIDER0);
+		names.add(NAME_ENEMYTURRET_RAIDER1);
+		names.add(NAME_ENEMYTURRET_RAIDER2);
+		names.add(NAME_ENEMYTURRET_RAIDER3);
+		names.add(NAME_ENEMYTURRET_RAIDER4);
 		names.add(NAME_ENEMYBASE_ALPHA0);
 		names.add(NAME_ENEMYBASE_ALPHA0_DES);
 		names.add(NAME_ENEMYBASECORE_ALPHA0);
@@ -172,7 +182,6 @@ public abstract class TextureBuffer {
 				BufferedImage img = ImageIO.read(new File(PATH + name));
 
 				textures.put(name, img);
-
 			} catch (IOException e) { // Nicht gefunden
 				System.err.println(
 						"[ERR] Datei nicht gefunden: " + name + "; Name vomöglich fehlerhaft eingetragen! Schließe.");

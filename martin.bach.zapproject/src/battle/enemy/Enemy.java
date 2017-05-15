@@ -2,10 +2,12 @@ package battle.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import battle.CombatObject;
+import battle.MultiCannonWeaponConfiguration;
 import battle.Shockable;
 import battle.WeaponConfiguration;
 import battle.ai.AiProtocol;
@@ -134,6 +136,14 @@ public class Enemy extends CombatObject implements Shockable {
 			g.fillRect(-2, -2, 4, 4);
 			g.drawOval((int) -getInformation().getRadius(), (int) -getInformation().getRadius(),
 					(int) (2 * getInformation().getRadius()), (int) (2 * getInformation().getRadius()));
+
+			if (weaponConfiguration instanceof MultiCannonWeaponConfiguration) {
+				Point[] ps = ((MultiCannonWeaponConfiguration) weaponConfiguration).getPositioning()
+						.getRotated((float) rotation);
+				g.setColor(Color.CYAN);
+				for (Point p : ps)
+					g.fillRect(p.x - 3, p.y - 3, 6, 6);
+			}
 
 		}
 

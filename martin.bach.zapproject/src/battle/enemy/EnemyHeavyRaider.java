@@ -1,4 +1,4 @@
-package battle.stage;
+package battle.enemy;
 
 import java.awt.image.BufferedImage;
 
@@ -6,7 +6,6 @@ import battle.MultiCannonWeaponConfiguration;
 import battle.WeaponPositioning;
 import battle.ai.AdvancedSingleProtocol;
 import battle.ai.FindLockAction;
-import battle.enemy.Enemy;
 import battle.projectile.ProjectileRaiderHeavy;
 import collision.CollisionInformation;
 import collision.CollisionType;
