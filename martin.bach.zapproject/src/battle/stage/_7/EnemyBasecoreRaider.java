@@ -21,7 +21,7 @@ public class EnemyBasecoreRaider extends Enemy {
 	private static final float SCALE = 2.0f;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_ENEMYBASECORE_RAIDER);
 	private static final BufferedImage TEXTURE_DES = TextureBuffer.get(TextureBuffer.NAME_ENEMYBASECORE_RAIDER_DES);
-	private static final int MAX_HP = 30000;
+	private static final int MAX_HP = 11000;
 	private static final ExplosionEffectPattern EXPL_PATTERN = new ExplosionEffectPattern(120, 1500);
 	private static final int SCORE = 200;
 	private static final int CRYSTALS = 2200;

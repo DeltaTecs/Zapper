@@ -31,7 +31,7 @@ public class EnemyTurretRaider extends Enemy {
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(13, 70);
 	private static final WeaponPositioning WEAPON_POSITIONING = new WeaponPositioning((byte) 2, new int[] { -15, 15 },
 			new int[] { -40, -40 });
-	private static final float COOLDOWN = 40;
+	private static final float COOLDOWN = 80;
 	private static final int SCORE = 40;
 	private static final int CRYSTALS = 250;
 	private static final int PROJECTILE_RANGE = 2000;
