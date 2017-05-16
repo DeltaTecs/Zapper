@@ -89,7 +89,7 @@ public abstract class Hud {
 	private static final PaintingTask PAINTING_TASK = new PaintingTask() {
 		@Override
 		public void paint(Graphics2D g) {
-			
+
 			if (MainZap.getPlayer().isWarping()) {
 				if (blendAlpha != 0) {
 					if (blendAlpha > 255)
@@ -167,12 +167,10 @@ public abstract class Hud {
 				g.translate(-dx, -SPACE_Y_SHOP);
 			}
 			// ----
-			
-			
+
 			// --------- Fähigkeits-Aktivierungs-Knopf
 			ExtentionManager.paint(g);
-			
-			
+
 			// --------- DEBUG Stuff
 			if (MainZap.debug) {
 				// FPS-Anzeige
@@ -195,8 +193,8 @@ public abstract class Hud {
 		}
 	}
 
-	public static void pushCrystals() {
-		alphaCrystals += 10;
+	public static void pushCrystals(int amount) {
+		alphaCrystals += 10 * amount;
 		if (alphaCrystals > 255) {
 			alphaCrystals = 255;
 		}
@@ -262,7 +260,7 @@ public abstract class Hud {
 				shopIconX += SHOP_BLEND_SPEED;
 			}
 		}
-		
+
 		// -- Fähigkeit-UI -------------
 		ExtentionManager.update();
 		// ---

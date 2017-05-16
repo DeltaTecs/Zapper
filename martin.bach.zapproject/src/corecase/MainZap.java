@@ -144,10 +144,12 @@ public class MainZap {
 			frame.getContentPane().remove(stamp);
 		}
 
-		if (FINAL_RUN)
+		if (FINAL_RUN) {
 			StageManager.setUp(1);
-		else {
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
+		} else {
 			StageManager.setUp(7);
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_FALCON_III));
 			crystals = 500;
 		}
 		Hud.setUpClickListener();
@@ -158,8 +160,6 @@ public class MainZap {
 		if (FINAL_RUN)
 			Tutorial.show();
 
-		player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_FALCON_III));
-		
 		// -- Loop ----------
 		new Thread(mainLoop, "Zapper Update Thread").start();
 

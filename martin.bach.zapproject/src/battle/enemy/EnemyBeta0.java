@@ -23,7 +23,7 @@ public class EnemyBeta0 extends Enemy {
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(16, 90);
 	private static final float COOLDOWN = 40;
 	private static final int SCORE = 2;
-	private static final int CRYSTALS = 1;
+	private static final int CRYSTALS = 2;
 	private static final int PROJECTILE_RANGE = 600;
 	private static final boolean FRIEND = false;
 
