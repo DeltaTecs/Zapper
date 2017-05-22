@@ -40,6 +40,9 @@ public abstract class StageManager {
 		case 7:
 			setUpLvlSeven();
 			break;
+		case 8:
+			setUpLvlEight();
+			break;
 		default:
 			System.err.println("[Err] Level not existing: lvl " + lvl);
 			setUpLvlZero();
@@ -115,6 +118,12 @@ public abstract class StageManager {
 	private static void setUpLvlSeven() {
 		clearStage();
 		activeStage = new Stage7();
+		registerStage();
+	}
+
+	private static void setUpLvlEight() {
+		clearStage();
+		activeStage = new Stage8();
 		registerStage();
 	}
 

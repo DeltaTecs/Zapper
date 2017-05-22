@@ -52,6 +52,7 @@ public abstract class TextureBuffer {
 	public static final String NAME_ENEMYBASECORE_RAIDER = "enemyBasecoreRaider.png";
 	public static final String NAME_ENEMYBASECORE_RAIDER_DES = "enemyBasecoreRaiderDestroyed.png";
 	public static final String NAME_STRUCTURE_SHOP0 = "strShop0.png";
+	public static final String NAME_STRUCTURE_SHOP1 = "strShop1.png";
 	public static final String NAME_STRUCTURE_ROCK0 = "strRock0.png";
 	public static final String NAME_COLLECT_HEALTHUP_ROUND = "collectHealthupRound.png";
 	public static final String NAME_COLLECT_AMMO_SMALL_ROUND = "collectAmmopackSmallRound.png";
@@ -131,6 +132,7 @@ public abstract class TextureBuffer {
 		names.add(NAME_ENEMYBASECORE_RAIDER);
 		names.add(NAME_ENEMYBASECORE_RAIDER_DES);
 		names.add(NAME_STRUCTURE_SHOP0);
+		names.add(NAME_STRUCTURE_SHOP1);
 		names.add(NAME_STRUCTURE_ROCK0);
 		names.add(NAME_COLLECT_HEALTHUP_ROUND);
 		names.add(NAME_COLLECT_AMMO_SMALL_ROUND);

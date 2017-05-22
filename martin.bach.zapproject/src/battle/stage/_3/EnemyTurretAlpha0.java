@@ -24,7 +24,7 @@ public class EnemyTurretAlpha0 extends Enemy {
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(13, 70);
 	private static final float COOLDOWN = 40;
 	private static final int SCORE = 20;
-	private static final int CRYSTALS = 14;
+	private static final int CRYSTALS = 64;
 	private static final int PROJECTILE_RANGE = 800;
 	private static final boolean FRIEND = false;
 

@@ -22,7 +22,7 @@ public class Stage7 extends Stage {
 
 	private static final int MAX_AMOUNT_AMMO_PACK_LARGE = 4;
 	private static final int MAX_AMOUNT_AMMO_PACK_SMALL = 14;
-	private static final int SPAWN_RATE_HP_PACK = MainZap.getMainLoop().inTicks(2000);
+	private static final int SPAWN_RATE_HP_PACK = MainZap.getMainLoop().inTicks(4000);
 	private static final int SPAWN_RATE_SPEED_PACK = MainZap.getMainLoop().inTicks(4000);
 	private static final int SPAWN_RATE_DMG_PACK = MainZap.getMainLoop().inTicks(6000);
 	private static final int SPAWN_RATE_BL_SPEED_PACK = MainZap.getMainLoop().inTicks(6000);
