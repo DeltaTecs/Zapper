@@ -22,7 +22,7 @@ public class DeltaVIShipConfig extends ShipStartConfig {
 	private static final float PROJ_SPEED = 16;
 	private static final float RELOAD_WITH = 1.4f;
 	private static final float RELOAD_WITHOUT = 2.5f;
-	private static final int HP = 3000;
+	private static final int HP = 4500;
 	private static final int HIT_RANGE = 35;
 	private static final int PROJ_RANGE = 600;
 	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignDeltaVI();

@@ -26,7 +26,7 @@ import schedule.DynamicUpdateLoop;
 
 public class MainZap {
 
-	public static final String VERSION = "0.9.1 _ Alpha";
+	public static final String VERSION = "0.9.4 _ Alpha";
 	public static final String DIRECTORY = determineDirectory();
 
 	public static final boolean FINAL_RUN = false || !inWorkspace();
@@ -341,9 +341,9 @@ public class MainZap {
 		grid.add(player);
 		Cmd.print("Reseting Screens...");
 		Shop.reset();
-		Hud.setUpClickListener();
+		// Hud.setUpClickListener(); <--- added nur listener. -> schon da
 		PauseScreen.setUp(true);
-		Shop.setUp();
+		// Shop.setUp(); <--- added nur listener. -> schon da
 		Cmd.print("Reseting Stage...");
 		StageManager.setUp(1);
 		Cmd.print("Calling GarbageCollector...");

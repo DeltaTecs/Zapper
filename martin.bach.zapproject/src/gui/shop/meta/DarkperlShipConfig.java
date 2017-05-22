@@ -16,13 +16,13 @@ public class DarkperlShipConfig extends ShipStartConfig {
 	private static final int PRICE = 1100;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DARKPERL);
 	private static final float SCALE = 0.9f;
-	private static final float AMMO_USAGE = 1.6f;
+	private static final float AMMO_USAGE = 2.0f;
 	private static final int DAMAGE = 400;
-	private static final float SPEED = 4.0f;
+	private static final float SPEED = 3.0f;
 	private static final float PROJ_SPEED = 26;
 	private static final float RELOAD_WITH = 6.0f;
 	private static final float RELOAD_WITHOUT = 9.5f;
-	private static final int HP = 16000;
+	private static final int HP = 10000;
 	private static final int HIT_RANGE = 38;
 	private static final int PROJ_RANGE = 1800;
 	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignDarkPerl();

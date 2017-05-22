@@ -65,7 +65,7 @@ public class Stage5 extends Stage {
 			public void desReached(int x, int y) {
 				if (MainZap.getPlayer().isAlive())
 					pass(); // Der Transporter hat das Ziel erreicht
-				transporter.getAiProtocol().moveTo(-1000, 1000);
+				transporter.getAiProtocol().moveTo(-1000, 4000);
 			}
 		});
 		transporter.getAiProtocol().addCall(AiProtocol.KEY_CALL_DIEING, new DieCall() {
