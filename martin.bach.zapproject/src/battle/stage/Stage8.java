@@ -63,7 +63,7 @@ public class Stage8 extends Stage {
 		MainZap.getMap().addPaintElement(shop, true); // Manuell registieren
 		shop.setPosition(1500, 1500);
 
-		guardianTurret = new GuardianTurret(1720, 1240, 20);
+		guardianTurret = new GuardianTurret(1720, 1240, 20, 1);
 		super.getInteractiveObjects().add(guardianTurret);
 		guardianTurret.register();
 

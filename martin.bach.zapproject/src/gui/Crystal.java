@@ -51,7 +51,7 @@ public class Crystal implements PaintingTask, Updateable {
 
 		if (MainZap.getPlayer().isInRange((int) posX, (int) posY, PLAYER_DISTANCE_TOLERANCE)) {
 			if (large) {
-				MainZap.setCrystals(MainZap.getCrystals() + LARGE_CRYSTAL_VALUE);
+				MainZap.addCrystals(LARGE_CRYSTAL_VALUE);
 				Hud.pushCrystals(LARGE_CRYSTAL_VALUE);
 			} else {
 				MainZap.addCrystal();

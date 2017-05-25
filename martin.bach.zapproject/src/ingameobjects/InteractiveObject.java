@@ -97,6 +97,11 @@ public class InteractiveObject implements Collideable, PaintingTask, Updateable,
 
 	}
 
+	public int distanceTo(InteractiveObject o) {
+		return (int) Math
+				.sqrt(((posX - o.getPosX()) * (posX - o.getPosX())) + ((posY - o.getPosY()) * (posY - o.getPosY())));
+	}
+
 	public boolean isBackground() {
 		return background;
 	}

@@ -472,6 +472,24 @@ public class Grid {
 
 	};
 
+	/**
+	 * Knapp effizienter als die Java-Implementation (Math.sqr) Aber dafür
+	 * extrem ungenau
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public static float fastSqr(float a) {
+		// Heron-Verfahren
+
+		float lastValue = (a + 1) / 2.0f; // idealer Startwert
+
+		lastValue = (lastValue + (a / lastValue)) / 2.0f;
+		lastValue = (lastValue + (a / lastValue)) / 2.0f;
+
+		return lastValue;
+	}
+
 	public ArrayList<Enemy> debugGetSurrounding(int cx, int cy, int range) {
 
 		int ix = cx / tileSizeX; // index-x

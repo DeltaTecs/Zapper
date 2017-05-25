@@ -462,7 +462,7 @@ public abstract class ShopSecUpgrade {
 		if (inDialog) {
 			if (BOUNDS_DIA_YES.contains(tx, ty)) {
 				inDialog = false;
-				MainZap.setCrystals(MainZap.getCrystals() - priceDia);
+				MainZap.removeCrystals(priceDia);
 				extentionStates = new boolean[] { false, false, false, false };
 				byte cannonsBeforeReset = (byte) (addedCannons + 1);
 				resetExtentions();
@@ -707,7 +707,7 @@ public abstract class ShopSecUpgrade {
 		if (priceTable[activeUpgrades[index]] > MainZap.getCrystals() || activeUpgrades[index] == 5)
 			return; // Nicht genug Knete oder alle schon gekauft
 
-		MainZap.setCrystals(MainZap.getCrystals() - priceTable[activeUpgrades[index]]);
+		MainZap.removeCrystals(priceTable[activeUpgrades[index]]);
 		activeUpgrades[index]++;
 		MainZap.getPlayer().setUpgraded(true);
 

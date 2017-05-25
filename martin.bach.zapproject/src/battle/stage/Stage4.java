@@ -71,7 +71,7 @@ public class Stage4 extends Stage {
 		MainZap.getMap().addPaintElement(rock, true);
 		rock.setPosition(1780, 1300);
 
-		GuardianTurret turret = new GuardianTurret(1780, 1300, 20);
+		GuardianTurret turret = new GuardianTurret(1780, 1300, 20, 0);
 		super.getInteractiveObjects().add(turret);
 		turret.register();
 

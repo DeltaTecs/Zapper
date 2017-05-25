@@ -27,20 +27,20 @@ public class GuardianTurretProtocol extends AiProtocol {
 
 		CombatObject lock = getLockOn();
 
-		if (lock instanceof Enemy) {
-			if (!lock.isAlive()) {
-				lock = null;
-				setLockOn(null);
-				getHost().setShootingAim(null);
-			}
-		}
-
 		if (lock == null) {
 			// Lock suchen
 			lock = searchForLock();
 			setLockOn(lock);
 			getHost().setShootingAim(lock);
+			return;
 		}
+
+		if (!lock.isAlive()) {
+			lock = null;
+			setLockOn(null);
+			getHost().setShootingAim(null);
+		}
+
 	}
 
 	public CombatObject searchForLock() {
@@ -55,8 +55,8 @@ public class GuardianTurretProtocol extends AiProtocol {
 		// Umgebung abgehen
 		for (Enemy e : surrounding) {
 
-			if (e.isFriend() || !e.isAlive())
-				continue; // nur Feinde beschieﬂen
+			if (e.isFriend() || !e.isAlive() || !MainZap.fittsMap(e.getLocX(), e.getLocY()))
+				continue; // nur Feinde in der Grid beschieﬂen
 
 			// Da is was in Range
 			if (e.isInRange(getHost(), DISTANCE_SHOOT))
@@ -66,20 +66,16 @@ public class GuardianTurretProtocol extends AiProtocol {
 		if (possibleLocks.size() == 0)
 			return null; // nix da
 
-		// Zuf‰lliges Lock w‰hlen
-		CombatObject choise = possibleLocks.get(rand(possibleLocks.size()));
-		if (!MainZap.fittsMap(choise.getLocX(), choise.getLocY())) {
-			// Nicht in der Grid
-			for (CombatObject o : possibleLocks) {
-				// Nimm einfach irgendeins
-				if (MainZap.fittsMap(o.getLocX(), o.getLocY()))
-					return o;
+		// Das N‰chst-Gelegene ausw‰hlen
+		int lowestDistance = 3000;
+		CombatObject nearest = possibleLocks.get(0);
+		for (CombatObject c : possibleLocks) {
+			if (getHost().distanceTo(c) < lowestDistance) {
+				nearest = c;
+				lowestDistance = getHost().distanceTo(c);
 			}
-			// Kein gefunden...
-			return null;
 		}
-		return choise;
-
+		return nearest;
 	}
 
 	public void registerForAutoUnregisterFrom(final ScheduledList<Enemy> list) {

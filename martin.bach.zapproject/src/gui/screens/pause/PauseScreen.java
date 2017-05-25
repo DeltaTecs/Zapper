@@ -15,6 +15,7 @@ import corecase.Cmd;
 import corecase.MainZap;
 import gui.Frame;
 import gui.shop.Shop;
+import io.CashReader;
 import io.SettingsInitReader;
 import io.TextureBuffer;
 import lib.ClickListener;
@@ -238,6 +239,8 @@ public abstract class PauseScreen {
 						MainZap.restartGame();
 						setOpen(false);
 					} else if (dialog == PauseScreenDialogoption.EXIT) {
+						// Geld speichern
+						CashReader.save((int) (MainZap.getCrystalsEverEarned() * MainZap.CRYSTAL_GETBACK));
 						Cmd.print("User quits...");
 						System.exit(1);
 					}
@@ -635,8 +638,8 @@ public abstract class PauseScreen {
 		}
 		g.setColor(COLOR_BORDER);
 		if (MainZap.roundCorners)
-			g.drawRoundRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height,
-					BORDER_ROUND_DEEPTH, BORDER_ROUND_DEEPTH);
+			g.drawRoundRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height, BORDER_ROUND_DEEPTH,
+					BORDER_ROUND_DEEPTH);
 		else
 			g.drawRect(BOUNDS_EXIT.x, BOUNDS_EXIT.y, BOUNDS_EXIT.width, BOUNDS_EXIT.height);
 		g.setColor(COLOR_EXIT);

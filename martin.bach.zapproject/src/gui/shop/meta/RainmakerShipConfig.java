@@ -12,7 +12,7 @@ import io.TextureBuffer;
 public class RainmakerShipConfig extends ShipStartConfig {
 
 	private static final String NAME = "Rainmaker";
-	private static final String DESCRIPTION = "This ship was the result of an weapon experiment crash. The Rainmaker can only be summoned from the void by using massive amounts of crystals.";
+	private static final String DESCRIPTION = "This ship was the result of a weapon experiment crash. The Rainmaker can only be summoned from the void by using massive amounts of crystals.";
 	private static final int PRICE = 800000;
 	public static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_RAINMAKER);
 	private static final float SCALE = 1.2f;

@@ -493,7 +493,7 @@ class CommandLibrary {
 				printInvalidArgs("addcash <int>");
 				return;
 			}
-			MainZap.setCrystals(MainZap.getCrystals() + Integer.parseInt(in[1]));
+			MainZap.addCrystals(Integer.parseInt(in[1]));
 			Cmd.print(in[1] + " crystals added.");
 			break;
 		case "activatemirror":

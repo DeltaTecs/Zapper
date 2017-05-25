@@ -20,6 +20,7 @@ import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
 import gui.shop.meta.ShipStartConfig;
 import ingameobjects.Player;
+import io.CashReader;
 import io.SettingsInitReader;
 import io.TextureBuffer;
 import schedule.DynamicUpdateLoop;
@@ -29,9 +30,10 @@ public class MainZap {
 	public static final String VERSION = "0.9.4 _ Alpha";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = false || !inWorkspace();
+	public static final boolean FINAL_RUN = true || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
+	public static final float CRYSTAL_GETBACK = 0.15f;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
 	public static boolean speedMode = false;
@@ -59,13 +61,9 @@ public class MainZap {
 
 	private static int score = 0;
 	private static int crystals = 10;
+	private static int crystalsEverEarned = 10;
 
 	public static void main(String[] args) throws InterruptedException {
-
-		if (debug) {
-			fpsDiagnosis = new FpsDiagnosis();
-			crystals = 9999999;
-		}
 
 		TextureBuffer.load();
 		ShipStartConfig.loadAll();
@@ -77,6 +75,9 @@ public class MainZap {
 		fancyGraphics = SettingsInitReader.loadFancyGraphics();
 		roundCorners = SettingsInitReader.loadRoundCorners();
 		speedMode = SettingsInitReader.loadSpeedmode();
+		// Geld laden
+		crystals = CashReader.load() + 9;
+		crystalsEverEarned = crystals;
 
 		frame = new Frame();
 		player = new Player();
@@ -179,7 +180,6 @@ public class MainZap {
 		if (speedMode) // SPEED IT UP!!!
 			collisionLoop.setBooster(collisionLoop.getTimeBetweenFramesMS() / 2);
 		// ----
-
 	}
 
 	private static final Runnable TASK_UPDATE = new Runnable() {
@@ -336,7 +336,8 @@ public class MainZap {
 			paintLoop.setRunningOnFreeWheel(false);
 		Cmd.print("Reseting Player...");
 		player.totalReset();
-		crystals = 10;
+		crystals = (int) (crystalsEverEarned * CRYSTAL_GETBACK);
+		crystalsEverEarned = crystals;
 		score = 0;
 		grid.add(player);
 		Cmd.print("Reseting Screens...");
@@ -352,12 +353,10 @@ public class MainZap {
 	}
 
 	public static int clipRGB(int v) {
-		if (v > 255) {
+		if (v > 255)
 			return 255;
-		}
-		if (v < 0) {
+		if (v < 0)
 			return 0;
-		}
 		return v;
 	}
 
@@ -367,13 +366,11 @@ public class MainZap {
 
 	public static float clip(float pos) {
 
-		if (pos < 0) {
+		if (pos < 0)
 			return 0;
-		}
 
-		if (pos > Map.SIZE) {
+		if (pos > Map.SIZE)
 			return Map.SIZE;
-		}
 
 		return pos;
 	}
@@ -400,14 +397,20 @@ public class MainZap {
 
 	public static void addCrystal() {
 		crystals++;
+		crystalsEverEarned++;
+	}
+
+	public static void addCrystals(int amount) {
+		crystals += amount;
+		crystalsEverEarned += amount;
+	}
+
+	public static void removeCrystals(int amount) {
+		crystals -= amount;
 	}
 
 	public static int getCrystals() {
 		return crystals;
-	}
-
-	public static void setCrystals(int a) {
-		crystals = a;
 	}
 
 	public static int getScore() {
@@ -462,10 +465,6 @@ public class MainZap {
 		return scale;
 	}
 
-	public static void removeCrystals(int c) {
-		MainZap.crystals -= c;
-	}
-
 	public static void setScale(float s) {
 		scale = s;
 		frame.rescale(s);
@@ -507,6 +506,10 @@ public class MainZap {
 		collisionLoop.pushUpdate();
 		mainLoop.pushUpdate();
 		paintLoop.pushUpdate();
+	}
+
+	public static int getCrystalsEverEarned() {
+		return crystalsEverEarned;
 	}
 
 }
