@@ -1,1 +1,1 @@
-FUCK<1050>Arthur Dent<42>
+Arthur Dent<42>
