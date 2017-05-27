@@ -33,7 +33,7 @@ public class MainZap {
 	public static final boolean FINAL_RUN = true || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
-	public static final float CRYSTAL_GETBACK = 0.25f;
+	public static final float CRYSTAL_GETBACK = 0.20f;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
 	public static boolean speedMode = false;
