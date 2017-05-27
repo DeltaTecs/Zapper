@@ -22,7 +22,7 @@ public class DarkperlShipConfig extends ShipStartConfig {
 	private static final float PROJ_SPEED = 26;
 	private static final float RELOAD_WITH = 6.0f;
 	private static final float RELOAD_WITHOUT = 9.5f;
-	private static final int HP = 10000;
+	private static final int HP = 7000;
 	private static final int HIT_RANGE = 38;
 	private static final int PROJ_RANGE = 1800;
 	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignDarkPerl();

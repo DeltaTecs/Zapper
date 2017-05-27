@@ -21,7 +21,7 @@ public class Stage6 extends Stage {
 	private static final int LVL = 6;
 	private static final String NAME = "Raiders Loot";
 	private static final String DESCRIPTION = "eliminate the stolen DeltaVI";
-	private static final StageDifficulty DIFFICULTY = StageDifficulty.MEDIUM;
+	private static final StageDifficulty DIFFICULTY = StageDifficulty.EASY;
 
 	private static final int SPAWN_RATE_AMMO_PACK_SMALL = MainZap.getMainLoop().inTicks(3000);
 	private static final int SPAWN_RATE_AMMO_PACK_LARGE = MainZap.getMainLoop().inTicks(5000);

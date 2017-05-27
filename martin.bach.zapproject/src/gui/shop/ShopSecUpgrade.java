@@ -24,8 +24,8 @@ public abstract class ShopSecUpgrade {
 
 	private static final int PRICE_MIRROR = 3000;
 	private static final int PRICE_SHIELD = 1160;
-	private static final int PRICE_SHOCK = 8750;
-	private static final int[] PRICE_CANNON = new int[] { 5000, 12000, -1 };
+	private static final int PRICE_SHOCK = 6000;
+	private static final int[] PRICE_CANNON = new int[] { 2500, 8000, -1 };
 	private static final BufferedImage IMG_CRYSTAL = TextureBuffer.get(TextureBuffer.NAME_CRYSTAL);
 	private static final BufferedImage IMG_EXT_MIRROR = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_MIRROR);
 	private static final BufferedImage IMG_EXT_SHIELD = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_SHIELD);

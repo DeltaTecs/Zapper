@@ -17,7 +17,7 @@ public class Stage7 extends Stage {
 
 	private static final int LVL = 7;
 	private static final String NAME = "The Raiders Base";
-	private static final String DESCRIPTION = "Kill everything";
+	private static final String DESCRIPTION = "destroy the core";
 	private static final StageDifficulty DIFFICULTY = StageDifficulty.PRO;
 
 	private static final int MAX_AMOUNT_AMMO_PACK_LARGE = 4;

@@ -89,6 +89,8 @@ public class InteractiveObject implements Collideable, PaintingTask, Updateable,
 
 		ArrayList<InteractiveObject> bufferList = new ArrayList<InteractiveObject>(listedObjects);
 		for (InteractiveObject o : bufferList) {
+			if (o == null)
+				continue;
 			if (!o.stageBound)
 				continue;
 			o.unRegister();

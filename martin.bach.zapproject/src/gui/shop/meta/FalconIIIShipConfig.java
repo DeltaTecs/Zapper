@@ -22,7 +22,7 @@ public class FalconIIIShipConfig extends ShipStartConfig {
 	private static final float PROJ_SPEED = 13;
 	private static final float RELOAD_WITH = 2.5f;
 	private static final float RELOAD_WITHOUT = 4.3f;
-	private static final int HP = 14000;
+	private static final int HP = 12500;
 	private static final int HIT_RANGE = 40;
 	private static final int PROJ_RANGE = 840;
 	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignFalconIII();

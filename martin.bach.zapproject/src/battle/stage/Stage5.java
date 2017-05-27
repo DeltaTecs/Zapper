@@ -3,7 +3,6 @@ package battle.stage;
 import battle.CombatObject;
 import battle.ai.AdvancedSingleProtocol;
 import battle.ai.AiProtocol;
-import battle.ai.DestinationReachedCall;
 import battle.ai.DieCall;
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
@@ -21,7 +20,7 @@ public class Stage5 extends Stage {
 	private static final int LVL = 5;
 	private static final String NAME = "Expensive Goods";
 	private static final String DESCRIPTION = "guard the transporter";
-	private static final StageDifficulty DIFFICULTY = StageDifficulty.MEDIUM;
+	private static final StageDifficulty DIFFICULTY = StageDifficulty.HARD;
 
 	private static final int MAX_AMOUNT_AMMO_PACK_LARGE = 5;
 	private static final int MAX_AMOUNT_AMMO_PACK_SMALL = 14;
@@ -58,16 +57,8 @@ public class Stage5 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_RELOAD_PACK, PackType.RELOAD),
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED) };
 
-		transporter = new FriendTransporter(2800, 200, 200, 2800);
+		transporter = new FriendTransporter(2800, 200, -1000, 4000);
 		transporter.register();
-		transporter.getAiProtocol().addCall(AiProtocol.KEY_CALL_REACHED_DESTINATION, new DestinationReachedCall() {
-			@Override
-			public void desReached(int x, int y) {
-				if (MainZap.getPlayer().isAlive())
-					pass(); // Der Transporter hat das Ziel erreicht
-				transporter.getAiProtocol().moveTo(-1000, 4000);
-			}
-		});
 		transporter.getAiProtocol().addCall(AiProtocol.KEY_CALL_DIEING, new DieCall() {
 			@Override
 			public void die() { // Verkackt
@@ -82,6 +73,9 @@ public class Stage5 extends Stage {
 
 	@Override
 	public void update() {
+
+		if (!isPassed() && transporter.getPosY() < 350)
+			pass(); // Ziel erreicht
 
 		time++;
 
@@ -141,7 +135,7 @@ public class Stage5 extends Stage {
 			raiders.add(new EnemyHeavyRaider());
 
 		int spawnRadius = 300;
-		
+
 		int warpAimX = transporter.getLocX() - 150 + rand(300);
 		int warpAimY = transporter.getLocY() - 150 + rand(300);
 
@@ -175,7 +169,7 @@ public class Stage5 extends Stage {
 			raiders.add(new EnemyHeavyRaider());
 
 		int spawnRadius = 300;
-		
+
 		int warpAimX = transporter.getLocX() - 150 + rand(300);
 		int warpAimY = transporter.getLocY() - 150 + rand(300);
 

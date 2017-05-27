@@ -12,6 +12,7 @@ import corecase.MainZap;
 import corecase.StringConverter;
 import gui.Frame;
 import gui.shop.Shop;
+import io.CashReader;
 import io.ScoreReader;
 import lib.ClickListener;
 import lib.ClickableObject;
@@ -63,7 +64,7 @@ public abstract class EndScreen {
 		MainZap.getFrame().addKeyListener(KEYLISTENER);
 		MainZap.getFrame().addClickable(bg);
 		clickObject = bg;
-
+		CashReader.save((int) (MainZap.getCrystalsEverEarned() * MainZap.CRYSTAL_GETBACK));
 		active = true;
 	}
 
