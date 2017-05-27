@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
-import corecase.Cmd;
 import corecase.MainZap;
 import lib.PaintingTask;
 import lib.ScheduledList;
@@ -79,7 +77,6 @@ public class PlayerHpBar implements PaintingTask, Updateable {
 
 			g.setColor(COLOR_FOREGROUND);
 
-			// *PingPT
 			// Buffern für Multi-Thread, um ConcMod zu vermeiden
 			ArrayList<int[]> pulses = new ArrayList<int[]>(this.pulses);
 
@@ -118,28 +115,26 @@ public class PlayerHpBar implements PaintingTask, Updateable {
 		}
 
 		g.setColor(COLOR_FOREGROUND);
-		try {
-			for (int[] i : pulses) {
+		// Buffern für Multi-Thread, um ConcMod zu vermeiden
+		ArrayList<int[]> pulses = new ArrayList<int[]>(this.pulses);
+		for (int[] i : pulses) {
 
-				int c = i[0] - PULSE_LENGTH;
-				float alpha = 0;
-				float alphaDelta = (float) 255 / PULSE_LENGTH;
+			int c = i[0] - PULSE_LENGTH;
+			float alpha = 0;
+			float alphaDelta = (float) 255 / PULSE_LENGTH;
 
-				for (int j = c; j != i[0] + 1; j++) {
+			for (int j = c; j != i[0] + 1; j++) {
 
-					if (alpha > 255)
-						alpha = 255;
+				if (alpha > 255)
+					alpha = 255;
 
-					g.setColor(new Color(COLOR_FOREGROUND.getRed(), COLOR_FOREGROUND.getGreen(),
-							COLOR_FOREGROUND.getBlue(), (int) alpha));
-					alpha += alphaDelta;
-					g.fillRect(j, 6, 1, 10);
-
-				}
+				g.setColor(new Color(COLOR_FOREGROUND.getRed(), COLOR_FOREGROUND.getGreen(), COLOR_FOREGROUND.getBlue(),
+						(int) alpha));
+				alpha += alphaDelta;
+				g.fillRect(j, 6, 1, 10);
 
 			}
-		} catch (ConcurrentModificationException e) {
-			Cmd.err("Hp-Pulls fucked up again. (ConcurrentMod.)");
+
 		}
 
 		g.setClip(null);
