@@ -1,4 +1,4 @@
-package error;
+package err;
 
 public class InitializationTimingException extends RuntimeException {
 

@@ -10,7 +10,7 @@ import battle.projectile.Projectile;
 import collision.Collideable;
 import collision.Grid;
 import corecase.MainZap;
-import error.MissingShipLinkageException;
+import err.MissingShipLinkageException;
 import gui.Map;
 import ingameobjects.InteractiveObject;
 import ingameobjects.Player;

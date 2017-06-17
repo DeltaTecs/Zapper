@@ -24,7 +24,7 @@ import io.CashReader;
 import io.SettingsInitReader;
 import io.TextureBuffer;
 import lib.Updateable;
-import schedule.DynamicUpdateLoop;
+import sched.DynamicUpdateLoop;
 
 public class MainZap {
 

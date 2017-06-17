@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import corecase.MainZap;
-import error.InitializationTimingException;
+import err.InitializationTimingException;
 import gui.Frame;
 import gui.extention.Mirroring;
 import gui.shop.meta.ShipStartConfig;
