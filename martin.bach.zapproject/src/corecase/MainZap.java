@@ -23,6 +23,7 @@ import ingameobjects.Player;
 import io.CashReader;
 import io.SettingsInitReader;
 import io.TextureBuffer;
+import lib.Updateable;
 import schedule.DynamicUpdateLoop;
 
 public class MainZap {
@@ -92,6 +93,18 @@ public class MainZap {
 		scaleTransform = new AffineTransform();
 		scaleTransform.scale(scale, scale);
 		frame.rescale(scale);
+		final long now = System.currentTimeMillis();
+		map.addUpdateElement(new Updateable() { // Später erneut abfragen
+			@Override
+			public void update() {
+				if (System.currentTimeMillis() - now > 5000) {
+					Insets s = frame.getInsets();
+					canvasDx = s.left;
+					canvasDy = s.top;
+					map.removeUpdateElement(this);
+				}
+			}
+		});
 
 		// Startparameter abchecken
 		for (String a : args) {
