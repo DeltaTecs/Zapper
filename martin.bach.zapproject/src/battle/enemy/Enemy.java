@@ -19,6 +19,7 @@ import gui.Crystal;
 import gui.effect.Effect;
 import gui.effect.ExplosionEffect;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.ShockedEffect;
 import gui.effect.WarpInEffect;
 import gui.effect.WarpOutEffect;
 import gui.extention.Shocking;
@@ -55,6 +56,7 @@ public class Enemy extends CombatObject implements Shockable {
 	private InteractiveObject shootingAim;
 	private WeaponConfiguration weaponConfiguration;
 	private ExplosionEffectPattern explosionEffectPattern;
+	private ShockedEffect shockEffect;
 	private int maxHealth;
 	private int health;
 	private int dmgIndicatingTime = 0;
@@ -119,6 +121,11 @@ public class Enemy extends CombatObject implements Shockable {
 		// HP-Leiste
 		if (dmgIndicatingTime > 0)
 			paintDamageIndicators(g);
+		
+		// Shock-Effetk
+		if (shocked)
+			if (shockEffect != null)
+				shockEffect.paint(g);
 
 		if (MainZap.debug) {
 
@@ -197,6 +204,9 @@ public class Enemy extends CombatObject implements Shockable {
 		}
 
 		// Geshockt?
+		if (shocked) {
+			if (shockEffect != null)
+				shockEffect.update();
 		if (normalSpeedCooldown > -1)
 			if (normalSpeedCooldown <= 0) {
 				normalSpeedCooldown = -1;
@@ -204,6 +214,7 @@ public class Enemy extends CombatObject implements Shockable {
 				shocked = false;
 			} else
 				normalSpeedCooldown--;
+		}
 
 		updateAi();
 		if (aiProtocol.isWaiting()) {
@@ -374,6 +385,8 @@ public class Enemy extends CombatObject implements Shockable {
 
 	@Override
 	public void shock() {
+		if (MainZap.fancyGraphics)
+			shockEffect = new ShockedEffect(MAX_NORMAL_SPEED_COOLDOWN, (int) getCollisionInfo().getRadius());
 		shocked = true;
 		damage((int) (maxHealth * 0.4f), Shocking.getTagProjectile());
 		if (weaponConfiguration != null)
@@ -554,4 +567,13 @@ public class Enemy extends CombatObject implements Shockable {
 		this.shocked = shocked;
 	}
 
+	public void setShockEffect(ShockedEffect shockEffect) {
+		this.shockEffect = shockEffect;
+	}
+
+	public ShockedEffect getShockEffect() {
+		return shockEffect;
+	}
+	
+	
 }

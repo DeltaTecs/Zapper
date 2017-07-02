@@ -11,13 +11,14 @@ import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.ShockedEffect;
 import io.TextureBuffer;
 
 public class FriendTurretAlpha extends Enemy {
 
 	private static final float SPEED = 0;
 	private static final int MAX_HP = 100000;
-//	private static final int SHOOTING_RANGE = 1000;
+	// private static final int SHOOTING_RANGE = 1000;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_FRIENDTURRET_ALPHA);
 	private static final float SCALE = 0.9f;
 	private static final float RADIUS = 55.0f;
@@ -31,12 +32,12 @@ public class FriendTurretAlpha extends Enemy {
 	private static final int CRYSTALS = 0;
 	private static final int PROJECTILE_RANGE = 1200;
 	private static final boolean FRIEND = true;
-	
+
 	private static final int SHOCK_TIMEOUT = MainZap.inTicks(4000);
 	private static final int LOCK_OPTIC_DETECTION = 1000;
 	private static final int LOCK_FACE = 1100;
 	private static final int LOCK_PHYSICAL_DETECTION = 1500;
-	
+
 	private int timeSinceLastShock = SHOCK_TIMEOUT + 1;
 
 	public FriendTurretAlpha(float posX, float posY) {
@@ -52,21 +53,25 @@ public class FriendTurretAlpha extends Enemy {
 		getAiProtocol().setLockFaceDistance(LOCK_FACE);
 		setMaxMiddistance(80);
 	}
-	
+
 	@Override
 	public void update() {
-		
+
 		if (timeSinceLastShock < SHOCK_TIMEOUT) {
 			timeSinceLastShock++;
-			setShocked(false);
+			if (getShockEffect() != null)
+				getShockEffect().update();
 			return;
-		}
-		
+		} else if (isShocked())
+			setShocked(false);
+
 		super.update();
 	}
-	
+
 	@Override
 	public void shock() { // hat eigenen shock
+		if (MainZap.fancyGraphics)
+			setShockEffect(new ShockedEffect(SHOCK_TIMEOUT, (int) COLINFO.getRadius()));
 		setShocked(true);
 		timeSinceLastShock = 0;
 	}

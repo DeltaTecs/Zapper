@@ -8,6 +8,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
+import gui.screens.pause.PauseScreen;
+import gui.shop.Shop;
 import io.TextureBuffer;
 import lib.ClickListener;
 import lib.ClickableObject;
@@ -51,7 +53,8 @@ public abstract class ExtentionManager {
 
 			@Override
 			public void release(int dx, int dy) {
-				requestActivation();
+				if (!PauseScreen.isOpen() && !Shop.isOpen())
+					requestActivation();
 			}
 
 			@Override

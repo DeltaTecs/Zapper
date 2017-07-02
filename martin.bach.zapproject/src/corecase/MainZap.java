@@ -14,6 +14,7 @@ import gui.Frame;
 import gui.Hud;
 import gui.Map;
 import gui.PaintingLayer;
+import gui.extention.Extention;
 import gui.extention.ExtentionManager;
 import gui.screens.end.EndScreen;
 import gui.screens.pause.PauseScreen;
@@ -162,9 +163,11 @@ public class MainZap {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(8);
+			StageManager.setUp(9);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
 			crystals = 8000;
+			ExtentionManager.setExtention(Extention.SHOCK);
+			
 		}
 		Hud.setUpClickListener();
 		ExtentionManager.setUpClickListener();

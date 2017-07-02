@@ -88,7 +88,7 @@ public abstract class ShopSecUpgrade {
 	private static final String TEXT_DES_ONLY_ONE_EXTENTION = "You can only select one extention at a time!";
 	private static final String TEXT_DES_MIRROR = "No more alone! Duplicates your ship to an armee of four. Mirror images have the same meta like you, but can not be healed. Cooldown: 20 sec. ";
 	private static final String TEXT_DES_SHIELD = "Temporary sentry mode. You are slowed down for 15 seconds, but your weapons are buffed and damage gets heavily absorbed. ";
-	private static final String TEXT_DES_SHOCK = "Shock wave. Damages surrounding enemys and slows down their systems. ";
+	private static final String TEXT_DES_SHOCK = "Shock wave. Damages surrounding enemys and slows down their systems as well as breaking shields.";
 	private static final String TEXT_DES_ADDCANNON = "Adds another cannon to the weapon system. You can only have 3 cannons at total. ";
 
 	// -- Dailog ----------
