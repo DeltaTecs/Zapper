@@ -16,8 +16,8 @@ import corecase.MainZap;
 
 public class Shocking {
 
-	private static final int MAX_DURATION = MainZap.inTicks(400); // 0,4 Sek
-	private static final int RANGE = 300;
+	private static final int MAX_DURATION = MainZap.inTicks(250); // 0,25 Sek
+	private static final int RANGE = 350;
 	private static final float START_RADIAN = 20.0f;
 	private static final float MAX_RADIAN = RANGE;
 	private static final float DURATION_START_FADE_PERCENTAGE = 0.2f;

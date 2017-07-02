@@ -22,15 +22,16 @@ public abstract class TextureBuffer {
 	public static final String NAME_PLAYERSHIP_FALCONIII = "playerShipFalconIII.png";
 	public static final String NAME_PLAYERSHIP_DARKPERL = "playerShipDarkPerl.png";
 	public static final String NAME_PLAYERSHIP_RAINMAKER = "playerShipRainmaker.png";
-	public static final String NAME_ENEMYSHIP_ALPHA0 = "enemyShipAlpha0.png";
 	public static final String NAME_FRIENDSHIP_ALPHA1 = "friendShipAlpha1.png";
 	public static final String NAME_FRIENDSHIP_BETA = "friendShipBeta.png";
 	public static final String NAME_FRIENDSHIP_TRANSPORTER = "friendShipTransporter.png";
 	public static final String NAME_FRIENDTURRET_SHOP0 = "friendTurretShop0.png";
 	public static final String NAME_FRIENDTURRET_SHOP1 = "friendTurretShop1.png";
+	public static final String NAME_FRIENDTURRET_ALPHA = "friendTurretAlpha.png";
 	public static final String NAME_FRIENDBASE_ALPHA = "friendBaseAlpha.png";
 	public static final String NAME_FRIENDBASECORE_ALPHA = "friendBasecoreAlpha.png";
 	public static final String NAME_FRIENDBASECORE_ALPHA_DES = "friendBasecoreAlphaDestroyed.png";
+	public static final String NAME_ENEMYSHIP_ALPHA0 = "enemyShipAlpha0.png";
 	public static final String NAME_ENEMYSHIP_ALPHA2 = "enemyShipAlpha2.png";
 	public static final String NAME_ENEMYSHIP_BETA0 = "enemyShipBeta0.png";
 	public static final String NAME_ENEMYSHIP_BETA1 = "enemyShipBeta1.png";
@@ -43,6 +44,8 @@ public abstract class TextureBuffer {
 	public static final String NAME_ENEMYSHIP_RAIDER_HEAVY_1 = "enemyShipRaider5.png";
 	public static final String NAME_ENEMYSHIP_RAIDER_DELTAVI = "enemyShipRaiderDeltaVI.png";
 	public static final String NAME_ENEMYSHIP_RAIDER_DELTAVII = "enemyShipRaiderDeltaVII.png";
+	public static final String NAME_ENEMYSHIP_GAMMA_0 = "enemyShipGamma0b.png";
+	public static final String NAME_ENEMYSHIP_GAMMA_1 = "enemyShipGamma1.png";
 	public static final String NAME_ENEMYTURRET_ALPHA0 = "enemyTurretAlpha0.png";
 	public static final String NAME_ENEMYTURRET_RAIDER0 = "enemyTurretRaider0.png";
 	public static final String NAME_ENEMYTURRET_RAIDER1 = "enemyTurretRaider1.png";
@@ -113,6 +116,7 @@ public abstract class TextureBuffer {
 		names.add(NAME_FRIENDSHIP_TRANSPORTER);
 		names.add(NAME_FRIENDTURRET_SHOP0);
 		names.add(NAME_FRIENDTURRET_SHOP1);
+		names.add(NAME_FRIENDTURRET_ALPHA);
 		names.add(NAME_FRIENDBASE_ALPHA);
 		names.add(NAME_FRIENDBASECORE_ALPHA);
 		names.add(NAME_FRIENDBASECORE_ALPHA_DES);
@@ -127,6 +131,8 @@ public abstract class TextureBuffer {
 		names.add(NAME_ENEMYSHIP_RAIDER_HEAVY_1);
 		names.add(NAME_ENEMYSHIP_RAIDER_DELTAVI);
 		names.add(NAME_ENEMYSHIP_RAIDER_DELTAVII);
+		names.add(NAME_ENEMYSHIP_GAMMA_0);
+		names.add(NAME_ENEMYSHIP_GAMMA_1);
 		names.add(NAME_ENEMYTURRET_ALPHA0);
 		names.add(NAME_ENEMYTURRET_RAIDER0);
 		names.add(NAME_ENEMYTURRET_RAIDER1);
@@ -194,7 +200,7 @@ public abstract class TextureBuffer {
 				textures.put(name, img);
 			} catch (IOException e) { // Nicht gefunden
 				System.err.println(
-						"[ERR] Datei nicht gefunden: " + name + "; Name vomöglich fehlerhaft eingetragen! Schließe.");
+						"[ERR] Datei nicht gefunden: " + name + "; Name womöglich fehlerhaft eingetragen! Schließe.");
 				System.exit(-1);
 			}
 

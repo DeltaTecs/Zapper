@@ -262,12 +262,13 @@ public class AdvancedSingleProtocol extends AiProtocol {
 
 	}
 
-	public void preLock(ArrayList<Enemy> enemys) {
+	public void preLock(ArrayList<CombatObject> enemys) {
 
 		ArrayList<CombatObject> possibleLocks = new ArrayList<CombatObject>();
 
-		for (Enemy e : enemys) {
+		for (CombatObject e : enemys) {
 
+			// Muss Enemy sein. Sonst invalid
 			if (e.isFriend() != getHost().isFriend())
 				possibleLocks.add(e);
 		}
@@ -443,7 +444,7 @@ public class AdvancedSingleProtocol extends AiProtocol {
 
 	// -------------
 
-	private void move() {
+	protected void move() {
 		getHost().moveX(getHost().getVelocity().getX());
 		getHost().moveY(getHost().getVelocity().getY());
 	}

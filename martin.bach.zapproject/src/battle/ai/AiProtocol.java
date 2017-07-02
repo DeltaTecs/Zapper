@@ -44,6 +44,7 @@ public class AiProtocol implements Updateable, CloneableObject {
 	private boolean mayFollowLock = true;
 	private boolean shootAimPlayerOnly = false;
 	private boolean parked = false;
+	private boolean selfRotating = false;
 
 	private HashMap<String, ArrayList<Call>> calls = new HashMap<String, ArrayList<Call>>();
 
@@ -52,6 +53,7 @@ public class AiProtocol implements Updateable, CloneableObject {
 
 	public void init(Enemy host) {
 		this.host = host;
+
 	}
 
 	public Enemy getHost() {
@@ -190,7 +192,7 @@ public class AiProtocol implements Updateable, CloneableObject {
 				// in Richtung der Bewegung zeigen, da Bewegung vorhanden
 				host.setAimX(host.getLocX() + (int) (10000 * host.getVelocity().getX()));
 				host.setAimY(host.getLocY() + (int) (10000 * host.getVelocity().getY()));
-			} // Sonst: Aim beibehalten
+			} // Sonst: Rotation beibehalten
 
 		}
 
@@ -483,8 +485,17 @@ public class AiProtocol implements Updateable, CloneableObject {
 		this.nonAutoLockon = nonAutoLockon;
 	}
 
+	public boolean isSelfRotating() {
+		return selfRotating;
+	}
+
+	public void setSelfRotating(boolean selfRotating) {
+		this.selfRotating = selfRotating;
+	}
+
 	@Override
 	public Object getClone() {
 		return new AiProtocol();
 	}
+
 }

@@ -23,7 +23,7 @@ public class FriendBasecoreAlpha extends Enemy {
 	private static final float SCALE = 3.5f;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_FRIENDBASECORE_ALPHA);
 	private static final BufferedImage TEXTURE_DES = TextureBuffer.get(TextureBuffer.NAME_FRIENDBASECORE_ALPHA_DES);
-	private static final int MAX_HP = 20000;
+	private static final int MAX_HP = 40000;
 	private static final ExplosionEffectPattern EXPL_PATTERN = new ExplosionEffectPattern(40, 200);
 	private static final int SCORE = 0;
 	private static final int CRYSTALS = 0;

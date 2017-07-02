@@ -46,7 +46,7 @@ public class Shielding {
 		}
 
 		if (duration <= (MAX_DURATION * FLICKER_TIME_PERCENTAGE))
-			visible = !(MainZap.rand(4) == 0);
+			visible = !(MainZap.rand(4) == 0); // Flackern
 
 	}
 
@@ -106,7 +106,7 @@ public class Shielding {
 		MainZap.getPlayer().setShielded(true);
 	}
 
-	private static int calcShieldRange(BufferedImage img, float scale) {
+	public static int calcShieldRange(BufferedImage img, float scale) {
 
 		float hWidth = img.getWidth() * scale * 0.5f; // halbe Weite
 		float hHeight = img.getHeight() * scale * 0.5f;

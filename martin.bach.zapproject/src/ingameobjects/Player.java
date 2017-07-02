@@ -153,8 +153,9 @@ public class Player extends CombatObject {
 	private boolean shielded = false; // Für Schild-Effekt
 
 	public Player() {
-		super(collisionInfo, false, false); // false -> nicht an Stage gebunden;
+		super(collisionInfo, false, false, true); // false -> nicht an Stage gebunden;
 											// false -> egal ob BG oder FG
+											// true  -> ist Freund
 		texture = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DEFAULT);
 		midSizeX = (int) ((texture.getWidth() * textureScale) / 2);
 		midSizeY = (int) ((texture.getHeight() * textureScale) / 2);

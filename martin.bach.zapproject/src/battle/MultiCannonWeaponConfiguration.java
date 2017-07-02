@@ -54,11 +54,11 @@ public class MultiCannonWeaponConfiguration extends WeaponConfiguration {
 
 		} else {
 			if (!e.getAiProtocol().isMoving()) {
-				p.launch(e.getLocX() + (int) wp.getX(), e.getLocY() + (int) wp.getY(), e.getShootingAim().getLocX(),
-						e.getShootingAim().getLocY(), getRange(), e);
+				p.launch(e.getLocX() + (int) wp.x, e.getLocY() + (int) wp.y, e.getShootingAim().getLocX() + wp.x,
+						e.getShootingAim().getLocY() + wp.y, getRange(), e);
 			} else {
-				p.launch(e.getLocX() + (int) wp.getX(), e.getLocY() + (int) wp.getY(), e.getShootingAim().getLocX(),
-						e.getShootingAim().getLocY(), e.getVelocity(), getRange(), e);
+				p.launch(e.getLocX() + (int) wp.getX(), e.getLocY() + (int) wp.getY(), e.getShootingAim().getLocX() + wp.x,
+						e.getShootingAim().getLocY() + wp.y, e.getVelocity(), getRange(), e);
 			}
 		}
 

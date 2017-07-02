@@ -27,15 +27,15 @@ import ingameobjects.InteractiveObject;
 public class Enemy extends CombatObject implements Shockable {
 
 	private static final int MAX_NORMAL_SPEED_COOLDOWN = MainZap.inTicks(5000);
-	private static final int DMG_INDICATING_MAX_TIME = MainZap.getMainLoop().inTicks(5000);
-	private static final Color COLOR_HP_BACKGROUND = new Color(174, 1, 2, 113);
-	private static final Color COLOR_HP_FOREGROUND = new Color(221, 22, 10);
-	private static final int DISTANCE_HP_BAR_TO_MAX = 6;
-	private static final int HEIGHT_HP_BAR = 6;
+	public static final int DMG_INDICATING_MAX_TIME = MainZap.getMainLoop().inTicks(5000);
+	public static final Color COLOR_HP_BACKGROUND = new Color(174, 1, 2, 113);
+	public static final Color COLOR_HP_FOREGROUND = new Color(221, 22, 10);
+	public static final int DISTANCE_HP_BAR_TO_MAX = 6;
+	public static final int HEIGHT_HP_BAR = 6;
 
 	private boolean warping = false;
-	private boolean friend = false;
 	private boolean exploded = false;
+	private boolean shocked = false;
 	private int aimX;
 	private int aimY;
 	private float speed;
@@ -67,8 +67,9 @@ public class Enemy extends CombatObject implements Shockable {
 	public Enemy(float posX, float posY, float speed, BufferedImage texture, float scale,
 			CollisionInformation information, AiProtocol ai, WeaponConfiguration weaponconf, int health,
 			ExplosionEffectPattern explPattern, int score, int projRange, int crystals, boolean friend) {
-		super(information, true, false); // true -> Immer an Stage gebunden;
-											// false -> im Vordergrund
+		super(information, true, false, friend); // true -> Immer an Stage
+													// gebunden;
+		// false -> im Vordergrund
 		this.speed = speed;
 		this.texture = texture;
 		this.scale = scale;
@@ -79,7 +80,6 @@ public class Enemy extends CombatObject implements Shockable {
 		this.score = score;
 		this.projRange = projRange;
 		this.crystals = crystals;
-		this.friend = friend;
 		size = (int) (((texture.getHeight() * scale) + (texture.getWidth() * scale)) / 2);
 		hpBarLength = (int) (size * 0.8f);
 		maxMiddistance = (int) (texture.getHeight() * scale / 2);
@@ -117,17 +117,8 @@ public class Enemy extends CombatObject implements Shockable {
 		g.drawImage(texture, buffer, null);
 
 		// HP-Leiste
-		if (dmgIndicatingTime > 0) {
-
-			g.setColor(COLOR_HP_BACKGROUND);
-			g.fillRect(-(hpBarLength / 2), maxMiddistance + DISTANCE_HP_BAR_TO_MAX, hpBarLength, HEIGHT_HP_BAR);
-			if (health > 0) {
-				g.setColor(COLOR_HP_FOREGROUND);
-				g.fillRect(-(hpBarLength / 2), maxMiddistance + DISTANCE_HP_BAR_TO_MAX,
-						(int) (hpBarLength * (health / (float) maxHealth)), HEIGHT_HP_BAR);
-			}
-
-		}
+		if (dmgIndicatingTime > 0)
+			paintDamageIndicators(g);
 
 		if (MainZap.debug) {
 
@@ -150,6 +141,16 @@ public class Enemy extends CombatObject implements Shockable {
 		// Von EigenPos zu Karten Kontext
 		g.translate(-dx, -dy);
 
+	}
+
+	public void paintDamageIndicators(Graphics2D g) {
+		g.setColor(COLOR_HP_BACKGROUND);
+		g.fillRect(-(hpBarLength / 2), maxMiddistance + DISTANCE_HP_BAR_TO_MAX, hpBarLength, HEIGHT_HP_BAR);
+		if (health > 0) {
+			g.setColor(COLOR_HP_FOREGROUND);
+			g.fillRect(-(hpBarLength / 2), maxMiddistance + DISTANCE_HP_BAR_TO_MAX,
+					(int) (hpBarLength * (health / (float) maxHealth)), HEIGHT_HP_BAR);
+		}
 	}
 
 	public void updateShooting() {
@@ -178,7 +179,7 @@ public class Enemy extends CombatObject implements Shockable {
 	}
 
 	public void updateRotation() {
-		if (!getAiProtocol().isParked())
+		if (!getAiProtocol().isParked() && !getAiProtocol().isSelfRotating() || shootingAim != null)
 			rotation = Math.PI - Math.atan2(aimX - getLocX(), aimY - getLocY());
 	}
 
@@ -200,6 +201,7 @@ public class Enemy extends CombatObject implements Shockable {
 			if (normalSpeedCooldown <= 0) {
 				normalSpeedCooldown = -1;
 				speed *= 5;
+				shocked = false;
 			} else
 				normalSpeedCooldown--;
 
@@ -217,9 +219,8 @@ public class Enemy extends CombatObject implements Shockable {
 	}
 
 	private void updateUI() {
-		if (dmgIndicatingTime > 0) {
+		if (dmgIndicatingTime > 0)
 			dmgIndicatingTime--;
-		}
 	}
 
 	protected void updateAi() {
@@ -337,11 +338,11 @@ public class Enemy extends CombatObject implements Shockable {
 			return new Enemy(getPosX(), getPosY(), speed, texture, scale, getCollisionInfo(),
 					(AiProtocol) aiProtocol.getClone(),
 					new WeaponConfiguration(weaponConfiguration.getMaxCooldown(), weaponConfiguration.getRange()),
-					getMaxHealth(), getExplosionEffectPattern(), score, projRange, crystals, friend);
+					getMaxHealth(), getExplosionEffectPattern(), score, projRange, crystals, isFriend());
 		} else {
 			return new Enemy(getPosX(), getPosY(), speed, texture, scale, getCollisionInfo(),
 					(AiProtocol) aiProtocol.getClone(), null, getMaxHealth(), getExplosionEffectPattern(), score,
-					projRange, crystals, friend);
+					projRange, crystals, isFriend());
 		}
 	}
 
@@ -373,6 +374,7 @@ public class Enemy extends CombatObject implements Shockable {
 
 	@Override
 	public void shock() {
+		shocked = true;
 		damage((int) (maxHealth * 0.4f), Shocking.getTagProjectile());
 		if (weaponConfiguration != null)
 			weaponConfiguration.setMaxCooldown(weaponConfiguration.getMaxCooldown() * 2);
@@ -496,14 +498,6 @@ public class Enemy extends CombatObject implements Shockable {
 		this.projRange = projRange;
 	}
 
-	public boolean isFriend() {
-		return friend;
-	}
-
-	public void setFriend(boolean friend) {
-		this.friend = friend;
-	}
-
 	public boolean isPreAiming() {
 		return preAiming;
 	}
@@ -526,6 +520,38 @@ public class Enemy extends CombatObject implements Shockable {
 
 	public void setTexture(BufferedImage texture) {
 		this.texture = texture;
+	}
+
+	public int getMaxMiddistance() {
+		return maxMiddistance;
+	}
+
+	public int getHpBarLength() {
+		return hpBarLength;
+	}
+
+	public void setMaxMiddistance(int maxMiddistance) {
+		this.maxMiddistance = maxMiddistance;
+	}
+
+	public boolean isNodrops() {
+		return nodrops;
+	}
+
+	public void setNodrops(boolean nodrops) {
+		this.nodrops = nodrops;
+	}
+
+	public void setDmgIndicatingTime(int dmgIndicatingTime) {
+		this.dmgIndicatingTime = dmgIndicatingTime;
+	}
+
+	public boolean isShocked() {
+		return shocked;
+	}
+
+	public void setShocked(boolean shocked) {
+		this.shocked = shocked;
 	}
 
 }

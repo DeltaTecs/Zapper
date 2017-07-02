@@ -97,7 +97,7 @@ public class MainZap {
 		map.addUpdateElement(new Updateable() { // Später erneut abfragen
 			@Override
 			public void update() {
-				if (System.currentTimeMillis() - now > 5000) {
+				if (System.currentTimeMillis() - now > 5000) { // nach 5 Sekunden
 					Insets s = frame.getInsets();
 					canvasDx = s.left;
 					canvasDy = s.top;
@@ -162,9 +162,9 @@ public class MainZap {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(9);
-			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_FALCON_III));
-			crystals = 500;
+			StageManager.setUp(8);
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
+			crystals = 8000;
 		}
 		Hud.setUpClickListener();
 		ExtentionManager.setUpClickListener();

@@ -58,10 +58,11 @@ public class SpeedVector {
 
 	}
 
-	public void normalize() {
+	public SpeedVector normalize() {
 		float sum = Math.abs(x) + Math.abs(y);
 		x = x /= sum;
 		y = y /= sum;
+		return this;
 	}
 
 	public double angle() {
@@ -122,11 +123,16 @@ public class SpeedVector {
 	}
 
 	public void invertX() {
-		x = x * -1;
+		x *= -1;
 	}
 
 	public void invertY() {
-		y = y * -1;
+		y *= -1;
+	}
+	
+	public void invert() {
+		x *= -1;
+		y *= -1;
 	}
 
 }

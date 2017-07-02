@@ -416,9 +416,9 @@ public abstract class ShopSecUpgrade {
 		g.setColor(COLOR_GREEN);
 		if (img == PaintableStats.IMG_EFFICIENCY) {
 			// Minus. Es geht um den Munitions-Verbrauch
-			g.drawString("-10%", x + 314, y + FONT_PERCENTAGE.getSize() + 7);
+			g.drawString("-15%", x + 314, y + FONT_PERCENTAGE.getSize() + 7);
 		} else {
-			g.drawString("+10%", x + 310, y + FONT_PERCENTAGE.getSize() + 7);
+			g.drawString("+15%", x + 310, y + FONT_PERCENTAGE.getSize() + 7);
 		}
 
 		// Antialising deaktivieren
@@ -714,19 +714,19 @@ public abstract class ShopSecUpgrade {
 		switch (index) {
 		case 0:
 			MainZap.getPlayer()
-					.setMaxHp(MainZap.getPlayer().getMaxHp() + (int) (MainZap.getPlayer().getMaxHp() * 0.1f));
+					.setMaxHp(MainZap.getPlayer().getMaxHp() + (int) (MainZap.getPlayer().getMaxHp() * 0.15f));
 			break;
 		case 1:
 			MainZap.getPlayer().setBulletDamage(
-					MainZap.getPlayer().getBulletDamage() + (int) (MainZap.getPlayer().getBulletDamage() * 0.1f));
+					MainZap.getPlayer().getBulletDamage() + (int) (MainZap.getPlayer().getBulletDamage() * 0.15f));
 			break;
 		case 2:
 			MainZap.getPlayer().setAmmoUsageFac(
-					MainZap.getPlayer().getAmmoUsageFac() - (MainZap.getPlayer().getAmmoUsageFac() * 0.1f));
+					MainZap.getPlayer().getAmmoUsageFac() - (MainZap.getPlayer().getAmmoUsageFac() * 0.15f));
 			break;
 		case 3:
 			MainZap.getPlayer().setBulletSpeed(
-					MainZap.getPlayer().getBulletSpeed() + (int) (MainZap.getPlayer().getBulletSpeed() * 0.1f));
+					MainZap.getPlayer().getBulletSpeed() + (int) (MainZap.getPlayer().getBulletSpeed() * 0.15f));
 			break;
 		default:
 			Cmd.err("ShopSecUpgrade:231 Impossible!");
