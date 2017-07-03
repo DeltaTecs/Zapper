@@ -95,7 +95,8 @@ public class ShieldedEnemy extends Enemy {
 		timeSinceLastDamage = 0; // Regen-Zeit zurücksetzen
 
 		// Einschlag eintragen
-		hits.schedAdd(new SimpleShieldAbsorbtionEffect(p, this, shieldRadian));
+		if (MainZap.fancyGraphics)
+			hits.schedAdd(new SimpleShieldAbsorbtionEffect(p, this, shieldRadian));
 	}
 
 	@Override
@@ -103,13 +104,15 @@ public class ShieldedEnemy extends Enemy {
 		super.update();
 		updateShield();
 		// Effekte aktualisieren
-		synchronized (hits) { // Zugriff vor Paint-Loop shotgunnen.
-			for (SimpleShieldAbsorbtionEffect e : hits) {
-				e.update();
-				if (e.isFinished())
-					hits.schedRemove(e);
+		if (MainZap.fancyGraphics) {
+			synchronized (hits) { // Zugriff vor Paint-Loop shotgunnen.
+				for (SimpleShieldAbsorbtionEffect e : hits) {
+					e.update();
+					if (e.isFinished())
+						hits.schedRemove(e);
+				}
+				hits.update();
 			}
-			hits.update();
 		}
 	}
 
@@ -138,9 +141,11 @@ public class ShieldedEnemy extends Enemy {
 		}
 
 		// Einschläge
-		synchronized (hits) { // Zugriff vor Calc-Loop shotgunnen.
-			for (SimpleShieldAbsorbtionEffect e : hits)
-				e.paint(g);
+		if (MainZap.fancyGraphics) {
+			synchronized (hits) { // Zugriff vor Calc-Loop shotgunnen.
+				for (SimpleShieldAbsorbtionEffect e : hits)
+					e.paint(g);
+			}
 		}
 
 		g.translate(-dx, -dy);
@@ -165,7 +170,7 @@ public class ShieldedEnemy extends Enemy {
 		}
 
 	}
-	
+
 	@Override
 	public void shock() { // Schock deaktiviert Schilde
 		super.shock();

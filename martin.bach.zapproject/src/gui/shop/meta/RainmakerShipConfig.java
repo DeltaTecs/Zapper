@@ -16,7 +16,7 @@ public class RainmakerShipConfig extends ShipStartConfig {
 	private static final int PRICE = 800000;
 	public static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_RAINMAKER);
 	private static final float SCALE = 1.2f;
-	private static final float AMMO_USAGE = 4.0f;
+	private static final float AMMO_USAGE = 3.5f;
 	private static final int DAMAGE = 250;
 	private static final float SPEED = 8.2f;
 	private static final float PROJ_SPEED = 18;

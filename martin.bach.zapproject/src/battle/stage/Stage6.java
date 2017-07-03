@@ -32,7 +32,7 @@ public class Stage6 extends Stage {
 	private static final int SPAWN_RATE_RANGE_PACK = MainZap.getMainLoop().inTicks(3000);
 	private static final int SPAWN_RATE_RELOAD_PACK = MainZap.getMainLoop().inTicks(3000);
 
-	private static final int AMOUNT_FRIENDS = 8;
+	private static final int AMOUNT_FRIENDS = 6;
 	private static final int AMOUNT_RAIDERS = 2;
 	private static final int RAND_SPAWN_RAIDER_BASIC = 1200;
 	private static final int RAND_SPAWN_RAIDER_HEAVY = 4000;

@@ -163,7 +163,7 @@ public class MainZap {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(9);
+			StageManager.setUp(0);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
 			crystals = 8000;
 			ExtentionManager.setExtention(Extention.SHOCK);

@@ -34,13 +34,13 @@ public class Stage9 extends Stage {
 	private static final int SPAWN_RATE_RANGE_PACK = MainZap.getMainLoop().inTicks(6000);
 	private static final int SPAWN_RATE_RELOAD_PACK = MainZap.getMainLoop().inTicks(4000);
 
-	private static final int WAVE_0_AMOUNT_G_0 = 4;
+	private static final int WAVE_0_AMOUNT_G_0 = 5;
 	private static final int WAVE_0_AMOUNT_G_1 = 0;
-	private static final int WAVE_1_AMOUNT_G_0 = 7;
+	private static final int WAVE_1_AMOUNT_G_0 = 8;
 	private static final int WAVE_1_AMOUNT_G_1 = 0;
-	private static final int WAVE_2_AMOUNT_G_0 = 6;
+	private static final int WAVE_2_AMOUNT_G_0 = 7;
 	private static final int WAVE_2_AMOUNT_G_1 = 1;
-	private static final int WAVE_3_AMOUNT_G_0 = 7;
+	private static final int WAVE_3_AMOUNT_G_0 = 8;
 	private static final int WAVE_3_AMOUNT_G_1 = 2;
 
 	private static final Rectangle SPAWN_AREA_GAMMA_0 = new Rectangle(800, 1000, 1400, 1000);
@@ -98,7 +98,6 @@ public class Stage9 extends Stage {
 
 		// Gegener
 		sendWave(WAVE_0_AMOUNT_G_0, WAVE_0_AMOUNT_G_1);
-
 	}
 
 	@Override
