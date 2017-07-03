@@ -2,6 +2,9 @@ package battle.ai;
 
 import java.awt.Rectangle;
 
+import corecase.MainZap;
+import lib.SpeedVector;
+
 public class BoundedFleeProtocol extends FleeSingleProtocol {
 
 	private Rectangle bounds;
@@ -14,9 +17,31 @@ public class BoundedFleeProtocol extends FleeSingleProtocol {
 	@Override
 	public void updateMovement() {
 
-		// begrenzung
-		if (bounds.contains(getHost().getLocX(), getHost().getLocY()))
-			super.updateMovement();
+		super.updateMovement();
+
+		// Begrenzung
+		if (!bounds.contains(getHost().getLocX(), getHost().getLocY())) {
+			// nicht drin
+
+			if (bounds.contains((int) (getHost().getPosX() + getHost().getVelocity().getX()),
+					(int) (getHost().getPosY() + getHost().getVelocity().getY())))
+				return; // aber dann draußen
+
+			if (bounds.contains((int) (getHost().getPosX() - getHost().getVelocity().getX()),
+					(int) (getHost().getPosY() - getHost().getVelocity().getY()))) {
+				// Zurücksetzen möglich...
+				getHost().setPosition(getHost().getPosX() - getHost().getVelocity().getX(),
+						getHost().getPosY() - getHost().getVelocity().getY());
+
+			} else {
+				// Nur Clippen möglich
+				getHost().setPosition(MainZap.clip(getHost().getPosX()), MainZap.clip(getHost().getPosY()));
+
+			}
+
+			getHost().setVelocity(new SpeedVector(0, 0));
+
+		}
 	}
 
 	public Rectangle getBounds() {
