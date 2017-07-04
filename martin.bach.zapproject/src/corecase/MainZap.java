@@ -32,7 +32,7 @@ public class MainZap {
 	public static final String VERSION = "0.9.6";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = false || !inWorkspace();
+	public static final boolean FINAL_RUN = true || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static final float CRYSTAL_GETBACK = 0.20f;
@@ -98,11 +98,26 @@ public class MainZap {
 		map.addUpdateElement(new Updateable() { // Später erneut abfragen
 			@Override
 			public void update() {
-				if (System.currentTimeMillis() - now > 5000) { // nach 5 Sekunden
+				if (System.currentTimeMillis() - now > 2000) { // nach 2
+																// Sekunden
 					Insets s = frame.getInsets();
 					canvasDx = s.left;
 					canvasDy = s.top;
 					map.removeUpdateElement(this);
+					map.addUpdateElement(new Updateable() { // Später erneut
+															// abfragen
+						@Override
+						public void update() {
+							if (System.currentTimeMillis() - now > 5000) { // nach
+																			// 7
+																			// Sekunden
+								Insets s = frame.getInsets();
+								canvasDx = s.left;
+								canvasDy = s.top;
+								map.removeUpdateElement(this);
+							}
+						}
+					});
 				}
 			}
 		});
@@ -160,14 +175,14 @@ public class MainZap {
 		}
 
 		if (FINAL_RUN) {
-			StageManager.setUp(1);
+			StageManager.setUp(10);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(0);
+			StageManager.setUp(10);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
 			crystals = 8000;
 			ExtentionManager.setExtention(Extention.SHOCK);
-			
+
 		}
 		Hud.setUpClickListener();
 		ExtentionManager.setUpClickListener();

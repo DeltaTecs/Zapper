@@ -106,7 +106,7 @@ public abstract class Hud {
 			// ----- Spieler - Score
 			g.setColor(new Color(COLOR_SCORE[0], COLOR_SCORE[1], COLOR_SCORE[2], (int) alphaScore));
 			g.setFont(FONT_BIG);
-			g.drawString("s: " + MainZap.getScore() + " (x" + StageManager.getActiveStage().getLvl() + ")", 6,
+			g.drawString(MainZap.getScore() + " x" + StageManager.getActiveStage().getLvl() + "", 6,
 					Frame.SIZE - 6);
 
 			// ----- Spieler - Knette
@@ -114,12 +114,12 @@ public abstract class Hud {
 				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 						RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 			}
-			g.drawImage(Crystal.TEXTURE, 230, 625, 22, 22, null);
+			g.drawImage(Crystal.TEXTURE, 100, 625, 22, 22, null);
 			if (MainZap.generalAntialize) {
 				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			}
 			g.setColor(new Color(COLOR_SCORE[0], COLOR_SCORE[1], COLOR_SCORE[2], (int) alphaCrystals));
-			g.drawString(": " + MainZap.getCrystals(), 250, 643);
+			g.drawString(MainZap.getCrystals() + "", 120, 643);
 
 			// ----- NextStage - Button
 			if (StageManager.getActiveStage().isPassed()) {
