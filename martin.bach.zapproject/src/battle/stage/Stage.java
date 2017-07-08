@@ -3,9 +3,14 @@ package battle.stage;
 import java.util.ArrayList;
 import java.util.Random;
 
+import battle.CombatObject;
+import battle.ai.AiProtocol;
+import battle.ai.DieCall;
+import battle.enemy.Enemy;
 import corecase.MainZap;
 import gui.Map;
 import ingameobjects.InteractiveObject;
+import ingameobjects.Player;
 import lib.PaintingTask;
 import lib.Updateable;
 
@@ -43,6 +48,58 @@ public class Stage implements Updateable {
 		MainZap.getPlayer().setPosition(x, y);
 
 		passed = MainZap.debug; // in Debug alle Skippen können
+	}
+
+	public void applyRemoveTask(final ArrayList<CombatObject> list, final CombatObject subject) {
+
+		final Stage stage = this;
+
+		if (subject instanceof Player) {
+
+			MainZap.getMainLoop().addTask(new Runnable() {
+				@Override
+				public void run() {
+					if (!MainZap.getPlayer().isAlive() || StageManager.getActiveStage() != stage) {
+						list.remove(subject);
+						MainZap.getMainLoop().removeTask(this, true);
+					}
+
+				}
+			}, true);
+
+		} else if (subject instanceof Enemy) {
+
+			Enemy e = (Enemy) subject;
+
+			if (e.getAiProtocol() != null) { // Subjekt verfügt über AI
+
+				e.getAiProtocol().addCall(AiProtocol.KEY_CALL_DIEING, new DieCall() {
+
+					@Override
+					public void die() {
+						list.remove(subject);
+					}
+				});
+
+			} else {
+				// keine AI-Vorhanden. Manueller Die-Call
+
+				MainZap.getMainLoop().addTask(new Runnable() {
+					@Override
+					public void run() {
+						if (!subject.isAlive() || StageManager.getActiveStage() != stage) {
+							list.remove(subject);
+							MainZap.getMainLoop().removeTask(this, true);
+						}
+
+					}
+				}, true);
+
+			}
+
+		} else // WTF ist das subject!!???
+			throw new RuntimeException("remove-tasks can only be applyed on a player or an enemy");
+
 	}
 
 	public void pass() {

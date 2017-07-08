@@ -9,14 +9,12 @@ import battle.ai.AiProtocol;
 import battle.ai.DieCall;
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
-import battle.enemy.Enemy;
 import battle.stage._9.EnemyGamma0;
 import battle.stage._9.EnemyGamma1;
 import battle.stage._9.FriendBaseAlpha;
 import battle.stage._9.FriendBasecoreAlpha;
 import battle.stage._9.FriendTurretAlpha;
 import corecase.MainZap;
-import ingameobjects.Player;
 
 public class Stage9 extends Stage {
 
@@ -164,58 +162,6 @@ public class Stage9 extends Stage {
 		}
 
 		enemysRemaining = amountG_0 + amountG_1;
-	}
-
-	private void applyRemoveTask(final ArrayList<CombatObject> list, final CombatObject subject) {
-
-		final Stage stage = this;
-
-		if (subject instanceof Player) {
-
-			MainZap.getMainLoop().addTask(new Runnable() {
-				@Override
-				public void run() {
-					if (!MainZap.getPlayer().isAlive() || StageManager.getActiveStage() != stage) {
-						list.remove(subject);
-						MainZap.getMainLoop().removeTask(this, true);
-					}
-
-				}
-			}, true);
-
-		} else if (subject instanceof Enemy) {
-
-			Enemy e = (Enemy) subject;
-
-			if (e.getAiProtocol() != null) { // Subjekt verfügt über AI
-
-				e.getAiProtocol().addCall(AiProtocol.KEY_CALL_DIEING, new DieCall() {
-
-					@Override
-					public void die() {
-						list.remove(subject);
-					}
-				});
-
-			} else {
-				// keine AI-Vorhanden. Manueller Die-Call
-
-				MainZap.getMainLoop().addTask(new Runnable() {
-					@Override
-					public void run() {
-						if (!subject.isAlive() || StageManager.getActiveStage() != stage) {
-							list.remove(subject);
-							MainZap.getMainLoop().removeTask(this, true);
-						}
-
-					}
-				}, true);
-
-			}
-
-		} else // WTF ist das subject!!???
-			throw new RuntimeException("remove-tasks can only be applyed on a player or an enemy");
-
 	}
 
 }

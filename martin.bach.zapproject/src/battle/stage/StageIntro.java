@@ -7,6 +7,7 @@ import java.awt.Polygon;
 
 import corecase.MainZap;
 import corecase.StringConverter;
+import corecase.Tutorial;
 import gui.Frame;
 import gui.screens.pause.PauseScreen;
 import lib.PaintingTask;
@@ -54,9 +55,9 @@ public class StageIntro implements PaintingTask, Updateable {
 
 	@Override
 	public void paint(Graphics2D g) {
-		
-		if (PauseScreen.isOpen())
-			return; // Nicht mit Pausier-Bildschirm überlagern.
+
+		if (PauseScreen.isOpen() || Tutorial.isVisible())
+			return; // Nicht mit Pausier-Bildschirm oder Tutorial überlagern.
 
 		int alpha = 255; // Sollange nicht faden. nicht faden.
 

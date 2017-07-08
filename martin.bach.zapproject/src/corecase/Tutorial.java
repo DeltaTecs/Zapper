@@ -15,9 +15,11 @@ public abstract class Tutorial {
 
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_TUTORIAL_SCREEN);
 
+	private static boolean visible = false;
+
 	public static void show() {
 
-
+		visible = true;
 		MainZap.getStaticLayer().addTask(PAINTINGTASK);
 
 		final ClickableObject table = new ClickableObject(0, 0, Frame.SIZE, Frame.SIZE);
@@ -29,6 +31,8 @@ public abstract class Tutorial {
 				MainZap.getStaticLayer().removeTask(PAINTINGTASK);
 				MainZap.getFrame().removeClickable(table);
 				new StageIntro(StageManager.getActiveStage()).register();
+				MainZap.getMainLoop().setPaused(false);
+				visible = false;
 			}
 
 			@Override
@@ -37,7 +41,7 @@ public abstract class Tutorial {
 		});
 
 		MainZap.getFrame().addClickable(table);
-
+		MainZap.getMainLoop().setPaused(true);
 
 	}
 
@@ -50,5 +54,9 @@ public abstract class Tutorial {
 
 		}
 	};
+
+	public static boolean isVisible() {
+		return visible;
+	}
 
 }
