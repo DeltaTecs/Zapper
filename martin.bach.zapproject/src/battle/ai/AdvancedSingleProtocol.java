@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import battle.CombatObject;
 import battle.enemy.Enemy;
 import battle.projectile.Projectile;
+import battle.stage._10.FriendGamma0;
 import collision.Collideable;
 import collision.Grid;
 import corecase.MainZap;
@@ -24,6 +25,7 @@ public class AdvancedSingleProtocol extends AiProtocol {
 	private static final int FORCED_MOVING_TIME_COMBAT = MainZap.getMainLoop().inTicks(200);
 	private static final int FORCED_WAITING_TIME = MainZap.getMainLoop().inTicks(2000);
 	private static final int TIME_GOING_BACK_INTO_COMBAT = MainZap.inTicks(1800);
+	private static final int COMBAT_FOLLOWUP_COOLDOWN = MainZap.inTicks(1000);
 
 	private int ancX, ancY; // Lokalisation, von der nicht abgewichen werden
 							// soll
@@ -40,6 +42,7 @@ public class AdvancedSingleProtocol extends AiProtocol {
 	private FindLockAction lockAction = FindLockAction.LOCK_ENEMYS_INRANGE;
 
 	private int timeToNextMovementAction = 2;
+	private int combatFollowupCooldown = 0;
 	private boolean wasInCombat = false;
 	private Rectangle movementBounds = null; // Brgrenztes bewegungs-Gebiet
 	private int lockCombatFreeMovementRange = 100;
@@ -70,15 +73,23 @@ public class AdvancedSingleProtocol extends AiProtocol {
 		int distance = Grid.distance(new Point(lock.getLocX(), lock.getLocY()),
 				new Point(getHost().getLocX(), getHost().getLocY()));
 
+		if (combatFollowupCooldown > 0)
+			combatFollowupCooldown--;
+
 		if (distance >= maxCombatDistance) {
 
-			// Im Kampf, aus der Range gelangt
-			// In Range bleiben!
-			moveTo(rand(2 * lockCombatFreeMovementRange) - lockCombatFreeMovementRange + lock.getLocX(),
-					rand(2 * lockCombatFreeMovementRange) - lockCombatFreeMovementRange + lock.getLocY());
-			move();
-			timeToNextMovementAction = TIME_GOING_BACK_INTO_COMBAT;
-			return;
+			if (combatFollowupCooldown == 0) {
+				combatFollowupCooldown = COMBAT_FOLLOWUP_COOLDOWN;
+
+				// Im Kampf, aus der Range gelangt
+				// In Range bleiben!
+				moveTo(rand(2 * lockCombatFreeMovementRange) - lockCombatFreeMovementRange + lock.getLocX(),
+						rand(2 * lockCombatFreeMovementRange) - lockCombatFreeMovementRange + lock.getLocY());
+				move();
+				timeToNextMovementAction = TIME_GOING_BACK_INTO_COMBAT;
+				return;
+
+			}
 		}
 
 		if (timeToNextMovementAction > 0) { // warten
@@ -170,6 +181,9 @@ public class AdvancedSingleProtocol extends AiProtocol {
 			for (CombatObject e : linkedEnemys)
 				if (e.isAlive())
 					aliveLocks0.add(e);
+
+			if (aliveLocks0.size() == 0)
+				return false; // nix lebendiges da
 
 			setLockOn(aliveLocks0.get(rand(aliveLocks0.size())));
 			return true;

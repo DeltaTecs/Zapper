@@ -182,7 +182,8 @@ public class AiProtocol implements Updateable, CloneableObject {
 			return;
 		}
 
-		if (host.distanceToPlayer() <= lockFaceDistance && mayFacePlayer && MainZap.getPlayer().isAlive()) {
+		if (host.distanceToPlayer() <= lockFaceDistance && mayFacePlayer && MainZap.getPlayer().isAlive()
+				&& !getHost().isFriend()) {
 			// Anvisierung erwünscht und möglich
 			host.setAimX((int) MainZap.getPlayer().getPosX());
 			host.setAimY((int) MainZap.getPlayer().getPosY());
