@@ -50,6 +50,12 @@ public class Map implements PaintingTask, Updateable {
 			g.drawString("-100 | 200", -80, 194);
 		}
 
+		// ----- Zeichen-Reihenfolge -------
+		// 1. Background-Objects (Strukturen, darüber alle Projektile)
+		// 2. Ship-Tasks (Schiffe)
+		// 3. Foreground-Objects (sonderfall. eig. nur Turrets auf FriendGamma1)
+		// ------
+
 		// *PingPT
 		// Listen Buffern, falls Paint/calc getrennt
 		if (MainZap.PAINT_CALC_THREAD_SPLIT) {
@@ -86,6 +92,7 @@ public class Map implements PaintingTask, Updateable {
 			for (PaintingTask pt : foregroundPaintElements) {
 				pt.paint(g);
 			}
+
 		} else {
 
 			g.setColor(new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 30));
@@ -116,6 +123,7 @@ public class Map implements PaintingTask, Updateable {
 			for (PaintingTask pt : foregroundPaintElements) {
 				pt.paint(g);
 			}
+
 		}
 
 		// Shock-Effekt
@@ -219,19 +227,19 @@ public class Map implements PaintingTask, Updateable {
 	}
 
 	public void addPaintElement(PaintingTask t, boolean bg) {
-		if (bg) {
+		if (bg)
 			backgroundPaintElements.schedAdd(t);
-		} else {
+		else
 			foregroundPaintElements.schedAdd(t);
-		}
+
 	}
 
 	public void removePaintElement(PaintingTask t, boolean bg) {
-		if (bg) {
+		if (bg)
 			backgroundPaintElements.schedRemove(t);
-		} else {
+		else
 			foregroundPaintElements.schedRemove(t);
-		}
+
 	}
 
 	public void addPaintShip(Enemy e) {

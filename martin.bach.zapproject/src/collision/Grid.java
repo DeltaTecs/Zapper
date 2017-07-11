@@ -293,20 +293,25 @@ public class Grid {
 		CollisionType ta = a.getInformation().getType();
 		CollisionType tb = b.getInformation().getType();
 
-		if (ta == CollisionType.COLLIDE_WITH_ALL || tb == CollisionType.COLLIDE_WITH_ALL) {
+		if ((ta == CollisionType.COLLIDE_WITH_ALL && tb != CollisionType.DO_NOT_COLLIDE)
+				|| (tb == CollisionType.COLLIDE_WITH_ALL && ta != CollisionType.DO_NOT_COLLIDE)) {
 			// Kollision mit allem
 			return true;
 		}
 
 		switch (a.getInformation().getType()) {
 		case COLLIDE_WITH_FRIENDS:
-			return tb == CollisionType.COLLIDE_WITH_ENEMYS || tb == CollisionType.COLLIDE_AS_PLAYER;
+			return tb == CollisionType.COLLIDE_WITH_ENEMYS
+					|| tb == CollisionType.COLLIDE_AS_PLAYER && ta != CollisionType.DO_NOT_COLLIDE;
 		case COLLIDE_AS_PLAYER:
-			return tb == CollisionType.COLLIDE_ONLY_WITH_PLAYER || tb == CollisionType.COLLIDE_WITH_FRIENDS;
+			return tb == CollisionType.COLLIDE_ONLY_WITH_PLAYER
+					|| tb == CollisionType.COLLIDE_WITH_FRIENDS && ta != CollisionType.DO_NOT_COLLIDE;
 		case COLLIDE_ONLY_WITH_PLAYER:
-			return tb == CollisionType.COLLIDE_AS_PLAYER;
+			return tb == CollisionType.COLLIDE_AS_PLAYER && ta != CollisionType.DO_NOT_COLLIDE;
 		case COLLIDE_WITH_ENEMYS:
-			return tb == CollisionType.COLLIDE_WITH_FRIENDS;
+			return tb == CollisionType.COLLIDE_WITH_FRIENDS && ta != CollisionType.DO_NOT_COLLIDE;
+		case DO_NOT_COLLIDE:
+			return false;
 		default:
 			return false;
 		}
@@ -473,8 +478,8 @@ public class Grid {
 	};
 
 	/**
-	 * Knapp effizienter als die Java-Implementation (Math.sqr) Aber dafür
-	 * extrem ungenau
+	 * Knapp effizienter als die Java-Implementation (Math.sqr) Aber dafür extrem
+	 * ungenau
 	 * 
 	 * @param a
 	 * @return

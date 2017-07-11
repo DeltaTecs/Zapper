@@ -182,8 +182,7 @@ public class InteractiveObject implements Collideable, PaintingTask, Updateable,
 	public void push(Collideable from, float speed) {
 		SpeedVector vec = new SpeedVector(0, 0);
 		vec.aimFor(from.getLocation()[0], from.getLocation()[1], speed, posX, posY);
-		posX += vec.getX();
-		posY += vec.getY();
+		move(vec);
 	}
 
 	public boolean isStageBound() {
@@ -204,6 +203,16 @@ public class InteractiveObject implements Collideable, PaintingTask, Updateable,
 
 	public void setVelocity(SpeedVector velocity) {
 		this.velocity = velocity;
+	}
+
+	/**
+	 * Setzt die zugehörigkeit des Objekts. Nur sinnvoll, wenn noch nicht
+	 * registriert.
+	 * 
+	 * @param background
+	 */
+	public void setBackground(boolean background) {
+		this.background = background;
 	}
 
 }

@@ -9,8 +9,8 @@ public class WeaponPositioning {
 	private int[] corey;
 
 	/**
-	 * Speichert die KernPositionen und berechnet bei Bedarf
-	 * Rotations-Positionen. Werte in Abhänigkeit vom Schiffszentrum.
+	 * Speichert die KernPositionen und berechnet bei Bedarf Rotations-Positionen.
+	 * Werte in Abhänigkeit vom Schiffszentrum.
 	 * 
 	 * @param weapons
 	 * @param corex
@@ -45,6 +45,11 @@ public class WeaponPositioning {
 	public static Point rotate(float angle, Point base) {
 		return new Point((int) ((base.x * Math.cos(angle)) - (base.y * Math.sin(angle))),
 				(int) ((base.x * Math.sin(angle)) + (base.y * Math.cos(angle))));
+	}
+
+	public static double[] rotate(double angle, Point base) {
+		return new double[] { (base.x * Math.cos(angle)) - (base.y * Math.sin(angle)),
+				(base.x * Math.sin(angle)) + (base.y * Math.cos(angle)) };
 	}
 
 	public byte getWeaponAmount() {

@@ -33,7 +33,7 @@ public class ScoreReader {
 			String[] entrys = content.split(SPLIT_POINTER_ENTRY);
 			String[][] values = new String[entrys.length][2];
 			for (int i = 0; i != entrys.length; i++) {
-				if (values[i].equals(""))
+				if (values[i].length == 0)
 					continue; // Leerer Wert
 				values[i] = entrys[i].split(SPLIT_POINTER_VALUE);
 			}
@@ -42,7 +42,7 @@ public class ScoreReader {
 			ArrayList<ScoreEntry> result = new ArrayList<ScoreEntry>();
 
 			for (String[] v : values) {
-				if (v.equals(""))
+				if (v.length == 0)
 					continue; // Leerer Wert
 				result.add(new ScoreEntry(v[0], Integer.parseInt(v[1])));
 			}

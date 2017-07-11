@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import battle.CombatObject;
 import battle.MultiCannonWeaponConfiguration;
@@ -57,6 +58,7 @@ public class Enemy extends CombatObject implements Shockable {
 	private WeaponConfiguration weaponConfiguration;
 	private ExplosionEffectPattern explosionEffectPattern;
 	private ShockedEffect shockEffect;
+	private ArrayList<AttachedEnemy> attachments = new ArrayList<AttachedEnemy>();
 	private int maxHealth;
 	private int health;
 	private int dmgIndicatingTime = 0;
@@ -111,6 +113,12 @@ public class Enemy extends CombatObject implements Shockable {
 		// Von Kontext Karte zu Kontext EigenPos
 		int dx = getLocX();
 		int dy = getLocY();
+
+		synchronized (attachments) { // Attachments updaten (z.b. turrets)
+			for (AttachedEnemy e : attachments)
+				e.setLatestHostPaintLoc(dx, dy);
+		}
+
 		g.translate(dx, dy);
 
 		// Schiff zeichnen
@@ -121,7 +129,7 @@ public class Enemy extends CombatObject implements Shockable {
 		// HP-Leiste
 		if (dmgIndicatingTime > 0)
 			paintDamageIndicators(g);
-		
+
 		// Shock-Effetk
 		if (shocked)
 			if (shockEffect != null)
@@ -187,7 +195,7 @@ public class Enemy extends CombatObject implements Shockable {
 
 	public void updateRotation() {
 		if (!getAiProtocol().isParked() && !getAiProtocol().isSelfRotating() || shootingAim != null)
-			rotation = Math.PI - Math.atan2(aimX - getLocX(), aimY - getLocY());
+			setRotation(Math.PI - Math.atan2(aimX - getLocX(), aimY - getLocY()));
 	}
 
 	@Override
@@ -207,13 +215,13 @@ public class Enemy extends CombatObject implements Shockable {
 		if (shocked) {
 			if (shockEffect != null)
 				shockEffect.update();
-		if (normalSpeedCooldown > -1)
-			if (normalSpeedCooldown <= 0) {
-				normalSpeedCooldown = -1;
-				speed *= 5;
-				shocked = false;
-			} else
-				normalSpeedCooldown--;
+			if (normalSpeedCooldown > -1)
+				if (normalSpeedCooldown <= 0) {
+					normalSpeedCooldown = -1;
+					speed *= 5;
+					shocked = false;
+				} else
+					normalSpeedCooldown--;
 		}
 
 		updateAi();
@@ -574,6 +582,25 @@ public class Enemy extends CombatObject implements Shockable {
 	public ShockedEffect getShockEffect() {
 		return shockEffect;
 	}
+
+	public boolean isWarping() {
+		return warping;
+	}
+
+	public int getDmgIndicatingTime() {
+		return dmgIndicatingTime;
+	}
 	
+	public void attach(AttachedEnemy e) {
+		synchronized (attachments) {
+			attachments.add(e);
+		}
+	}
 	
+	public void detach(AttachedEnemy e) {
+		synchronized (attachments) {
+			attachments.remove(e);
+		}
+	}
+
 }

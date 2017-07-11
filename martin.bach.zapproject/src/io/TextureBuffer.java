@@ -25,6 +25,9 @@ public abstract class TextureBuffer {
 	public static final String NAME_FRIENDSHIP_ALPHA1 = "friendShipAlpha1.png";
 	public static final String NAME_FRIENDSHIP_BETA = "friendShipBeta.png";
 	public static final String NAME_FRIENDSHIP_TRANSPORTER = "friendShipTransporter.png";
+	public static final String NAME_FRIENDSHIP_GAMMA_0 = "friendShipGamma0.png";
+	public static final String NAME_FRIENDSHIP_GAMMA_1 = "friendShipGamma1.png";
+	public static final String NAME_FRIENDSHIP_GAMMA_1_TURRET = "friendShipGamma1Turret.png";
 	public static final String NAME_FRIENDTURRET_SHOP0 = "friendTurretShop0.png";
 	public static final String NAME_FRIENDTURRET_SHOP1 = "friendTurretShop1.png";
 	public static final String NAME_FRIENDTURRET_ALPHA = "friendTurretAlpha.png";
@@ -115,6 +118,9 @@ public abstract class TextureBuffer {
 		names.add(NAME_FRIENDSHIP_ALPHA1);
 		names.add(NAME_FRIENDSHIP_BETA);
 		names.add(NAME_FRIENDSHIP_TRANSPORTER);
+		names.add(NAME_FRIENDSHIP_GAMMA_0);
+		names.add(NAME_FRIENDSHIP_GAMMA_1);
+		names.add(NAME_FRIENDSHIP_GAMMA_1_TURRET);
 		names.add(NAME_FRIENDTURRET_SHOP0);
 		names.add(NAME_FRIENDTURRET_SHOP1);
 		names.add(NAME_FRIENDTURRET_ALPHA);
