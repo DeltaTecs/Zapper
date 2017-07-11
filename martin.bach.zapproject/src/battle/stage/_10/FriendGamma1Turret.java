@@ -26,7 +26,7 @@ public class FriendGamma1Turret extends AttachedEnemy {
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(90, 180);
 	private static final WeaponPositioning WEAPON_POSITIONING = new WeaponPositioning((byte) 2, new int[] { -6, 6 },
 			new int[] { -50, -50 });
-	private static final float COOLDOWN = 1.0f;
+	private static final float COOLDOWN = 2.7f;
 	private static final int SCORE = 0;
 	private static final int CRYSTALS = 0;
 	private static final int PROJECTILE_RANGE = 1500;

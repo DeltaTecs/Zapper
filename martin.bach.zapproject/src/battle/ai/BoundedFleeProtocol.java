@@ -8,6 +8,7 @@ import lib.SpeedVector;
 public class BoundedFleeProtocol extends FleeSingleProtocol {
 
 	private Rectangle bounds;
+	private boolean enabled = true;
 
 	public BoundedFleeProtocol(float criticalPercentage, boolean shield, Rectangle bounds) {
 		super(criticalPercentage, shield);
@@ -18,6 +19,9 @@ public class BoundedFleeProtocol extends FleeSingleProtocol {
 	public void updateMovement() {
 
 		super.updateMovement();
+
+		if (!enabled)
+			return;
 
 		// Begrenzung
 		if (!bounds.contains(getHost().getLocX(), getHost().getLocY())) {
@@ -50,6 +54,14 @@ public class BoundedFleeProtocol extends FleeSingleProtocol {
 
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 }

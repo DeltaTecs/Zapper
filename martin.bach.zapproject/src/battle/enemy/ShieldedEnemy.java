@@ -21,7 +21,7 @@ public class ShieldedEnemy extends Enemy {
 	private static final Color COLOR_SHIELDBAR_BACKGROUND = new Color(102, 177, 230, 128);
 	private static final Color COLOR_SHIELD_BG = new Color(56, 164, 181, 35);
 	private static final Color COLOR_SHIELD_FG = new Color(56, 164, 181, 198);
-	private static final int SHIELD_DOWNTIME_AFTER_SHOCK = MainZap.inTicks(3500);
+	private static final int SHIELD_DOWNTIME_AFTER_SHOCK = MainZap.inTicks(8000);
 	public static final int SHIELD_REGEN_DEFAULT = 5;
 	public static final int SHIELD_REGEN_LOW = 1;
 	public static final int SHIELD_REGEN_HIGH = 20;
@@ -107,6 +107,8 @@ public class ShieldedEnemy extends Enemy {
 		if (MainZap.fancyGraphics) {
 			synchronized (hits) { // Zugriff vor Paint-Loop shotgunnen.
 				for (SimpleShieldAbsorbtionEffect e : hits) {
+					if (e == null) // Seltener Fehler
+						continue;
 					e.update();
 					if (e.isFinished())
 						hits.schedRemove(e);

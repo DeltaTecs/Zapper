@@ -53,7 +53,7 @@ public class EnemyGamma1 extends ShieldedEnemy {
 		getAiProtocol().setLockOpticDetectionRange(OPTIC_LOCK_RANGE);
 		getAiProtocol().setLockOutOfRangeRange(LOCK_LOOSE_RANGE);
 		getAiProtocol().setLockFaceDistance(LOCK_FACE_RANGE);
-		((AdvancedSingleProtocol) getAiProtocol()).setLockAction(FindLockAction.LOCK_ENEMYS_INRANGE);
+		((AdvancedSingleProtocol) getAiProtocol()).setLockAction(FindLockAction.LOCK_LINKED_ENEMYS);
 		((AdvancedSingleProtocol) getAiProtocol()).setCombatRangePerOutOfRangeRange(0.8f);
 		setNonRecoveryTime(MainZap.inTicks(200));
 	}

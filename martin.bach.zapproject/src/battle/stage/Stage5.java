@@ -74,7 +74,7 @@ public class Stage5 extends Stage {
 	@Override
 	public void update() {
 
-		if (!isPassed() && transporter.getPosY() < 350)
+		if (!isPassed() && transporter.getPosX() < 350)
 			pass(); // Ziel erreicht
 
 		time++;

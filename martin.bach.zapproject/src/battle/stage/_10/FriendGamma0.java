@@ -15,8 +15,8 @@ import io.TextureBuffer;
 
 public class FriendGamma0 extends Enemy {
 
-	private static final float SPEED = 4.0f;
-	private static final int MAX_HP = 10_000;
+	private static final float SPEED = 8.0f;
+	private static final int MAX_HP = 4_000;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_FRIENDSHIP_GAMMA_0);
 	private static final float SCALE = 0.85f;
 	private static final float RADIUS = 40.0f;

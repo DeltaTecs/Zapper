@@ -149,17 +149,21 @@ public class AdvancedSingleProtocol extends AiProtocol {
 
 			if (getLockOn() instanceof Enemy) {
 				Enemy lock = (Enemy) getLockOn();
-				if ((!lock.isAlive() || !lock.isInRange(getHost(), getLockOutOfRangeRange())
-						&& lockAction != FindLockAction.LOCK_LINKED_ENEMYS
-						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS
-						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS_INRANGE))
-					setLockOn(null); // Fallen lassen
-			} else if (getLockOn() instanceof Player) {
-				if ((!MainZap.getPlayer().isAlive() || getLockOn().distanceToPlayer() > getLockOutOfRangeRange())
+				if (!lock.isInRange(getHost(), getLockOutOfRangeRange())
 						&& lockAction != FindLockAction.LOCK_LINKED_ENEMYS
 						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS
 						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS_INRANGE)
 					setLockOn(null); // Fallen lassen
+				else if (!lock.isAlive())
+					setLockOn(null);
+			} else if (getLockOn() instanceof Player) {
+				if (getLockOn().distanceToPlayer() > getLockOutOfRangeRange()
+						&& lockAction != FindLockAction.LOCK_LINKED_ENEMYS
+						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS
+						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS_INRANGE)
+					setLockOn(null); // Fallen lassen
+				else if (!MainZap.getPlayer().isAlive())
+					setLockOn(null);
 			}
 
 		}

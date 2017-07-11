@@ -18,7 +18,7 @@ import lib.SpeedVector;
 public class FriendGamma1 extends Enemy {
 
 	private static final float SPEED = 1.5f;
-	private static final int MAX_HP = 10_000;
+	private static final int MAX_HP = 14_000;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_FRIENDSHIP_GAMMA_1);
 	private static final float SCALE = 0.85f;
 	private static final float RADIUS = 90.0f;
@@ -51,7 +51,7 @@ public class FriendGamma1 extends Enemy {
 		getAiProtocol().setLockPhysicalDetectionRange(1500);
 		getAiProtocol().setLockStopRange(200);
 		((AdvancedSingleProtocol) getAiProtocol()).setLockCombatFreeMovementRange(400);
-		((AdvancedSingleProtocol) getAiProtocol()).setCombatRangePerOutOfRangeRange(0.8f);
+		((AdvancedSingleProtocol) getAiProtocol()).setCombatRangePerOutOfRangeRange(0.9f);
 		((AdvancedSingleProtocol) getAiProtocol()).setLockAction(FindLockAction.LOCK_LINKED_ENEMYS);
 
 		// Turrets
