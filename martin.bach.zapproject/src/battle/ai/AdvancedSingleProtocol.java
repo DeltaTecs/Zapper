@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import battle.CombatObject;
 import battle.enemy.Enemy;
 import battle.projectile.Projectile;
-import battle.stage._10.FriendGamma0;
 import collision.Collideable;
 import collision.Grid;
 import corecase.MainZap;
@@ -150,10 +149,16 @@ public class AdvancedSingleProtocol extends AiProtocol {
 
 			if (getLockOn() instanceof Enemy) {
 				Enemy lock = (Enemy) getLockOn();
-				if (!lock.isAlive() || !lock.isInRange(getHost(), getLockOutOfRangeRange()))
+				if ((!lock.isAlive() || !lock.isInRange(getHost(), getLockOutOfRangeRange())
+						&& lockAction != FindLockAction.LOCK_LINKED_ENEMYS
+						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS
+						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS_INRANGE))
 					setLockOn(null); // Fallen lassen
 			} else if (getLockOn() instanceof Player) {
-				if (!MainZap.getPlayer().isAlive() || getLockOn().distanceToPlayer() > getLockOutOfRangeRange())
+				if ((!MainZap.getPlayer().isAlive() || getLockOn().distanceToPlayer() > getLockOutOfRangeRange())
+						&& lockAction != FindLockAction.LOCK_LINKED_ENEMYS
+						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS
+						&& lockAction != FindLockAction.LOCK_LOCK_OF_LINKED_FRIENDS_INRANGE)
 					setLockOn(null); // Fallen lassen
 			}
 
