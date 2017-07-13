@@ -19,7 +19,7 @@ public class EnemyGamma1 extends ShieldedEnemy {
 
 	private static final float SPEED = 1.0f;
 	private static final int MAX_HP = 1_500;
-	private static final int SHIELD = 5_000;
+	private static final int SHIELD = 7_000;
 	private static final int SHOOTING_RANGE = 1000;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_ENEMYSHIP_GAMMA_1);
 	private static final float SCALE = 1.2f;

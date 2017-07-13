@@ -23,7 +23,7 @@ public class Crystal implements PaintingTask, Updateable {
 	private static final Color COLOR_MAIN = new Color(143, 39, 247, 184);
 	private static final int HALFSIZE = 7;
 	private static final int SIZE = 2 * HALFSIZE;
-	private static final int HALFSIZE_LARGE = 21;
+	private static final int HALFSIZE_LARGE = 14;
 	private static final int SIZE_LARGE = 2 * HALFSIZE_LARGE;
 	private static final int HALFSIZE_CORNERED = 12;
 	private static final int SIZE_CORNERED = 2 * HALFSIZE_CORNERED;
