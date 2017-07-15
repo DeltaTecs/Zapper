@@ -38,7 +38,7 @@ public class SpeedVector {
 		x = aimingLocX - currentLocX;
 		y = aimingLocY - currentLocY;
 
-		normalize();
+		normalize_fast();
 
 		x *= speed;
 		y *= speed;
@@ -51,17 +51,34 @@ public class SpeedVector {
 		x = aimingLocX - currentLocX;
 		y = aimingLocY - currentLocY;
 
-		normalize();
+		normalize_fast();
 
 		x *= sum;
 		y *= sum;
 
 	}
 
-	public SpeedVector normalize() {
+	/**
+	 * Normalisierung mit Summe der Beträge als Divisor
+	 * 
+	 * @return
+	 */
+	public SpeedVector normalize_fast() {
 		float sum = Math.abs(x) + Math.abs(y);
-		x = x /= sum;
-		y = y /= sum;
+		x /= sum;
+		y /= sum;
+		return this;
+	}
+
+	/**
+	 * Normalisierung mit genauer Länge des Vektors als Divisor
+	 * 
+	 * @return
+	 */
+	public SpeedVector normailze_accurate() {
+		float sum = (float) Math.sqrt((x * x) + (y * y));
+		x /= sum;
+		y /= sum;
 		return this;
 	}
 
@@ -90,6 +107,11 @@ public class SpeedVector {
 		current.aimFor(0, 0, speed, addX, addY);
 
 		return current;
+	}
+
+	public void scaleToLength(float len) {
+		normailze_accurate();
+		multiply(len);
 	}
 
 	public void turnAround() {
@@ -129,7 +151,7 @@ public class SpeedVector {
 	public void invertY() {
 		y *= -1;
 	}
-	
+
 	public void invert() {
 		x *= -1;
 		y *= -1;

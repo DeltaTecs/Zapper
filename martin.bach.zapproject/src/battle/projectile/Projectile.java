@@ -155,7 +155,7 @@ public class Projectile extends InteractiveObject implements Shockable {
 		this.speed = speed;
 	}
 
-	public int getSize() {
+	public int getRadius() {
 		return size;
 	}
 

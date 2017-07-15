@@ -33,6 +33,7 @@ import gui.Frame;
 import gui.Hud;
 import gui.Map;
 import gui.PlayerAmmoIndicator;
+import gui.PlayerDamageIndicator;
 import gui.PlayerHpBar;
 import gui.effect.ExplosionEffect;
 import gui.effect.ExplosionEffectPattern;
@@ -260,7 +261,9 @@ public class Player extends CombatObject {
 			if (p.collided())
 				return;
 			p.setCollided(true);
+			// Auf Effekte registrieren
 			Shielding.inboundProjectile(p.getLocX(), p.getLocY());
+			PlayerDamageIndicator.register(p);
 			if (shielded) {
 				hp -= (int) (p.getDamage() * SHIELD_FAC_INBOUND_DAMAGE);
 				hpBar.remove((int) (p.getDamage() * SHIELD_FAC_INBOUND_DAMAGE));

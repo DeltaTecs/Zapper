@@ -102,7 +102,13 @@ public abstract class Hud {
 
 			if (StageManager.getActiveStage() == null || !MainZap.getPlayer().isAlive())
 				return; // noch nicht initialisiert, oder tot, oder im warp
-
+			
+			// ----- Hit-Indicator
+			if (MainZap.fancyGraphics)
+				PlayerDamageIndicator.paint(g);
+			
+			
+			
 			// ----- Spieler - Score
 			g.setColor(new Color(COLOR_SCORE[0], COLOR_SCORE[1], COLOR_SCORE[2], (int) alphaScore));
 			g.setFont(FONT_BIG);
@@ -212,6 +218,10 @@ public abstract class Hud {
 
 		if (StageManager.getActiveStage() == null)
 			return; // Noch nicht initialisiert
+		
+		// ----- Hit-Indicator
+		if (MainZap.fancyGraphics)
+			PlayerDamageIndicator.update();
 
 		// -- Score ---------
 		if (alphaScore > COLOR_SCORE[3]) {

@@ -47,7 +47,7 @@ public class Stage10 extends Stage {
 	private static final int RAND_SPAWN_ENEMY_GAMMA_1 = 420;
 	private static final int RAND_SPAWN_ENEMY_GAMMA_2 = 500;
 	private static final int RAND_SPAWN_FRIEND_GAMMA_0 = 280;
-	private static final int RAND_SPAWN_FRIEND_GAMMA_1 = 530;
+	private static final int RAND_SPAWN_FRIEND_GAMMA_1 = 630;
 
 	private SpawnScheduler[] spawner;
 	private ArrayList<CombatObject> enemys = new ArrayList<CombatObject>();

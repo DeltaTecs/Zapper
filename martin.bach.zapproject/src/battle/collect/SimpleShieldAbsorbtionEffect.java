@@ -23,7 +23,7 @@ public class SimpleShieldAbsorbtionEffect implements PaintingTask, Updateable {
 	public SimpleShieldAbsorbtionEffect(Projectile p, CombatObject c, int maxRange) {
 		this.x = p.getLocX() - c.getLocX();
 		this.y = p.getLocY() - c.getLocY();
-		r = p.getSize();
+		r = p.getRadius();
 		duration = (int) (p.getDamage() * VISIBLE_TIME_PER_DMG);
 		maxDuration = duration;
 		// Prüfen ob Position außerhalb des Radius

@@ -168,9 +168,8 @@ public class MainZap {
 			stamp.init();
 			frame.getContentPane().add(stamp);
 			stamp.execute();
-			while (!stamp.isDone()) {
+			while (!stamp.isDone())
 				Thread.sleep(1);
-			}
 			frame.getContentPane().remove(stamp);
 		}
 
@@ -179,10 +178,9 @@ public class MainZap {
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
 			StageManager.setUp(10);
-			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_ASHSLIDER));
 			crystals = 8000;
 			ExtentionManager.setExtention(Extention.SHOCK);
-
 		}
 		Hud.setUpClickListener();
 		ExtentionManager.setUpClickListener();

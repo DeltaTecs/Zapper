@@ -75,10 +75,10 @@ public class FleeSingleProtocol extends AdvancedSingleProtocol {
 													// Distanz-Vektoren
 		for (CombatObject e : enemys) {
 			dTotal.add(
-					new SpeedVector(e.getPosX() - getHost().getPosX(), e.getPosY() - getHost().getPosY()).normalize());
+					new SpeedVector(e.getPosX() - getHost().getPosX(), e.getPosY() - getHost().getPosY()).normalize_fast());
 		}
 
-		dTotal.normalize();
+		dTotal.normalize_fast();
 		dTotal.multiply(getHost().getSpeed());
 		dTotal.invert();
 		getHost().setVelocity(dTotal);
