@@ -130,7 +130,7 @@ public class Enemy extends CombatObject implements Shockable {
 		if (dmgIndicatingTime > 0)
 			paintDamageIndicators(g);
 
-		// Shock-Effetk
+		// Shock-Effekt
 		if (shocked)
 			if (shockEffect != null)
 				shockEffect.paint(g);

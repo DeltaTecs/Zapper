@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import battle.CombatObject;
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
+import battle.stage._11.Stargate;
 import corecase.MainZap;
 
 public class Stage11 extends Stage {
@@ -28,7 +29,7 @@ public class Stage11 extends Stage {
 	private ArrayList<CombatObject> friendsAndPlayer = new ArrayList<CombatObject>();
 
 	public Stage11() {
-		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 2400);
+		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 2000);
 		spawner = new SpawnScheduler[] { new SpawnScheduler(50, SPAWN_RATE_AMMO_SMALL, PackType.AMMO_SMALL),
 				new SpawnScheduler(50, SPAWN_RATE_AMMO_LARGE, PackType.AMMO_LARGE),
 				new SpawnScheduler(50, SPAWN_RATE_HP_PACK, PackType.HEALTH),
@@ -40,6 +41,12 @@ public class Stage11 extends Stage {
 
 		friendsAndPlayer.add(MainZap.getPlayer());
 		applyRemoveTask(friendsAndPlayer, MainZap.getPlayer());
+
+		// Stargate spawnen
+		Stargate gate = new Stargate();
+		gate.setPosition(1500, 1500);
+		MainZap.getMap().addPaintElement(gate, true);
+		getPaintingTasks().add(gate); // manuelles registrieren
 
 	}
 
