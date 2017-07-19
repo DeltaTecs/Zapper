@@ -25,6 +25,8 @@ public class StargateConnector extends Enemy {
 	private static final int CRYSTALS = 5;
 	private static final boolean FRIEND = false;
 
+	private static final int AMOUNT_SPARKS = 160;
+
 	private StargateConnector connection;
 	private ScheduledList<StargateConnectionspark> sparks = new ScheduledList<StargateConnectionspark>();
 
@@ -44,28 +46,12 @@ public class StargateConnector extends Enemy {
 
 		if (!MainZap.fancyGraphics)
 			return;
-		
+
 		synchronized (sparks) {
 			for (StargateConnectionspark s : sparks)
 				s.update();
 		}
 
-		for (StargateConnectionspark s : sparks)
-			if (s.isFinished())
-				sparks.schedRemove(s);
-
-		if (MainZap.RANDOM.nextBoolean())
-			synchronized (sparks) {
-				sparks.add(new StargateConnectionspark(this, connection));
-			}
-		else
-			synchronized (sparks) {
-				sparks.add(new StargateConnectionspark(connection, this));
-			}
-
-		synchronized (sparks) {
-			sparks.update();
-		}
 	}
 
 	@Override
@@ -90,6 +76,16 @@ public class StargateConnector extends Enemy {
 
 	public void connect(StargateConnector connection) {
 		this.connection = connection;
+		// Sparks initialisieren
+		synchronized (sparks) {
+			sparks.clear();
+			for (int i = 0; i != AMOUNT_SPARKS; i++) {
+				if (MainZap.RANDOM.nextBoolean())
+					sparks.add(new StargateConnectionspark(this, connection));
+				else
+					sparks.add(new StargateConnectionspark(connection, this));
+			}
+		}
 	}
 
 }

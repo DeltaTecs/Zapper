@@ -27,7 +27,7 @@ import io.TextureBuffer;
 import lib.Updateable;
 import sched.DynamicUpdateLoop;
 
-public class MainZap {
+public abstract class MainZap {
 
 	public static final String VERSION = "0.9.8";
 	public static final String DIRECTORY = determineDirectory();
@@ -66,7 +66,7 @@ public class MainZap {
 	private static int crystalsEverEarned = 10;
 
 	public static void main(String[] args) throws InterruptedException {
-
+		
 		TextureBuffer.load();
 		ShipStartConfig.loadAll();
 

@@ -10,10 +10,18 @@ import java.awt.image.BufferedImage;
 import corecase.MainZap;
 import io.TextureBuffer;
 import lib.PaintingTask;
+import lib.ScheduledList;
+import lib.Updateable;
 
-public class Stargate implements PaintingTask {
+public class Stargate implements PaintingTask, Updateable {
 
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_STRUCTURE_STARGATE_FRAME);
+	private static final float PULSSPEED_DEFAULT = 2.0f;
+	private static final int PULS_DELAY_DEFAULT = MainZap.inTicks(1200);
+	private static final float COLLAPS_UPSPEED = 0.015f;
+	private static final float COLLAPS_DELAY_REDUCE = 0.14f;
+	private static final int PORTALSPARKS_PER_TICK_DEFAULT = 20;
+	private static final int RAND_ADD_PORTALSPARK_COLLAPSE = 25;
 	private static final float SCALE = 5.0f;
 	private static final int IMAGE_SIZE_X = (int) (TEXTURE.getWidth() * SCALE);
 	private static final int IMAGE_SIZE_Y = (int) (TEXTURE.getHeight() * SCALE);
@@ -25,10 +33,24 @@ public class Stargate implements PaintingTask {
 	private int posY;
 	private int movedX;
 	private int movedY;
+	private int portalSparksPerTick = PORTALSPARKS_PER_TICK_DEFAULT;
+	private float pulsSpeed = PULSSPEED_DEFAULT;
+	private float pulsDelay = PULS_DELAY_DEFAULT;
+	private int timeToNextPuls = MainZap.rand((int) pulsDelay);
+	private boolean collapsing = false;
+	private boolean collapsed = false;
 
 	private StargateConnector[] connectors = new StargateConnector[8];
+	private ScheduledList<StargatePortalspark> portalLightnings = new ScheduledList<StargatePortalspark>();
+	private ScheduledList<StargatePuls> portalPulses = new ScheduledList<StargatePuls>();
 
-	public Stargate() {
+	public Stargate(int locX, int locY) {
+
+		posX = locX;
+		posY = locY;
+
+		movedX = (int) (locX - ((TEXTURE.getWidth() / 2) * SCALE));
+		movedY = (int) (locY - ((TEXTURE.getHeight() / 2) * SCALE));
 
 		connectors[0] = new StargateConnector(0);
 		connectors[1] = new StargateConnector(0);
@@ -38,6 +60,8 @@ public class Stargate implements PaintingTask {
 		connectors[5] = new StargateConnector(0);
 		connectors[6] = new StargateConnector(0);
 		connectors[7] = new StargateConnector(0);
+
+		positionConnectors(); // muss vor sparks-init kommen
 
 		connectors[0].connect(connectors[1]);
 		connectors[1].connect(connectors[2]);
@@ -52,21 +76,29 @@ public class Stargate implements PaintingTask {
 			if (c != null)
 				c.register();
 
-		positionConnectors();
 	}
 
 	@Override
 	public void paint(Graphics2D g) {
 
-		if (MainZap.generalAntialize)
+		if (MainZap.generalAntialize) {
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		}
+
+		synchronized (portalPulses) {
+			for (StargatePuls p : portalPulses)
+				p.paint(g);
+		}
+
+		if (MainZap.fancyGraphics)
+			synchronized (portalLightnings) {
+				for (StargatePortalspark s : portalLightnings)
+					s.paint(g);
+			}
 
 		g.translate(movedX, movedY);
 		g.drawImage(TEXTURE, 0, 0, IMAGE_SIZE_X, IMAGE_SIZE_Y, null);
 		g.translate(-movedX, -movedY);
-
-		if (MainZap.generalAntialize)
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
 		if (MainZap.fancyGraphics)
 			g.setColor(COLOR_CONNECTION_DARK);
@@ -79,6 +111,114 @@ public class Stargate implements PaintingTask {
 				g.drawLine(c.getLocX(), c.getLocY(), c.getConnection().getLocX(), c.getConnection().getLocY());
 			}
 		}
+
+		if (MainZap.generalAntialize) {
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		}
+	}
+
+	@Override
+	public void update() {
+
+		// Kollaps-update
+		if (collapsing) {
+
+			pulsDelay -= COLLAPS_DELAY_REDUCE;
+			pulsSpeed += COLLAPS_UPSPEED;
+			if (MainZap.rand(RAND_ADD_PORTALSPARK_COLLAPSE) == 0)
+				portalSparksPerTick++;
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			// &&& ne GRenze einbauen vllt (pulsDelay < 21), ab der sich der Bildschirm
+			// verändert und man in das nächste Level gezogen wird
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			if (pulsDelay < 0) {
+				portalPulses.schedClear();
+				collapsed = true;
+				collapsing = false;
+			}
+		}
+
+		// Blitze
+		if (MainZap.fancyGraphics)
+			synchronized (portalLightnings) {
+				// update und remove
+				for (StargatePortalspark s : portalLightnings) {
+					s.update();
+					if (s.faded())
+						portalLightnings.schedRemove(s);
+				}
+
+				// add
+				for (int i = 0; i != portalSparksPerTick; i++)
+					portalLightnings.schedAdd(new StargatePortalspark(posX, posY));
+
+				// flush
+				portalLightnings.update();
+			}
+
+		// Impulse
+		if (!collapsed)
+			synchronized (portalPulses) {
+				// update unt remove
+				for (StargatePuls p : portalPulses) {
+					p.update();
+					if (p.isDone())
+						portalPulses.schedRemove(p);
+				}
+
+				// add
+				if (timeToNextPuls == 0) {
+					timeToNextPuls = (int) pulsDelay;
+					portalPulses.add(new StargatePuls(pulsSpeed, posX, posY));
+				} else
+					timeToNextPuls--;
+
+				portalPulses.update();
+			}
+		else
+			synchronized (portalPulses) {
+				portalPulses.update();
+			}
 
 	}
 
@@ -105,6 +245,11 @@ public class Stargate implements PaintingTask {
 
 	}
 
+	public void collapse() {
+		System.out.println("collapsing");
+		collapsing = true;
+	}
+
 	public int getPosX() {
 		return posX;
 	}
@@ -112,4 +257,5 @@ public class Stargate implements PaintingTask {
 	public int getPosY() {
 		return posY;
 	}
+
 }

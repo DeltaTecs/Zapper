@@ -25,8 +25,12 @@ public class Stage11 extends Stage {
 	private static final int SPAWN_RATE_RELOAD_PACK = MainZap.getMainLoop().inTicks(4000);
 
 	private SpawnScheduler[] spawner;
+	private Stargate gate;
 	private ArrayList<CombatObject> enemys = new ArrayList<CombatObject>();
 	private ArrayList<CombatObject> friendsAndPlayer = new ArrayList<CombatObject>();
+
+	// ### DEBUG
+	private int timeToCollapse = MainZap.inTicks(2000);
 
 	public Stage11() {
 		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 2000);
@@ -43,8 +47,7 @@ public class Stage11 extends Stage {
 		applyRemoveTask(friendsAndPlayer, MainZap.getPlayer());
 
 		// Stargate spawnen
-		Stargate gate = new Stargate();
-		gate.setPosition(1500, 1500);
+		gate = new Stargate(1500, 1500);
 		MainZap.getMap().addPaintElement(gate, true);
 		getPaintingTasks().add(gate); // manuelles registrieren
 
@@ -56,6 +59,13 @@ public class Stage11 extends Stage {
 		for (SpawnScheduler s : spawner)
 			s.update();
 
+		gate.update();
+
+		if (timeToCollapse == 0) {
+			timeToCollapse = -1;
+			gate.collapse();
+		} else if (timeToCollapse > 0)
+			timeToCollapse--;
 	}
 
 }
