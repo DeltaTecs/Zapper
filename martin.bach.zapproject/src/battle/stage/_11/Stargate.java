@@ -7,7 +7,10 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
+import battle.stage.StageManager;
 import corecase.MainZap;
+import gui.Hud;
+import gui.HudLightningEffect;
 import io.TextureBuffer;
 import lib.PaintingTask;
 import lib.ScheduledList;
@@ -22,6 +25,7 @@ public class Stargate implements PaintingTask, Updateable {
 	private static final float COLLAPS_DELAY_REDUCE = 0.14f;
 	private static final int PORTALSPARKS_PER_TICK_DEFAULT = 20;
 	private static final int RAND_ADD_PORTALSPARK_COLLAPSE = 25;
+	private static final int RAND_RESET_TP_BLENDING = MainZap.inTicks(800);
 	private static final float SCALE = 5.0f;
 	private static final int IMAGE_SIZE_X = (int) (TEXTURE.getWidth() * SCALE);
 	private static final int IMAGE_SIZE_Y = (int) (TEXTURE.getHeight() * SCALE);
@@ -120,6 +124,18 @@ public class Stargate implements PaintingTask, Updateable {
 	@Override
 	public void update() {
 
+		// Prüfen ob alle Conectoren nochda
+		if (!collapsing && !collapsed) {
+			boolean oneALive = false;
+			for (StargateConnector c : connectors) {
+				if (c.isAlive())
+					oneALive = true;
+			}
+
+			if (!oneALive)
+				collapse();
+
+		}
 		// Kollaps-update
 		if (collapsing) {
 
@@ -128,53 +144,15 @@ public class Stargate implements PaintingTask, Updateable {
 			if (MainZap.rand(RAND_ADD_PORTALSPARK_COLLAPSE) == 0)
 				portalSparksPerTick++;
 
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			// &&& ne GRenze einbauen vllt (pulsDelay < 21), ab der sich der Bildschirm
-			// verändert und man in das nächste Level gezogen wird
+			if (pulsDelay < 45 && Hud.getLightningEffect() == null && MainZap.fancyGraphics)
+				Hud.setLightningEffect(new HudLightningEffect());
 
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			if (pulsDelay < 0) {
 				portalPulses.schedClear();
 				collapsed = true;
 				collapsing = false;
+				Hud.setLightningEffect(null);
+				StageManager.setUp(12);
 			}
 		}
 
@@ -220,6 +198,11 @@ public class Stargate implements PaintingTask, Updateable {
 				portalPulses.update();
 			}
 
+		// Hud-Effekte: Spieler blenden
+		if (collapsing)
+			if (MainZap.rand(RAND_RESET_TP_BLENDING) == 0)
+				Hud.resetPortalBlending();
+
 	}
 
 	public void setPosition(int x, int y) {
@@ -246,8 +229,8 @@ public class Stargate implements PaintingTask, Updateable {
 	}
 
 	public void collapse() {
-		System.out.println("collapsing");
 		collapsing = true;
+		Hud.resetPortalBlending();
 	}
 
 	public int getPosX() {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import battle.enemy.Enemy;
+import battle.stage.StageManager;
 import corecase.MainZap;
 import gui.extention.Shocking;
 import lib.PaintingTask;
@@ -60,10 +61,12 @@ public class Map implements PaintingTask, Updateable {
 		// Listen Buffern, falls Paint/calc getrennt
 		if (MainZap.PAINT_CALC_THREAD_SPLIT) {
 
-			ArrayList<Rectangle> backgroundParticles = new ArrayList<Rectangle>(this.backgroundParticles);
-			g.setColor(new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 30));
-			for (Rectangle r : backgroundParticles) {
-				g.fillRect(r.x, r.y, r.width, r.height);
+			if (StageManager.getActiveStage().getLvl() != 12) {
+				ArrayList<Rectangle> backgroundParticles = new ArrayList<Rectangle>(this.backgroundParticles);
+				g.setColor(new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 30));
+				for (Rectangle r : backgroundParticles)
+					g.fillRect(r.x, r.y, r.width, r.height);
+
 			}
 
 			ArrayList<PaintingTask> backgroundPaintElements = new ArrayList<PaintingTask>(this.backgroundPaintElements);
@@ -95,9 +98,10 @@ public class Map implements PaintingTask, Updateable {
 
 		} else {
 
-			g.setColor(new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 30));
-			for (Rectangle r : backgroundParticles) {
-				g.fillRect(r.x, r.y, r.width, r.height);
+			if (StageManager.getActiveStage().getLvl() != 12) {
+				g.setColor(new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 30));
+				for (Rectangle r : backgroundParticles)
+					g.fillRect(r.x, r.y, r.width, r.height);
 			}
 
 			// Hintergrund-Objekte zeichnen

@@ -55,9 +55,9 @@ public class WarpInEffect extends Effect {
 		this.aimX = host.getPosX();
 		this.aimY = host.getPosY();
 		velocity = new SpeedVector(0, 0);
-		velocity.aimFor(this.aimX, this.aimY, WARP_SPEED, aimX, aimX);
+		velocity.aimFor(this.aimX, this.aimY, WARP_SPEED, aimX, aimY);
 		host.setPosition(this.aimX - (DURATION * velocity.getX()), this.aimY - (DURATION * velocity.getY()));
-		host.getVelocity().aimFor(this.aimX, this.aimY, host.getSpeed(), aimX, aimX);
+		host.getVelocity().aimFor(this.aimX, this.aimY, host.getSpeed(), aimX, aimY);
 		startX = host.getPosX();
 		startY = host.getPosY();
 		this.host = host;

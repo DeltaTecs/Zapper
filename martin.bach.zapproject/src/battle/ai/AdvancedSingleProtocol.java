@@ -39,6 +39,7 @@ public class AdvancedSingleProtocol extends AiProtocol {
 
 	// Was tun wenn ohne Lock?
 	private FindLockAction lockAction = FindLockAction.LOCK_ENEMYS_INRANGE;
+	private boolean noAlternativeLock = false;
 
 	private int timeToNextMovementAction = 2;
 	private int combatFollowupCooldown = 0;
@@ -139,7 +140,7 @@ public class AdvancedSingleProtocol extends AiProtocol {
 
 		if (getLockOn() == null) { // Kein Lock
 
-			if (!tryLockOn()) // Nochmal suchen
+			if (!tryLockOn() && !noAlternativeLock && lockAction != FindLockAction.NO_AUTO_LOCK) // Nochmal suchen
 				setLockOn(searchForLock());
 
 		} else { // Hat Lock
@@ -586,6 +587,14 @@ public class AdvancedSingleProtocol extends AiProtocol {
 
 	public boolean isAncCrowdEnabled() {
 		return ancCrowdEnabled;
+	}
+
+	public boolean isNoAlternativeLock() {
+		return noAlternativeLock;
+	}
+
+	public void setNoAlternativeLock(boolean noAlternativeLock) {
+		this.noAlternativeLock = noAlternativeLock;
 	}
 
 	@Override

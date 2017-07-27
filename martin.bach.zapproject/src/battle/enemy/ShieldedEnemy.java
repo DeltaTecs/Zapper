@@ -1,5 +1,6 @@
 package battle.enemy;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -121,6 +122,7 @@ public class ShieldedEnemy extends Enemy {
 	@Override
 	public void paint(Graphics2D g) {
 		super.paint(g);
+		g.setStroke(new BasicStroke(1));
 
 		if (shield <= 0)
 			return; // Schild down

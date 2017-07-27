@@ -19,7 +19,8 @@ public class Frame extends JFrame {
 
 	public static final int SIZE = 650;
 	public static final int HALF_SCREEN_SIZE = (SIZE / 2);
-
+	public static final int BUFFER_AMOUNT = 2;
+	
 	private BufferStrategy bufferStrategy;
 
 	private ArrayList<ClickableObject> coreClickables = new ArrayList<ClickableObject>();
@@ -35,7 +36,7 @@ public class Frame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		repaint();
-		super.createBufferStrategy(2);
+		super.createBufferStrategy(BUFFER_AMOUNT);
 		bufferStrategy = super.getBufferStrategy();
 		setIgnoreRepaint(true);
 		setLocationRelativeTo(null);

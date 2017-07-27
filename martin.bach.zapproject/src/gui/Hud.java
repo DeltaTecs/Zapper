@@ -28,6 +28,7 @@ public abstract class Hud {
 	private static final BufferedImage LVL_UP_TEXTURE_R = TextureBuffer.get(TextureBuffer.NAME_BUTTON_LVL_UP_ROUND);
 	private static final BufferedImage LVL_UP_TEXTURE_C = TextureBuffer.get(TextureBuffer.NAME_BUTTON_LVL_UP_CORNER);
 	private static final float LVL_UP_HIDDEN_ALPHA = 0.2f;
+	private static final float TP_BLEND_ALPHA_REMOVE = 2.0f;
 	private static final Color COLOR_SHOP = new Color(0, 0, 93, 180);
 	private static final Stroke STROKE_SHOP = new BasicStroke(5);
 	private static final Font FONT_SHOP = new Font("Arial", Font.BOLD, 36);
@@ -46,7 +47,9 @@ public abstract class Hud {
 	private static int lvlUpSignStatusTime = 0;
 	private static boolean lvlUpSignVisible = false;
 	private static ClickableObject clickObj;
-	private static int blendAlpha = 0;
+	private static int levelSwitchBlendAlpha = 0;
+	private static float tpBlendAlpha = 0;
+	private static HudLightningEffect lightningEffect = null;
 	private static boolean shopIconVisible = false;
 	private static float shopIconX = 0;
 	private static float shopBackgroundLength = WIDTH_SHOP;
@@ -91,10 +94,10 @@ public abstract class Hud {
 		public void paint(Graphics2D g) {
 
 			if (MainZap.getPlayer().isWarping()) {
-				if (blendAlpha != 0) {
-					if (blendAlpha > 255)
-						blendAlpha = 255;
-					g.setColor(new Color(255, 255, 255, blendAlpha));
+				if (levelSwitchBlendAlpha != 0) {
+					if (levelSwitchBlendAlpha > 255)
+						levelSwitchBlendAlpha = 255;
+					g.setColor(new Color(255, 255, 255, levelSwitchBlendAlpha));
 					g.fillRect(0, 0, Frame.SIZE, Frame.SIZE);
 				}
 				return;
@@ -102,18 +105,15 @@ public abstract class Hud {
 
 			if (StageManager.getActiveStage() == null || !MainZap.getPlayer().isAlive())
 				return; // noch nicht initialisiert, oder tot, oder im warp
-			
+
 			// ----- Hit-Indicator
 			if (MainZap.fancyGraphics)
 				PlayerDamageIndicator.paint(g);
-			
-			
-			
+
 			// ----- Spieler - Score
 			g.setColor(new Color(COLOR_SCORE[0], COLOR_SCORE[1], COLOR_SCORE[2], (int) alphaScore));
 			g.setFont(FONT_BIG);
-			g.drawString(MainZap.getScore() + " x" + StageManager.getActiveStage().getLvl() + "", 6,
-					Frame.SIZE - 6);
+			g.drawString(MainZap.getScore() + " x" + StageManager.getActiveStage().getLvl() + "", 6, Frame.SIZE - 6);
 
 			// ----- Spieler - Knette
 			if (MainZap.generalAntialize) {
@@ -177,6 +177,16 @@ public abstract class Hud {
 			// --------- Fähigkeits-Aktivierungs-Knopf
 			ExtentionManager.paint(g);
 
+			// ---------- Mögliche Blende durch Portal Effekt (lvl 11)
+			if (tpBlendAlpha > 3.0f) {
+				g.setColor(new Color(255, 255, 255, (int) tpBlendAlpha));
+				g.fillRect(0, 0, Frame.SIZE, Frame.SIZE);
+			}
+
+			// ----------- Blitze von Portal Effekt (lvl 11)
+			if (lightningEffect != null && MainZap.fancyGraphics)
+				lightningEffect.paint(g);
+
 			// --------- DEBUG Stuff
 			if (MainZap.debug) {
 				// FPS-Anzeige
@@ -207,18 +217,22 @@ public abstract class Hud {
 	}
 
 	public static void pushBlending() {
-		blendAlpha += 5;
+		levelSwitchBlendAlpha += 5;
+	}
+
+	public static void resetPortalBlending() {
+		tpBlendAlpha = 250;
 	}
 
 	public static void setBlending(int a) {
-		blendAlpha = a;
+		levelSwitchBlendAlpha = a;
 	}
 
 	public static void update() {
 
 		if (StageManager.getActiveStage() == null)
 			return; // Noch nicht initialisiert
-		
+
 		// ----- Hit-Indicator
 		if (MainZap.fancyGraphics)
 			PlayerDamageIndicator.update();
@@ -275,6 +289,17 @@ public abstract class Hud {
 		ExtentionManager.update();
 		// ---
 
+		// --- Portal-Effekt-Blende -----
+		if (tpBlendAlpha > 0) {
+			tpBlendAlpha -= TP_BLEND_ALPHA_REMOVE;
+			if (tpBlendAlpha < 0)
+				tpBlendAlpha = 0;
+		}
+
+		// --- Blitze von Portal Effekt (lvl 11)
+		if (lightningEffect != null && MainZap.fancyGraphics)
+			lightningEffect.update();
+
 	}
 
 	public static PaintingTask getPaintingTask() {
@@ -291,6 +316,14 @@ public abstract class Hud {
 
 	public static boolean clickInShopButton(int tx, int ty) {
 		return CLICK_OPENSHOP_AREA.contains(tx, ty);
+	}
+
+	public static HudLightningEffect getLightningEffect() {
+		return lightningEffect;
+	}
+
+	public static void setLightningEffect(HudLightningEffect lightningEffect) {
+		Hud.lightningEffect = lightningEffect;
 	}
 
 }

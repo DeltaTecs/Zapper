@@ -22,6 +22,7 @@ public class SpawnScheduler implements Updateable {
 	private boolean spawningPacks;
 
 	private Rectangle range;
+	private Rectangle prohibitedArea = null;
 	private PackType packType;
 	private InteractiveObject objectPattern;
 	private ArrayList<SpawnEvent> spawnEvents = new ArrayList<SpawnEvent>();
@@ -100,6 +101,11 @@ public class SpawnScheduler implements Updateable {
 			y = MainZap.rand(Map.SIZE);
 		}
 
+		if (prohibitedArea != null && prohibitedArea.contains(x, y)) {
+			spawn();
+			return;
+		}
+
 		if (spawningPacks) { // nur Packs spawnen -> Typ != null
 			CollectableSpawner.spawn(packType, x, y, amountUpdateRunnable);
 		} else { // nur Objekte spawnen -> pattern != null
@@ -161,5 +167,15 @@ public class SpawnScheduler implements Updateable {
 	public ArrayList<SpawnEvent> getSpawnEvents() {
 		return spawnEvents;
 	}
+
+	public Rectangle getProhibitedArea() {
+		return prohibitedArea;
+	}
+
+	public void setProhibitedArea(Rectangle prohibitedArea) {
+		this.prohibitedArea = prohibitedArea;
+	}
+	
+	
 
 }
