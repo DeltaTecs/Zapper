@@ -7,6 +7,7 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
+import battle.stage.Stage11;
 import battle.stage.StageManager;
 import corecase.MainZap;
 import gui.Hud;
@@ -47,9 +48,11 @@ public class Stargate implements PaintingTask, Updateable {
 	private StargateConnector[] connectors = new StargateConnector[8];
 	private ScheduledList<StargatePortalspark> portalLightnings = new ScheduledList<StargatePortalspark>();
 	private ScheduledList<StargatePuls> portalPulses = new ScheduledList<StargatePuls>();
+	private Stage11 stage;
 
-	public Stargate(int locX, int locY) {
+	public Stargate(int locX, int locY, Stage11 stage) {
 
+		this.stage = stage;
 		posX = locX;
 		posY = locY;
 
@@ -94,7 +97,7 @@ public class Stargate implements PaintingTask, Updateable {
 				p.paint(g);
 		}
 
-		if (MainZap.fancyGraphics)
+		if (MainZap.fancyGraphics && !collapsed)
 			synchronized (portalLightnings) {
 				for (StargatePortalspark s : portalLightnings)
 					s.paint(g);
@@ -147,12 +150,16 @@ public class Stargate implements PaintingTask, Updateable {
 			if (pulsDelay < 45 && Hud.getLightningEffect() == null && MainZap.fancyGraphics)
 				Hud.setLightningEffect(new HudLightningEffect());
 
-			if (pulsDelay < 0) {
+			if (pulsDelay < 50 && !stage.isEnemysDespawned())
+				stage.despawnEnemys();
+
+			if (pulsDelay < 0) { // Teleport
 				portalPulses.schedClear();
 				collapsed = true;
 				collapsing = false;
 				Hud.setLightningEffect(null);
-				StageManager.setUp(12);
+				if (MainZap.getPlayer().isAlive())
+					StageManager.setUp(12);
 			}
 		}
 
@@ -226,6 +233,10 @@ public class Stargate implements PaintingTask, Updateable {
 		connectors[6].setPosition(posX - 267, posY - 151);
 		connectors[7].setPosition(posX - 95, posY - 284);
 
+	}
+
+	public boolean isCollapsing() {
+		return collapsing;
 	}
 
 	public void collapse() {

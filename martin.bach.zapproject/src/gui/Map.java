@@ -61,7 +61,7 @@ public class Map implements PaintingTask, Updateable {
 		// Listen Buffern, falls Paint/calc getrennt
 		if (MainZap.PAINT_CALC_THREAD_SPLIT) {
 
-			if (StageManager.getActiveStage().getLvl() != 12) {
+			if (StageManager.getActiveStage() != null && StageManager.getActiveStage().getLvl() != 12) {
 				ArrayList<Rectangle> backgroundParticles = new ArrayList<Rectangle>(this.backgroundParticles);
 				g.setColor(new Color(Color.BLACK.getRed(), Color.BLACK.getGreen(), Color.BLACK.getBlue(), 30));
 				for (Rectangle r : backgroundParticles)

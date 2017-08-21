@@ -15,6 +15,7 @@ import battle.stage._11.Stargate;
 import battle.stage._9.EnemyGamma0;
 import battle.stage._9.EnemyGamma1;
 import corecase.MainZap;
+import gui.Map;
 
 public class Stage11 extends Stage {
 
@@ -36,11 +37,11 @@ public class Stage11 extends Stage {
 	private static final Rectangle NO_UPGRADES_AREA = new Rectangle(1000, 1000, 1000, 1000);
 	private static final int ENEMY_SPAWN_X = 1500;
 	private static final int ENEMY_SPAWN_Y = 2000;
-	private static final int RAND_SPAWN_ENEMY_0 = MainZap.inTicks(8000);
-	private static final int RAND_SPAWN_ENEMY_1 = MainZap.inTicks(16000);
-	private static final int RAND_SPAWN_ENEMY_2 = MainZap.inTicks(16000);
-	private static final float RAND_SPPAWN_DECREASE_FAC = 0.9998f;
-	private static final int GAMMA_0_ASSISTANCE = 5;
+	private static final int RAND_SPAWN_ENEMY_0 = MainZap.inTicks(6000);
+	private static final int RAND_SPAWN_ENEMY_1 = MainZap.inTicks(14000);
+	private static final int RAND_SPAWN_ENEMY_2 = MainZap.inTicks(14000);
+	private static final float RAND_SPPAWN_DECREASE_FAC = 0.9997f;
+	private static final int GAMMA_0_ASSISTANCE = 12;
 
 	private SpawnScheduler[] spawner;
 	private Stargate gate;
@@ -49,22 +50,7 @@ public class Stage11 extends Stage {
 	private float randSpawnEnemy0 = RAND_SPAWN_ENEMY_0;
 	private float randSpawnEnemy1 = RAND_SPAWN_ENEMY_1;
 	private float randSpawnEnemy2 = RAND_SPAWN_ENEMY_2;
-
-	// &&& BALANCING REQUIERED !!!!
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&
-	// &&& BALANCING REQUIERED !!!!
+	private boolean enemysDespawned = false;
 
 	public Stage11() {
 		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 2000);
@@ -96,7 +82,7 @@ public class Stage11 extends Stage {
 		}
 
 		// Stargate spawnen
-		gate = new Stargate(1500, 1500);
+		gate = new Stargate(1500, 1500, this);
 		MainZap.getMap().addPaintElement(gate, true);
 		getPaintingTasks().add(gate); // manuelles registrieren
 
@@ -110,7 +96,7 @@ public class Stage11 extends Stage {
 
 		gate.update();
 
-		if (!MainZap.getPlayer().isAlive())
+		if (!MainZap.getPlayer().isAlive() || gate.isCollapsing())
 			return;
 
 		randSpawnEnemy0 *= RAND_SPPAWN_DECREASE_FAC;
@@ -123,7 +109,12 @@ public class Stage11 extends Stage {
 			spawnEnemy(1);
 		if (rand((int) randSpawnEnemy2) == 0)
 			spawnEnemy(2);
+	}
 
+	public void despawnEnemys() { // panische Flucht
+		enemysDespawned = true;
+		for (CombatObject e : enemys)
+			((Enemy) e).warpOut(rand(Map.SIZE), rand(Map.SIZE), MainZap.inTicks(500));
 	}
 
 	private void spawnEnemy(int type) {
@@ -156,6 +147,10 @@ public class Stage11 extends Stage {
 		e.warpIn(ENEMY_SPAWN_X + dx, ENEMY_SPAWN_Y + 1024);
 		// e.setNoWaitAfterWarp(true);
 		e.register();
+	}
+
+	public boolean isEnemysDespawned() {
+		return enemysDespawned;
 	}
 
 }

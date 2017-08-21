@@ -68,15 +68,16 @@ public class ScheduledList<E extends Object> extends ArrayList<E> {
 			clearNext = false;
 		}
 		
+		if (!addList.isEmpty()) {
+			addAll(addList);
+			addList.clear();
+		}
+		
 		if (!removeList.isEmpty()) {
 			removeAll(removeList);
 			removeList.clear();
 		}
 
-		if (!addList.isEmpty()) {
-			addAll(addList);
-			addList.clear();
-		}
 	}
 
 	public ArrayList<E> getAddList() {

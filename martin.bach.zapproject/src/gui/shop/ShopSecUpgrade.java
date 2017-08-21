@@ -703,7 +703,7 @@ public abstract class ShopSecUpgrade {
 		return;
 	}
 
-	private static void purchaseUpgrade(int index) {
+	public static void purchaseUpgrade(int index) {
 		if (priceTable[activeUpgrades[index]] > MainZap.getCrystals() || activeUpgrades[index] == 5)
 			return; // Nicht genug Knete oder alle schon gekauft
 

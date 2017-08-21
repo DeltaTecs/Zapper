@@ -1,1 +1,1 @@
-1.0;true;true;false;false;false
+1.2;true;true;false;true;false

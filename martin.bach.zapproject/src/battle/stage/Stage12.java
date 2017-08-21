@@ -2,8 +2,7 @@ package battle.stage;
 
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
-import battle.stage._12.DeltaController;
-import battle.stage._12.EnemyDeltaPart;
+import battle.stage._12.DeltaEnemy;
 import corecase.MainZap;
 
 public class Stage12 extends Stage {
@@ -23,8 +22,8 @@ public class Stage12 extends Stage {
 	private static final int SPAWN_RATE_RELOAD_PACK = MainZap.getMainLoop().inTicks(4000);
 
 	private SpawnScheduler[] spawner;
-	private int timeTillSplit = MainZap.inTicks(3000);
-	EnemyDeltaPart deltatest;
+	private int timeTillSplit = MainZap.inTicks(1000);
+	DeltaEnemy deltatest;
 
 	public Stage12() {
 		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 1500);
@@ -37,13 +36,9 @@ public class Stage12 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_RELOAD_PACK, PackType.RELOAD),
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED) };
 
-		deltatest = new EnemyDeltaPart(800);
-		deltatest.setPosition(1500, 1300);
-		deltatest.setController(new DeltaController(0, 0, 0));
-		deltatest.getController().link(deltatest);
-		deltatest.getController().update();
-		deltatest.setRotation(0);
+		deltatest = new DeltaEnemy(500, true);
 		deltatest.register();
+		deltatest.setPosition(1500, 1500);
 
 	}
 
@@ -51,7 +46,7 @@ public class Stage12 extends Stage {
 	public void update() {
 
 		if (timeTillSplit == 0) {
-			deltatest.getController().split(1);
+			// deltatest.breakAt((byte) 2);
 			timeTillSplit = -1;
 		} else if (timeTillSplit > 0)
 			timeTillSplit--;

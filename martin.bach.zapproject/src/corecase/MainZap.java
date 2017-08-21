@@ -19,6 +19,7 @@ import gui.extention.ExtentionManager;
 import gui.screens.end.EndScreen;
 import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
+import gui.shop.ShopSecUpgrade;
 import gui.shop.meta.ShipStartConfig;
 import ingameobjects.Player;
 import io.CashReader;
@@ -29,7 +30,7 @@ import sched.DynamicUpdateLoop;
 
 public abstract class MainZap {
 
-	public static final String VERSION = "0.9.8";
+	public static final String VERSION = "0.9.9";
 	public static final String DIRECTORY = determineDirectory();
 
 	public static final boolean FINAL_RUN = false || !inWorkspace();
@@ -66,7 +67,7 @@ public abstract class MainZap {
 	private static int crystalsEverEarned = 10;
 
 	public static void main(String[] args) throws InterruptedException {
-		
+
 		TextureBuffer.load();
 		ShipStartConfig.loadAll();
 
@@ -180,7 +181,13 @@ public abstract class MainZap {
 			StageManager.setUp(12);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
 			crystals = 8000;
-			ExtentionManager.setExtention(Extention.SHOCK);
+			ShopSecUpgrade.purchaseUpgrade(0);
+			ShopSecUpgrade.purchaseUpgrade(0);
+			ShopSecUpgrade.purchaseUpgrade(1);
+			ShopSecUpgrade.purchaseUpgrade(1);
+			ShopSecUpgrade.purchaseUpgrade(3);
+			ShopSecUpgrade.purchaseUpgrade(3);
+			ExtentionManager.setExtention(Extention.MIRROR);
 		}
 		Hud.setUpClickListener();
 		ExtentionManager.setUpClickListener();
@@ -539,6 +546,10 @@ public abstract class MainZap {
 
 	public static int getCrystalsEverEarned() {
 		return crystalsEverEarned;
+	}
+
+	public static double getRotation(double aim_dx, double aim_dy) {
+		return Math.PI - Math.atan2(aim_dx, aim_dy);
 	}
 
 }

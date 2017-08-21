@@ -17,7 +17,7 @@ public class StargateConnector extends Enemy {
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_STRUCTURE_STARGATE_CONNECTOR);
 	private static final float SCALE = 9;
 	private static final float RADIUS = 20;
-	private static final int HEALTH = 2000;
+	private static final int HEALTH = 3300;
 	private static final ExplosionEffectPattern EXPL_PATTERN = new ExplosionEffectPattern(30, 50);
 	private static final CollisionInformation COLL_INFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, false);

@@ -477,8 +477,6 @@ public class Enemy extends CombatObject implements Shockable {
 
 	public void setShootingAim(InteractiveObject shootingAim) {
 		this.shootingAim = shootingAim;
-		if (shootingAim != null)
-			System.out.println("");
 	}
 
 	public int getMaxHealth() {
@@ -604,5 +602,7 @@ public class Enemy extends CombatObject implements Shockable {
 			attachments.remove(e);
 		}
 	}
+	
+	
 
 }
