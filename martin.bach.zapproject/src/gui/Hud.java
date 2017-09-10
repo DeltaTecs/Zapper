@@ -35,6 +35,9 @@ public abstract class Hud {
 	private static final int SPACE_Y_SHOP = 30;
 	private static final int SPACE_X_SHOP = 5;
 	private static final int WIDTH_SHOP = 150;
+	private static final int BLACK_BLEND_MAX_ALPHA = 250;
+	private static final int BLACK_BLEND_PER_PUSH = 20;
+	private static final float BLACK_BLEND_SPEED = 10.0f;
 	private static final Polygon OUTLINE_SHOP = new Polygon(new int[] { 0, WIDTH_SHOP, WIDTH_SHOP, 40 },
 			new int[] { 0, 0, 40, 40 }, 4);
 	private static final float SHOP_BLEND_SPEED = 4;
@@ -43,6 +46,7 @@ public abstract class Hud {
 
 	private static float alphaScore = COLOR_SCORE[3];
 	private static float alphaCrystals = alphaScore;
+	private static float alphaBlackBlend = 0;
 	private static int lvlUpSignVisibleTime = MainZap.inTicks(800);
 	private static int lvlUpSignStatusTime = 0;
 	private static boolean lvlUpSignVisible = false;
@@ -102,6 +106,13 @@ public abstract class Hud {
 				}
 				return;
 			}
+
+			// -- Schwarze Blende, letzter Boss
+			if (alphaBlackBlend > 0) {
+				g.setColor(new Color(0, 0, 0, (int) (alphaBlackBlend)));
+				g.fillRect(0, 0, Frame.SIZE + 5, Frame.SIZE + 5);
+			}
+			// ---
 
 			if (StageManager.getActiveStage() == null || !MainZap.getPlayer().isAlive())
 				return; // noch nicht initialisiert, oder tot, oder im warp
@@ -300,6 +311,19 @@ public abstract class Hud {
 		if (lightningEffect != null && MainZap.fancyGraphics)
 			lightningEffect.update();
 
+		// --- Black Blende Letzter Boss --
+		if (alphaBlackBlend > 0) {
+			alphaBlackBlend -= BLACK_BLEND_SPEED;
+		}
+		if (alphaBlackBlend < 0)
+			alphaBlackBlend = 0;
+
+	}
+
+	public static void pushBlackBlending() {
+		alphaBlackBlend += BLACK_BLEND_PER_PUSH;
+		if (alphaBlackBlend > BLACK_BLEND_MAX_ALPHA)
+			alphaBlackBlend = BLACK_BLEND_MAX_ALPHA;
 	}
 
 	public static PaintingTask getPaintingTask() {

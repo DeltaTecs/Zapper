@@ -22,6 +22,7 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	private DeltaDummy[] dummys;
 	private double rotation;
 	private boolean[] partsAvailable;
+	private int partsRemaining;
 
 	public DeltaEnemy(int borderlen, boolean splitable) {
 		volume = borderlen * borderlen / 2;
@@ -44,13 +45,15 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 					(int) (volume * BASE_HP * 0.25f), this);
 			dummys[3] = new DeltaDummy(splitpos[6], splitpos[7], BASE_RADIUS * borderlen / 2, (byte) 4,
 					(int) (volume * BASE_HP * 0.25f), this);
+			partsRemaining = 4;
 
 		} else { // nur einer
-
+			partsRemaining = 1;
 			dummys = new DeltaDummy[1];
 			dummys[0] = new DeltaDummy(0, 0, BASE_RADIUS * borderlen, (byte) 3, (int) (volume * BASE_HP * 0.25f), this);
 		}
 
+		// Dummys registrieren
 		for (DeltaDummy d : dummys)
 			d.register();
 	}
@@ -58,9 +61,14 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	@Override
 	public void update() {
 
+		// Rotations-Update
 		// ### DEBUG
-//		rotation += 0.001;
-		outline.rotateByRadians((float) rotation);
+		rotation += 0.0002;
+		if (splitable && partsRemaining == 1)
+			outline.rotateByRadians((float) (rotation + Math.PI));
+		else
+			outline.rotateByRadians((float) rotation);
+		// DummyUpdate (Hitbox, etc)
 		updateDummyLocations();
 	}
 
@@ -70,7 +78,6 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 			double[] rotPos = WeaponPositioning.rotate(rotation, new Point((int) d.getDx(), (int) d.getDy()));
 			d.setPosition((float) rotPos[0] + posX, (float) rotPos[1] + posY);
 		}
-
 	}
 
 	@Override
@@ -83,26 +90,67 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 		g.fillPolygon(outline.getPolygon());
 		g.translate(-dx, -dy);
 
-		g.setColor(Color.GREEN);
-		for (DeltaDummy d : dummys) {
-			g.drawOval((int) (d.getPosX() - d.getRadius()), (int) (d.getPosY() - d.getRadius()),
-					(int) (2 * d.getRadius()), (int) (2 * d.getRadius()));
+		if (MainZap.debug) {
+			g.setColor(Color.GREEN);
+			int i = 0;
+			for (DeltaDummy d : dummys) {
+				if (partsAvailable[i])
+					g.drawOval((int) (d.getPosX() - d.getRadius()), (int) (d.getPosY() - d.getRadius()),
+							(int) (2 * d.getRadius()), (int) (2 * d.getRadius()));
+				i++;
+			}
 		}
 
 	}
 
-	public void breakAt(byte posId) {
+	public boolean breakAt(byte posId) {
 
 		if (splitable) {
-			partsAvailable[posId - 1] = false;
-			outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen, partsAvailable), 0, 0);
-			outline.rotateByRadians((float) rotation);
+
+			if (posId == 3) { // Mitte weggeholzt
+				if (partsRemaining == 1) { // Letztes Stück
+					die();
+					return true; // UnRegister genehmigt
+				}
+				// Sonst
+				// Irgendein anderes wegnehmen
+				for (int i = 0; i != partsAvailable.length; i++) {
+					if (i == 2) // Mittel-Teil
+						continue;
+					if (partsAvailable[i]) { // Nimm einfach immer das erst beste. Scheiß auf Random
+						partsAvailable[i] = false;
+						dummys[i].unRegister(); // Manuelle Löschung
+						break;
+					}
+				}
+				partsRemaining--;
+				outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen, partsAvailable), 0,
+						0);
+				outline.rotateByRadians((float) rotation);
+				return false; // UnRegister untersagt
+			} else {
+				partsAvailable[posId - 1] = false;
+				partsRemaining--;
+				outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen, partsAvailable), 0,
+						0);
+				outline.rotateByRadians((float) rotation);
+				return true; // UnRegister genehmigt
+			}
+
 		} else
 			die();
+		return true; // Löschung genehmigt
 
 	}
 
 	private void die() {
+		
+		for (int i = 0; i != dummys.length; i++)
+			if (partsAvailable[i]) {
+				partsAvailable[i] = false;
+				dummys[i].unRegister();
+			}
+		unRegister();
 
 	}
 

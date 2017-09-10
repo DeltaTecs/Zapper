@@ -28,8 +28,6 @@ public abstract class TriangleCalculation {
 				new Point(-(int) (borderlen / 2.0f), (int) heightToMid) };
 	}
 
-
-
 	/**
 	 * Gibt Rotierte Punkte für die Positionen von Split-Resultaten im Format (x0,
 	 * y0, x1, y1, ...), es sind insgesamt 4 Punkte
@@ -64,8 +62,8 @@ public abstract class TriangleCalculation {
 	public static float[] getSplitPositionSet(int baseBorderlen) {
 
 		float heightToMid = (float) (baseBorderlen / (4.0f * Math.tan(Math.PI / 3.0))); // tan im Nenner
-		return new float[] { 0, -(2.0f * heightToMid), -(baseBorderlen / 4), heightToMid, 0, 0,
-				(baseBorderlen / 4),  heightToMid };
+		return new float[] { 0, -(2.0f * heightToMid), -(baseBorderlen / 4), heightToMid, 0, 0, (baseBorderlen / 4),
+				heightToMid };
 	}
 
 	/**
@@ -79,19 +77,22 @@ public abstract class TriangleCalculation {
 
 		float totalHeight = (float) ((borderlen / 2.0f) * Math.tan(Math.PI / 3.0)); // tan im Zähler
 		float heightToMid = (float) (borderlen / (2.0f * Math.tan(Math.PI / 3.0))); // tan im Nenner
+		float heightToHalfBorderlen = (float) (Math.sin(Math.PI / 3) * borderlen * 0.5);
+		float heightFromMidToHalfBorderlen = heightToHalfBorderlen - heightToMid;
 		float heightFromMidToTop = totalHeight - heightToMid;
+		float widthToHalfBorderlenPoint = (float) (Math.tan(Math.PI / 6) * (totalHeight - heightToHalfBorderlen));
 
 		ArrayList<Point> points = new ArrayList<Point>();
 
-		if (availableParts[0] && false)
+		if (availableParts[0])
 			points.add(new Point(0, -(int) heightFromMidToTop));
-		points.add(new Point((int) (totalHeight / 4), 0));
-		if (availableParts[3] && false)
+		points.add(new Point((int) (widthToHalfBorderlenPoint), (int) -(heightFromMidToHalfBorderlen)));
+		if (availableParts[3])
 			points.add(new Point((int) (borderlen / 2), (int) heightToMid));
 		points.add(new Point(0, (int) heightToMid));
-		if (availableParts[1] && false)
+		if (availableParts[1])
 			points.add(new Point((int) -(borderlen / 2), (int) heightToMid));
-		points.add(new Point((int) -(totalHeight / 4), 0));
+		points.add(new Point((int) -(widthToHalfBorderlenPoint), (int) -(heightFromMidToHalfBorderlen)));
 
 		Point2D[] res = new Point2D[points.size()];
 		for (int i = 0; i != points.size(); i++)

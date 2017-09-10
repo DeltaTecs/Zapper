@@ -1,10 +1,18 @@
 package battle.stage._12;
 
+import java.awt.Color;
+
 import battle.projectile.Projectile;
+import battle.projectile.ProjectileDesign;
 import collision.Collideable;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
+import gui.Hud;
+import gui.PlayerDamageIndicator;
+import gui.extention.MirrorImage;
+import ingameobjects.Player;
+import lib.SpeedVector;
 
 /**
  * Ein Dreieck-Platzhalter, von dem es in jedem DeltaEnemy 4 geben sollte
@@ -16,10 +24,13 @@ import corecase.MainZap;
  */
 public class DeltaDummy implements Collideable {
 
+	private static final int DUMMY_DAMAGE = 5;
+
 	private float dx, dy, posX, posY, radius;
 	private CollisionInformation collInfo;
 	private byte id;
 	private int hp;
+	private int startHp;
 	private DeltaEnemy host;
 
 	public DeltaDummy(float dx, float dy, float radius, byte id, int hp, DeltaEnemy host) {
@@ -29,24 +40,35 @@ public class DeltaDummy implements Collideable {
 		this.radius = radius;
 		this.id = id;
 		this.hp = hp;
+		this.startHp = hp;
 		this.host = host;
 		collInfo = new CollisionInformation(radius, CollisionType.COLLIDE_WITH_FRIENDS, false);
 	}
 
 	@Override
 	public void collide(Collideable c) {
-		if (c instanceof Projectile) {
+
+		if (c instanceof Player) {
+			MainZap.getPlayer().trueDamage(DUMMY_DAMAGE);
+			Projectile pseudoProj = new Projectile(1000, new ProjectileDesign(2, false, Color.BLACK), DUMMY_DAMAGE * 10);
+			pseudoProj.setVelocity(new SpeedVector((int)(1000 * Math.random()) - 500, (int)(1000 * Math.random()) - 500));
+			PlayerDamageIndicator.register(pseudoProj);
+			Hud.pushBlackBlending();
+		} else if (c instanceof Projectile) {
 
 			if (hp > 0) { // Beschädigen
 				hp -= ((Projectile) c).getDamage();
 
 				if (hp <= 0) {
-					host.breakAt(id); // Wegbruch registrieren
-					unRegister(); // Dummy unregister
+					if (host.breakAt(id)) { // Wegbruch registrieren und nach Löschung fragen
+						unRegister(); // Dummy unregister
+					} else { // Löschung wurde untersagt. Werte zurücksetzen
+						hp = startHp;
+					}
 				}
 
 			}
-		}
+		} 
 	}
 
 	public void register() {

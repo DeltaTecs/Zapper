@@ -278,6 +278,13 @@ public class Player extends CombatObject {
 		}
 
 	}
+	
+	public void trueDamage(int damage) {
+		hp -= damage;
+		hpBar.remove(damage);
+		if (hp <= 0 && isAlive())
+			die(); // rip
+	}
 
 	private void die() {
 

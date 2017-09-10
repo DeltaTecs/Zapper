@@ -36,7 +36,7 @@ public class Stage12 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_RELOAD_PACK, PackType.RELOAD),
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED) };
 
-		deltatest = new DeltaEnemy(500, true);
+		deltatest = new DeltaEnemy(880, true);
 		deltatest.register();
 		deltatest.setPosition(1500, 1500);
 
