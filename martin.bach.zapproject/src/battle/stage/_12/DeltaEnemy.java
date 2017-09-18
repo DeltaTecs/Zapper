@@ -12,6 +12,7 @@ import lib.Updateable;
 
 public class DeltaEnemy implements PaintingTask, Updateable {
 
+	private static final int MAX_INSTANCES = 5;
 	private static final float BASE_RADIUS = 0.35f;
 	private static final float BASE_HP = 0.1f;
 
@@ -21,13 +22,15 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	private boolean splitable;
 	private DeltaDummy[] dummys;
 	private double rotation;
-	private boolean[] partsAvailable;
+	private boolean[] partsAvailable = new boolean[] { false };
 	private int partsRemaining;
+	private int instance;
 
-	public DeltaEnemy(int borderlen, boolean splitable) {
+	public DeltaEnemy(int borderlen, int instance) {
 		volume = borderlen * borderlen / 2;
 		this.borderlen = borderlen;
-		this.splitable = splitable;
+		splitable = instance < MAX_INSTANCES;
+		this.instance = instance;
 		outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen), 0, 0);
 
 		// Dummys einrichten
@@ -49,8 +52,9 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 
 		} else { // nur einer
 			partsRemaining = 1;
+			partsAvailable = new boolean[] { true };
 			dummys = new DeltaDummy[1];
-			dummys[0] = new DeltaDummy(0, 0, BASE_RADIUS * borderlen, (byte) 3, (int) (volume * BASE_HP * 0.25f), this);
+			dummys[0] = new DeltaDummy(0, 0, BASE_RADIUS * borderlen, (byte) 3, (int) (volume * BASE_HP), this);
 		}
 
 		// Dummys registrieren
@@ -62,8 +66,8 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	public void update() {
 
 		// Rotations-Update
-		// ### DEBUG
-		rotation += 0.0002;
+		if (instance == 0 && partsRemaining == 4)
+			rotation += 0.0004;
 		if (splitable && partsRemaining == 1)
 			outline.rotateByRadians((float) (rotation + Math.PI));
 		else
@@ -84,6 +88,8 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	public void paint(Graphics2D g) {
 
 		g.setColor(Color.BLACK);
+		if (!splitable && MainZap.debug) // ### DEBUG
+			g.setColor(Color.BLUE);
 		float dx = posX;
 		float dy = posY;
 		g.translate(dx, dy);
@@ -107,49 +113,74 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 
 		if (splitable) {
 
-			if (posId == 3) { // Mitte weggeholzt
-				if (partsRemaining == 1) { // Letztes Stück
-					die();
-					return true; // UnRegister genehmigt
-				}
-				// Sonst
-				// Irgendein anderes wegnehmen
+			if (partsRemaining == 2) {
+				// Noch Mitte und ein anderes über.
+				// -> beide breaken diese Instanz löschen
+
 				for (int i = 0; i != partsAvailable.length; i++) {
-					if (i == 2) // Mittel-Teil
-						continue;
-					if (partsAvailable[i]) { // Nimm einfach immer das erst beste. Scheiß auf Random
-						partsAvailable[i] = false;
-						dummys[i].unRegister(); // Manuelle Löschung
-						break;
-					}
+					if (partsAvailable[i]) // beide Teile rausfischen
+						replacePartAt((byte) (i + 1));
 				}
-				partsRemaining--;
-				outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen, partsAvailable), 0,
-						0);
-				outline.rotateByRadians((float) rotation);
-				return false; // UnRegister untersagt
-			} else {
-				partsAvailable[posId - 1] = false;
-				partsRemaining--;
-				outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen, partsAvailable), 0,
-						0);
-				outline.rotateByRadians((float) rotation);
-				return true; // UnRegister genehmigt
-			}
+
+				// Instanz beenden
+				unRegister();
+
+				return true; // egal. wird eh alles replaced.
+
+			} // else:
+
+			if (posId == 3) {
+				// Mitte weggeholzt, und noch min 2 andere Teile vorhanden
+				// -> ein random, nicht-Mittel-Stück breaken
+
+				// Alle breakable Parts finden
+				byte[] nonMiddleParts = new byte[] { 0, 0, 0 };
+				int partIndex = 0;
+				for (int i = 0; i != partsAvailable.length; i++)
+					if (partsAvailable[i] && dummys[i].getId() != 3) {
+						nonMiddleParts[partIndex] = dummys[i].getId();
+						partIndex++;
+					}
+
+				// Ein Part auswählen
+				byte selectedId = 0;
+				if (partIndex == 2) // zwei Teile gefunden
+					selectedId = (byte) (MainZap.rand(3) + 1);
+				else // drei Teile gefunden
+					selectedId = (byte) (MainZap.rand(3) + 1);
+
+				// Part breaken
+				replacePartAt(selectedId);
+				return false; // Es wurde eine alternativer Part replaced.
+
+			} // else:
+
+			// Außenstück weggeholzt
+			replacePartAt(posId);
+			return true; // Alles tuti
 
 		} else
 			die();
-		return true; // Löschung genehmigt
+		return true; // Reset verweigert (alles tuti)
 
 	}
 
+	private void replacePartAt(byte id) {
+		dummys[id - 1].replace();
+		partsAvailable[id - 1] = false;
+		partsRemaining--;
+		outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen, partsAvailable), 0, 0);
+		outline.rotateByRadians((float) rotation);
+	}
+
 	private void die() {
-		
+
 		for (int i = 0; i != dummys.length; i++)
 			if (partsAvailable[i]) {
 				partsAvailable[i] = false;
 				dummys[i].unRegister();
 			}
+		partsRemaining = 0;
 		unRegister();
 
 	}
@@ -187,6 +218,26 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 
 	public void setPosY(float posY) {
 		this.posY = posY;
+	}
+
+	public int getInstance() {
+		return instance;
+	}
+
+	public void setInstance(int instance) {
+		this.instance = instance;
+	}
+
+	public int getBorderlen() {
+		return borderlen;
+	}
+
+	public double getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(double rotation) {
+		this.rotation = rotation;
 	}
 
 }

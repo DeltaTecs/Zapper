@@ -35,9 +35,9 @@ public abstract class Hud {
 	private static final int SPACE_Y_SHOP = 30;
 	private static final int SPACE_X_SHOP = 5;
 	private static final int WIDTH_SHOP = 150;
-	private static final int BLACK_BLEND_MAX_ALPHA = 250;
-	private static final int BLACK_BLEND_PER_PUSH = 20;
-	private static final float BLACK_BLEND_SPEED = 10.0f;
+	private static final int BLACK_BLEND_DURATION = MainZap.inTicks(150);
+	private static final int BLACK_BLEND_MAX_ALPHA = 240;
+	private static final float BLACK_BLEND_SPEED = 12.0f;
 	private static final Polygon OUTLINE_SHOP = new Polygon(new int[] { 0, WIDTH_SHOP, WIDTH_SHOP, 40 },
 			new int[] { 0, 0, 40, 40 }, 4);
 	private static final float SHOP_BLEND_SPEED = 4;
@@ -47,6 +47,7 @@ public abstract class Hud {
 	private static float alphaScore = COLOR_SCORE[3];
 	private static float alphaCrystals = alphaScore;
 	private static float alphaBlackBlend = 0;
+	private static int durationBlackBlendRemaining = 0;
 	private static int lvlUpSignVisibleTime = MainZap.inTicks(800);
 	private static int lvlUpSignStatusTime = 0;
 	private static boolean lvlUpSignVisible = false;
@@ -212,6 +213,11 @@ public abstract class Hud {
 
 		}
 	};
+	
+	public static void pushBlackBlending() {
+		alphaBlackBlend = BLACK_BLEND_MAX_ALPHA;
+		durationBlackBlendRemaining = BLACK_BLEND_DURATION;
+	}
 
 	public static void pushScore() {
 		alphaScore += 50;
@@ -312,19 +318,17 @@ public abstract class Hud {
 			lightningEffect.update();
 
 		// --- Black Blende Letzter Boss --
-		if (alphaBlackBlend > 0) {
-			alphaBlackBlend -= BLACK_BLEND_SPEED;
-		}
-		if (alphaBlackBlend < 0)
-			alphaBlackBlend = 0;
+		if (durationBlackBlendRemaining == 0) {
+			if (alphaBlackBlend > 0) {
+				alphaBlackBlend -= BLACK_BLEND_SPEED;
+			}
+			if (alphaBlackBlend < 0)
+				alphaBlackBlend = 0;
+		} else
+			durationBlackBlendRemaining--;
 
 	}
 
-	public static void pushBlackBlending() {
-		alphaBlackBlend += BLACK_BLEND_PER_PUSH;
-		if (alphaBlackBlend > BLACK_BLEND_MAX_ALPHA)
-			alphaBlackBlend = BLACK_BLEND_MAX_ALPHA;
-	}
 
 	public static PaintingTask getPaintingTask() {
 		return PAINTING_TASK;

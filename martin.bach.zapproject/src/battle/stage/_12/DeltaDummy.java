@@ -10,7 +10,6 @@ import collision.CollisionType;
 import corecase.MainZap;
 import gui.Hud;
 import gui.PlayerDamageIndicator;
-import gui.extention.MirrorImage;
 import ingameobjects.Player;
 import lib.SpeedVector;
 
@@ -32,6 +31,7 @@ public class DeltaDummy implements Collideable {
 	private int hp;
 	private int startHp;
 	private DeltaEnemy host;
+	private boolean removed = false;
 
 	public DeltaDummy(float dx, float dy, float radius, byte id, int hp, DeltaEnemy host) {
 		super();
@@ -48,10 +48,15 @@ public class DeltaDummy implements Collideable {
 	@Override
 	public void collide(Collideable c) {
 
+		if (removed)
+			return;
+
 		if (c instanceof Player) {
 			MainZap.getPlayer().trueDamage(DUMMY_DAMAGE);
-			Projectile pseudoProj = new Projectile(1000, new ProjectileDesign(2, false, Color.BLACK), DUMMY_DAMAGE * 10);
-			pseudoProj.setVelocity(new SpeedVector((int)(1000 * Math.random()) - 500, (int)(1000 * Math.random()) - 500));
+			Projectile pseudoProj = new Projectile(1000, new ProjectileDesign(2, false, Color.BLACK),
+					DUMMY_DAMAGE * 10);
+			pseudoProj.setVelocity(
+					new SpeedVector((int) (1000 * Math.random()) - 500, (int) (1000 * Math.random()) - 500));
 			PlayerDamageIndicator.register(pseudoProj);
 			Hud.pushBlackBlending();
 		} else if (c instanceof Projectile) {
@@ -59,16 +64,23 @@ public class DeltaDummy implements Collideable {
 			if (hp > 0) { // Beschädigen
 				hp -= ((Projectile) c).getDamage();
 
-				if (hp <= 0) {
-					if (host.breakAt(id)) { // Wegbruch registrieren und nach Löschung fragen
-						unRegister(); // Dummy unregister
-					} else { // Löschung wurde untersagt. Werte zurücksetzen
-						hp = startHp;
-					}
-				}
+				if (hp <= 0)
+					if (!host.breakAt(id)) // Wegbruch registrieren und nach Reset fragen
+						hp = startHp; // Reset gefordert
 
 			}
-		} 
+		}
+	}
+
+	/**
+	 * Ersetzt Dummy durch neues DeltaEnemy
+	 */
+	public void replace() {
+		DeltaEnemy child = new DeltaEnemy(getHost().getBorderlen() / 2, getHost().getInstance() + 1);
+		child.setPosition(posX, posY);
+		child.setRotation((id != 3) ? (getHost().getRotation()) : (getHost().getRotation() + Math.PI));
+		child.register();
+		unRegister();
 	}
 
 	public void register() {
@@ -76,6 +88,7 @@ public class DeltaDummy implements Collideable {
 	}
 
 	public void unRegister() {
+		removed = true;
 		MainZap.getGrid().remove(this); // Dummy unregister
 	}
 

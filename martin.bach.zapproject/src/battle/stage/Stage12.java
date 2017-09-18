@@ -26,7 +26,7 @@ public class Stage12 extends Stage {
 	DeltaEnemy deltatest;
 
 	public Stage12() {
-		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1500, 1500);
+		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1900, 1900);
 		spawner = new SpawnScheduler[] { new SpawnScheduler(50, SPAWN_RATE_AMMO_SMALL, PackType.AMMO_SMALL),
 				new SpawnScheduler(50, SPAWN_RATE_AMMO_LARGE, PackType.AMMO_LARGE),
 				new SpawnScheduler(50, SPAWN_RATE_HP_PACK, PackType.HEALTH),
@@ -36,7 +36,7 @@ public class Stage12 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_RELOAD_PACK, PackType.RELOAD),
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED) };
 
-		deltatest = new DeltaEnemy(880, true);
+		deltatest = new DeltaEnemy(900, 0);
 		deltatest.register();
 		deltatest.setPosition(1500, 1500);
 

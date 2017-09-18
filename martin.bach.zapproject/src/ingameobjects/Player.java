@@ -70,6 +70,9 @@ public class Player extends CombatObject {
 			.get(TextureBuffer.NAME_COLLECT_RELOAD_UP_CORNER);
 	// ---
 
+	private static final boolean REALISTIC_PROJ_VELO = true;
+	private static final boolean ENABLE_WEAPONPOS_DEBUG = false;
+
 	private static final float SHIELD_FAC_SPEED = 0.2f;
 	private static final float SHIELD_FAC_RANGE = 2.5f;
 	private static final float SHIELD_FAC_DAMAGE = 3.0f;
@@ -85,7 +88,6 @@ public class Player extends CombatObject {
 
 	private static final int PROJ_RANGE_DEFAULT = 800;
 	private static final int HP_MAX_DEFAULT = 80000;
-	private static final boolean REALISTIC_PROJ_VELO = true;
 	private static final float BOOST_FAC_SPEED = 1.5f;
 	private static final float BOOST_FAC_BULLET_SPEED = 1.5f;
 	private static final float BOOST_FAC_BULLET_RANGE = 3f;
@@ -155,8 +157,8 @@ public class Player extends CombatObject {
 
 	public Player() {
 		super(collisionInfo, false, false, true); // false -> nicht an Stage gebunden;
-											// false -> egal ob BG oder FG
-											// true  -> ist Freund
+		// false -> egal ob BG oder FG
+		// true -> ist Freund
 		texture = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DEFAULT);
 		midSizeX = (int) ((texture.getWidth() * textureScale) / 2);
 		midSizeY = (int) ((texture.getHeight() * textureScale) / 2);
@@ -230,20 +232,22 @@ public class Player extends CombatObject {
 				g.fillRect(Frame.HALF_SCREEN_SIZE - 2 + (int) p.getX(), Frame.HALF_SCREEN_SIZE - 2 + (int) p.getY(), 4,
 						4);
 			}
-			if (new Random().nextInt(20) == 0) {
-				switch (new Random().nextInt(3)) {
-				case 0:
-					activeWeaponPositioning = singleWeaponPositioning;
-					break;
-				case 1:
-					activeWeaponPositioning = doubleWeaponPositioning;
-					break;
-				case 2:
-					activeWeaponPositioning = tripleWeaponPositioning;
-					break;
+
+			if (ENABLE_WEAPONPOS_DEBUG)
+				if (new Random().nextInt(20) == 0) {
+					switch (new Random().nextInt(3)) {
+					case 0:
+						activeWeaponPositioning = singleWeaponPositioning;
+						break;
+					case 1:
+						activeWeaponPositioning = doubleWeaponPositioning;
+						break;
+					case 2:
+						activeWeaponPositioning = tripleWeaponPositioning;
+						break;
+					}
+					nextWeapon = 0;
 				}
-				nextWeapon = 0;
-			}
 
 		}
 
@@ -278,7 +282,7 @@ public class Player extends CombatObject {
 		}
 
 	}
-	
+
 	public void trueDamage(int damage) {
 		hp -= damage;
 		hpBar.remove(damage);
