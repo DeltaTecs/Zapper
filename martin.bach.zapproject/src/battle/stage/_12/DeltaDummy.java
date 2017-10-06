@@ -1,17 +1,12 @@
 package battle.stage._12;
 
-import java.awt.Color;
-
 import battle.projectile.Projectile;
-import battle.projectile.ProjectileDesign;
 import collision.Collideable;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 import gui.Hud;
-import gui.PlayerDamageIndicator;
 import ingameobjects.Player;
-import lib.SpeedVector;
 
 /**
  * Ein Dreieck-Platzhalter, von dem es in jedem DeltaEnemy 4 geben sollte
@@ -23,7 +18,7 @@ import lib.SpeedVector;
  */
 public class DeltaDummy implements Collideable {
 
-	private static final int DUMMY_DAMAGE = 5;
+	public static final int DUMMY_DAMAGE = 5;
 
 	private float dx, dy, posX, posY, radius;
 	private CollisionInformation collInfo;
@@ -53,13 +48,13 @@ public class DeltaDummy implements Collideable {
 
 		if (c instanceof Player) {
 			MainZap.getPlayer().trueDamage(DUMMY_DAMAGE);
-			Projectile pseudoProj = new Projectile(1000, new ProjectileDesign(2, false, Color.BLACK),
-					DUMMY_DAMAGE * 10);
-			pseudoProj.setVelocity(
-					new SpeedVector((int) (1000 * Math.random()) - 500, (int) (1000 * Math.random()) - 500));
-			PlayerDamageIndicator.register(pseudoProj);
 			Hud.pushBlackBlending();
 		} else if (c instanceof Projectile) {
+
+			// Doppeltes Kollidieren verhindern
+			if (((Projectile) c).collided())
+				return;
+			((Projectile) c).setCollided(true);
 
 			if (hp > 0) { // Beschädigen
 				hp -= ((Projectile) c).getDamage();
@@ -75,12 +70,20 @@ public class DeltaDummy implements Collideable {
 	/**
 	 * Ersetzt Dummy durch neues DeltaEnemy
 	 */
-	public void replace() {
-		DeltaEnemy child = new DeltaEnemy(getHost().getBorderlen() / 2, getHost().getInstance() + 1);
+	public DeltaEnemy replace() {
+		DeltaEnemy child = new DeltaEnemy(getHost().getBorderlen() / 2, getHost().getInstance() + 1, host, id);
 		child.setPosition(posX, posY);
 		child.setRotation((id != 3) ? (getHost().getRotation()) : (getHost().getRotation() + Math.PI));
+		child.getCoordinator().subinit();
 		child.register();
+		if (getHost().getInstance() + 1 == 4) {
+			child.update(); // Update vor break pushen für pos init
+			child.breakAt((byte) 1);
+			child.breakAt((byte) 2);
+			child.breakAt((byte) 4); // Mitte wird automatisch mit gebreaked
+		}
 		unRegister();
+		return child;
 	}
 
 	public void register() {

@@ -131,7 +131,7 @@ public class Projectile extends InteractiveObject implements Shockable {
 		// Kollision
 		if (c instanceof Projectile)
 			return; // Keine Kollision mit andere Projektilen erwünscht
-
+		
 		unRegister();
 	}
 

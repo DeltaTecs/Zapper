@@ -111,10 +111,13 @@ public class Stage11 extends Stage {
 			spawnEnemy(2);
 	}
 
-	public void despawnEnemys() { // panische Flucht
+	public void despawnNpcs() { // panische Flucht
 		enemysDespawned = true;
 		for (CombatObject e : enemys)
 			((Enemy) e).warpOut(rand(Map.SIZE), rand(Map.SIZE), MainZap.inTicks(500));
+		for (CombatObject f : friendsAndPlayer)
+			if (f != MainZap.getPlayer())
+				((Enemy) f).warpOut(rand(Map.SIZE), rand(Map.SIZE), MainZap.inTicks(500));
 	}
 
 	private void spawnEnemy(int type) {

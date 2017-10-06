@@ -534,6 +534,7 @@ public abstract class MainZap {
 		return !path.contains("jar");
 	}
 
+
 	public static AffineTransform getScaleTransform() {
 		return scaleTransform;
 	}

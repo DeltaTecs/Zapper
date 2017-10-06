@@ -101,10 +101,9 @@ public class SpeedVector {
 	 */
 	public static SpeedVector equalize(SpeedVector aim, SpeedVector current, float force, float speed) {
 
-		float addX = current.getX() + aim.getX() * force;
-		float addY = current.getY() + aim.getY() * force;
-
-		current.aimFor(0, 0, speed, addX, addY);
+		current.setX(current.getX() + aim.getX() * force);
+		current.setY(current.getY() + aim.getY() * force);
+		current.scaleToLength(speed);
 
 		return current;
 	}

@@ -151,7 +151,7 @@ public class Stargate implements PaintingTask, Updateable {
 				Hud.setLightningEffect(new HudLightningEffect());
 
 			if (pulsDelay < 50 && !stage.isEnemysDespawned())
-				stage.despawnEnemys();
+				stage.despawnNpcs();
 
 			if (pulsDelay < 0) { // Teleport
 				portalPulses.schedClear();

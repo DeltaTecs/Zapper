@@ -8,6 +8,7 @@ import battle.WeaponPositioning;
 import corecase.MainZap;
 import lib.PaintingTask;
 import lib.RotateablePolygon;
+import lib.SpeedVector;
 import lib.Updateable;
 
 public class DeltaEnemy implements PaintingTask, Updateable {
@@ -15,24 +16,32 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	private static final int MAX_INSTANCES = 5;
 	private static final float BASE_RADIUS = 0.35f;
 	private static final float BASE_HP = 0.1f;
+	private static final float BASE_SPEED = 2800f;
 
 	private int volume, borderlen;
 	private float posX, posY;
+	private float speed;
+	private SpeedVector velocity;
 	private RotateablePolygon outline;
+	private boolean faceMovementDirection;
 	private boolean splitable;
 	private DeltaDummy[] dummys;
+	private DeltaCoordinator coordinator;
 	private double rotation;
 	private boolean[] partsAvailable = new boolean[] { false };
 	private int partsRemaining;
 	private int instance;
+	private byte posIdLastInstance = 0;
 
-	public DeltaEnemy(int borderlen, int instance) {
+	public DeltaEnemy(int borderlen, int instance, DeltaEnemy source) {
+		
 		volume = borderlen * borderlen / 2;
+		this.speed = BASE_SPEED * volume;
+		velocity = new SpeedVector();
 		this.borderlen = borderlen;
 		splitable = instance < MAX_INSTANCES;
 		this.instance = instance;
 		outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen), 0, 0);
-
 		// Dummys einrichten
 		if (splitable) { // Mehrere
 
@@ -57,6 +66,55 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 			dummys[0] = new DeltaDummy(0, 0, BASE_RADIUS * borderlen, (byte) 3, (int) (volume * BASE_HP), this);
 		}
 
+		if (instance == 0)
+			coordinator = DeltaCoordinator.getCoordinator(this, null);
+		else
+			coordinator = DeltaCoordinator.getCoordinator(this, source.getCoordinator());
+
+		// Dummys registrieren
+		for (DeltaDummy d : dummys)
+			d.register();
+	}
+
+	public DeltaEnemy(int borderlen, int instance, DeltaEnemy source, byte posIdLastInstance) {
+		
+		volume = borderlen * borderlen / 2;
+		this.posIdLastInstance = posIdLastInstance;
+		this.speed = BASE_SPEED / volume;
+		velocity = new SpeedVector();
+		this.borderlen = borderlen;
+		splitable = instance < MAX_INSTANCES;
+		this.instance = instance;
+		outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen), 0, 0);
+		// Dummys einrichten
+		if (splitable) { // Mehrere
+
+			partsAvailable = new boolean[] { true, true, true, true };
+
+			float[] splitpos = TriangleCalculation.getSplitPositionSet(borderlen);
+			dummys = new DeltaDummy[4];
+			dummys[0] = new DeltaDummy(splitpos[0], splitpos[1], BASE_RADIUS * borderlen / 2, (byte) 1,
+					(int) (volume * BASE_HP * 0.25f), this);
+			dummys[1] = new DeltaDummy(splitpos[2], splitpos[3], BASE_RADIUS * borderlen / 2, (byte) 2,
+					(int) (volume * BASE_HP * 0.25f), this);
+			dummys[2] = new DeltaDummy(splitpos[4], splitpos[5], BASE_RADIUS * borderlen / 2, (byte) 3,
+					(int) (volume * BASE_HP * 0.25f), this);
+			dummys[3] = new DeltaDummy(splitpos[6], splitpos[7], BASE_RADIUS * borderlen / 2, (byte) 4,
+					(int) (volume * BASE_HP * 0.25f), this);
+			partsRemaining = 4;
+
+		} else { // nur einer
+			partsRemaining = 1;
+			partsAvailable = new boolean[] { true };
+			dummys = new DeltaDummy[1];
+			dummys[0] = new DeltaDummy(0, 0, BASE_RADIUS * borderlen, (byte) 3, (int) (volume * BASE_HP), this);
+		}
+
+		if (instance == 0)
+			coordinator = DeltaCoordinator.getCoordinator(this, null);
+		else
+			coordinator = DeltaCoordinator.getCoordinator(this, source.getCoordinator());
+
 		// Dummys registrieren
 		for (DeltaDummy d : dummys)
 			d.register();
@@ -65,15 +123,18 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	@Override
 	public void update() {
 
-		// Rotations-Update
-		if (instance == 0 && partsRemaining == 4)
-			rotation += 0.0004;
-		if (splitable && partsRemaining == 1)
-			outline.rotateByRadians((float) (rotation + Math.PI));
-		else
-			outline.rotateByRadians((float) rotation);
+		updateRotation();
 		// DummyUpdate (Hitbox, etc)
 		updateDummyLocations();
+		coordinator.update();
+	}
+
+	private void updateRotation() {
+
+		if (faceMovementDirection)
+			rotation = MainZap.getRotation(velocity.getX() * 65535, velocity.getY() * 65535);
+
+		outline.rotateByRadians((float) rotation);
 	}
 
 	private void updateDummyLocations() {
@@ -90,10 +151,10 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 		g.setColor(Color.BLACK);
 		if (!splitable && MainZap.debug) // ### DEBUG
 			g.setColor(Color.BLUE);
-		float dx = posX;
-		float dy = posY;
+		final float dx = posX;
+		final float dy = posY;
 		g.translate(dx, dy);
-		g.fillPolygon(outline.getPolygon());
+		g.fillPolygon(outline.getPolygon()); // Outline braucht Mid-Kontext
 		g.translate(-dx, -dy);
 
 		if (MainZap.debug) {
@@ -123,8 +184,7 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 				}
 
 				// Instanz beenden
-				unRegister();
-
+				die();
 				return true; // egal. wird eh alles replaced.
 
 			} // else:
@@ -143,14 +203,14 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 					}
 
 				// Ein Part auswählen
-				byte selectedId = 0;
+				int selectedIndex = 0;
 				if (partIndex == 2) // zwei Teile gefunden
-					selectedId = (byte) (MainZap.rand(3) + 1);
+					selectedIndex = MainZap.rand(2);
 				else // drei Teile gefunden
-					selectedId = (byte) (MainZap.rand(3) + 1);
+					selectedIndex = MainZap.rand(3);
 
 				// Part breaken
-				replacePartAt(selectedId);
+				replacePartAt(nonMiddleParts[selectedIndex]);
 				return false; // Es wurde eine alternativer Part replaced.
 
 			} // else:
@@ -166,9 +226,9 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	}
 
 	private void replacePartAt(byte id) {
-		dummys[id - 1].replace();
 		partsAvailable[id - 1] = false;
 		partsRemaining--;
+		coordinator.breakAt(id, dummys[id - 1].replace());
 		outline = new RotateablePolygon(TriangleCalculation.getTriangleOutline(borderlen, partsAvailable), 0, 0);
 		outline.rotateByRadians((float) rotation);
 	}
@@ -181,6 +241,7 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 				dummys[i].unRegister();
 			}
 		partsRemaining = 0;
+		coordinator.die();
 		unRegister();
 
 	}
@@ -188,6 +249,8 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	public void register() {
 		MainZap.getMap().addUpdateElement(this);
 		MainZap.getMap().addPaintElement(this, true);
+		if (!coordinator.isSubInitialised())
+			coordinator.subinit();
 	}
 
 	public void unRegister() {
@@ -204,11 +267,32 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 		posY = y;
 	}
 
+	public boolean isFaceMovementDirection() {
+		return faceMovementDirection;
+	}
+
+	public void setFaceMovementDirection(boolean faceMovementDirection) {
+		this.faceMovementDirection = faceMovementDirection;
+	}
+
+	public SpeedVector getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(SpeedVector velocity) {
+		this.velocity = velocity;
+	}
+
+	public float getSpeed() {
+		return speed;
+	}
+
 	public float getPosX() {
 		return posX;
 	}
 
 	public void setPosX(float posX) {
+
 		this.posX = posX;
 	}
 
@@ -238,6 +322,33 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
+	}
+
+	public DeltaCoordinator getCoordinator() {
+		return coordinator;
+	}
+
+	public int getPartsRemaining() {
+		return partsRemaining;
+	}
+
+	public void move(float dx, float dy) {
+		posX += dx;
+		posY += dy;
+	}
+
+	public byte getPosIdLastInstance() {
+		return posIdLastInstance;
+	}
+
+	public void setPosIdLastInstance(byte posIdLastInstance) {
+		this.posIdLastInstance = posIdLastInstance;
+	}
+
+	public void move() {
+		posX += velocity.getX();
+		posY += velocity.getY();
+
 	}
 
 }

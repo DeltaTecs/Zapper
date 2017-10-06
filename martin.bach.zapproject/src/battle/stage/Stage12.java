@@ -22,11 +22,10 @@ public class Stage12 extends Stage {
 	private static final int SPAWN_RATE_RELOAD_PACK = MainZap.getMainLoop().inTicks(4000);
 
 	private SpawnScheduler[] spawner;
-	private int timeTillSplit = MainZap.inTicks(1000);
 	DeltaEnemy deltatest;
 
 	public Stage12() {
-		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 1900, 1900);
+		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 2200, 2200);
 		spawner = new SpawnScheduler[] { new SpawnScheduler(50, SPAWN_RATE_AMMO_SMALL, PackType.AMMO_SMALL),
 				new SpawnScheduler(50, SPAWN_RATE_AMMO_LARGE, PackType.AMMO_LARGE),
 				new SpawnScheduler(50, SPAWN_RATE_HP_PACK, PackType.HEALTH),
@@ -36,7 +35,7 @@ public class Stage12 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_RELOAD_PACK, PackType.RELOAD),
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED) };
 
-		deltatest = new DeltaEnemy(900, 0);
+		deltatest = new DeltaEnemy(900, 0, null);
 		deltatest.register();
 		deltatest.setPosition(1500, 1500);
 
@@ -44,12 +43,6 @@ public class Stage12 extends Stage {
 
 	@Override
 	public void update() {
-
-		if (timeTillSplit == 0) {
-			// deltatest.breakAt((byte) 2);
-			timeTillSplit = -1;
-		} else if (timeTillSplit > 0)
-			timeTillSplit--;
 
 		for (SpawnScheduler s : spawner)
 			s.update();

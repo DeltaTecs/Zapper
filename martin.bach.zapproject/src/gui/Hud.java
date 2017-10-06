@@ -12,7 +12,10 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
+import battle.projectile.Projectile;
+import battle.projectile.ProjectileDesign;
 import battle.stage.StageManager;
+import battle.stage._12.DeltaDummy;
 import corecase.MainZap;
 import gui.extention.ExtentionManager;
 import gui.shop.Shop;
@@ -20,6 +23,7 @@ import io.TextureBuffer;
 import lib.ClickListener;
 import lib.ClickableObject;
 import lib.PaintingTask;
+import lib.SpeedVector;
 
 public abstract class Hud {
 
@@ -213,7 +217,7 @@ public abstract class Hud {
 
 		}
 	};
-	
+
 	public static void pushBlackBlending() {
 		alphaBlackBlend = BLACK_BLEND_MAX_ALPHA;
 		durationBlackBlendRemaining = BLACK_BLEND_DURATION;
@@ -324,11 +328,17 @@ public abstract class Hud {
 			}
 			if (alphaBlackBlend < 0)
 				alphaBlackBlend = 0;
-		} else
+		} else {
+			// Projectil-einschlag
+			Projectile pseudoProj = new Projectile(1000, new ProjectileDesign(2, false, Color.BLACK),
+					DeltaDummy.DUMMY_DAMAGE * 10);
+			pseudoProj.setVelocity(
+					new SpeedVector((int) (1000 * Math.random()) - 500, (int) (1000 * Math.random()) - 500));
+			PlayerDamageIndicator.register(pseudoProj);
 			durationBlackBlendRemaining--;
+		}
 
 	}
-
 
 	public static PaintingTask getPaintingTask() {
 		return PAINTING_TASK;
