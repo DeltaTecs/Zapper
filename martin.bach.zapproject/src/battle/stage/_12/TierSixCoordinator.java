@@ -1,6 +1,7 @@
 package battle.stage._12;
 
 import corecase.MainZap;
+import gui.Hud;
 import lib.SpeedVector;
 
 public class TierSixCoordinator extends DeltaCoordinator {
@@ -41,6 +42,8 @@ public class TierSixCoordinator extends DeltaCoordinator {
 	public void die() {
 		super.die();
 		((TierOneCoordinator) getSuperiorCoordinators()[0]).unRegisterMinion(this);
+		MainZap.addScore(2);
+		Hud.pushScore();
 	}
 
 	private void updateMovement() {

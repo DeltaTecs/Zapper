@@ -37,6 +37,8 @@ public abstract class MainZap {
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static final float CRYSTAL_GETBACK = 0.20f;
+	private static final int SLEEPTIME_AFTER_WINDOW_INIT = 20;
+	private static final boolean SCHEDULE_INSET_RECHECK = false;
 	public static boolean debug = false;
 	public static boolean grid_debug = false;
 	public static boolean speedMode = false;
@@ -83,6 +85,7 @@ public abstract class MainZap {
 		crystalsEverEarned = crystals;
 
 		frame = new Frame();
+		Thread.sleep(SLEEPTIME_AFTER_WINDOW_INIT);
 		player = new Player();
 		map = new Map();
 		grid = new Grid(Map.SIZE, Map.SIZE);
@@ -95,33 +98,9 @@ public abstract class MainZap {
 		scaleTransform = new AffineTransform();
 		scaleTransform.scale(scale, scale);
 		frame.rescale(scale);
-		final long now = System.currentTimeMillis();
-		map.addUpdateElement(new Updateable() { // Später erneut abfragen
-			@Override
-			public void update() {
-				if (System.currentTimeMillis() - now > 2000) { // nach 2
-																// Sekunden
-					Insets s = frame.getInsets();
-					canvasDx = s.left;
-					canvasDy = s.top;
-					map.removeUpdateElement(this);
-					map.addUpdateElement(new Updateable() { // Später erneut
-															// abfragen
-						@Override
-						public void update() {
-							if (System.currentTimeMillis() - now > 5000) { // nach
-																			// 7
-																			// Sekunden
-								Insets s = frame.getInsets();
-								canvasDx = s.left;
-								canvasDy = s.top;
-								map.removeUpdateElement(this);
-							}
-						}
-					});
-				}
-			}
-		});
+		
+		if (SCHEDULE_INSET_RECHECK)
+			scheduleFrameInsetRecheck();
 
 		// Startparameter abchecken
 		for (String a : args) {
@@ -179,7 +158,7 @@ public abstract class MainZap {
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
 			StageManager.setUp(12);
-			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
 			crystals = 8000;
 			ShopSecUpgrade.purchaseUpgrade(0);
 			ShopSecUpgrade.purchaseUpgrade(0);
@@ -534,7 +513,6 @@ public abstract class MainZap {
 		return !path.contains("jar");
 	}
 
-
 	public static AffineTransform getScaleTransform() {
 		return scaleTransform;
 	}
@@ -551,6 +529,36 @@ public abstract class MainZap {
 
 	public static double getRotation(double aim_dx, double aim_dy) {
 		return Math.PI - Math.atan2(aim_dx, aim_dy);
+	}
+
+	private static void scheduleFrameInsetRecheck() {
+		final long now = System.currentTimeMillis();
+		map.addUpdateElement(new Updateable() { // Später erneut abfragen
+			@Override
+			public void update() {
+				if (System.currentTimeMillis() - now > 2000) { // nach 2
+																// Sekunden
+					Insets s = frame.getInsets();
+					canvasDx = s.left;
+					canvasDy = s.top;
+					map.removeUpdateElement(this);
+					map.addUpdateElement(new Updateable() { // Später erneut
+															// abfragen
+						@Override
+						public void update() {
+							if (System.currentTimeMillis() - now > 5000) { // nach
+																			// 7
+																			// Sekunden
+								Insets s = frame.getInsets();
+								canvasDx = s.left;
+								canvasDy = s.top;
+								map.removeUpdateElement(this);
+							}
+						}
+					});
+				}
+			}
+		});
 	}
 
 }

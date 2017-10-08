@@ -32,12 +32,20 @@ public class TierTwoCoordinator extends DeltaCoordinator {
 		if (getHost().getPosIdLastInstance() != 3 && timeTillStop > 0) {
 			getHost().move();
 			timeTillStop--;
-			
+
 			partInPlace = timeTillStop == 0;
 			if (partInPlace)
 				((TierOneCoordinator) getSuperiorCoordinators()[0]).registerTierTwoPartInPlace();
 		}
 
+	}
+
+	@Override
+	public void die() {
+		super.die();
+
+		if (!partInPlace) // Noch nicht angekommen, aber schon zerholzt?
+			((TierOneCoordinator) getSuperiorCoordinators()[0]).registerTierTwoPartInPlace();
 	}
 
 	@Override

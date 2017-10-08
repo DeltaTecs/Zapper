@@ -32,9 +32,10 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	private int partsRemaining;
 	private int instance;
 	private byte posIdLastInstance = 0;
+	private boolean alive = true;
 
 	public DeltaEnemy(int borderlen, int instance, DeltaEnemy source) {
-		
+
 		volume = borderlen * borderlen / 2;
 		this.speed = BASE_SPEED * volume;
 		velocity = new SpeedVector();
@@ -77,7 +78,7 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	}
 
 	public DeltaEnemy(int borderlen, int instance, DeltaEnemy source, byte posIdLastInstance) {
-		
+
 		volume = borderlen * borderlen / 2;
 		this.posIdLastInstance = posIdLastInstance;
 		this.speed = BASE_SPEED / volume;
@@ -172,7 +173,13 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 
 	public boolean breakAt(byte posId) {
 
+		if (!alive)
+			return true; // Abbruch
+
 		if (splitable) {
+			
+			if (!partsAvailable[posId - 1])
+				return true; // Abbruch
 
 			if (partsRemaining == 2) {
 				// Noch Mitte und ein anderes über.
@@ -225,6 +232,21 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 
 	}
 
+	public void breakAll() {
+
+		if (!alive)
+			return;
+
+		if (!splitable)
+			throw new RuntimeException("cannot break unsplitable DeltaEnemy");
+
+		for (byte i = 1; i != 5; i++)
+			if (partsAvailable[i - 1])
+				coordinator.breakAt(i, dummys[i - 1].replace());
+
+		die();
+	}
+
 	private void replacePartAt(byte id) {
 		partsAvailable[id - 1] = false;
 		partsRemaining--;
@@ -243,7 +265,7 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 		partsRemaining = 0;
 		coordinator.die();
 		unRegister();
-
+		alive = false;
 	}
 
 	public void register() {
@@ -348,7 +370,10 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	public void move() {
 		posX += velocity.getX();
 		posY += velocity.getY();
+	}
 
+	public boolean isAlive() {
+		return alive;
 	}
 
 }

@@ -40,7 +40,7 @@ public abstract class Hud {
 	private static final int SPACE_X_SHOP = 5;
 	private static final int WIDTH_SHOP = 150;
 	private static final int BLACK_BLEND_DURATION = MainZap.inTicks(150);
-	private static final int BLACK_BLEND_MAX_ALPHA = 240;
+	private static final int BLACK_BLEND_MAX_ALPHA = 220;
 	private static final float BLACK_BLEND_SPEED = 12.0f;
 	private static final Polygon OUTLINE_SHOP = new Polygon(new int[] { 0, WIDTH_SHOP, WIDTH_SHOP, 40 },
 			new int[] { 0, 0, 40, 40 }, 4);
@@ -62,6 +62,8 @@ public abstract class Hud {
 	private static boolean shopIconVisible = false;
 	private static float shopIconX = 0;
 	private static float shopBackgroundLength = WIDTH_SHOP;
+
+	private static boolean switchBooleanForShieldBlackBlend = false;
 
 	public static void setUpClickListener() {
 
@@ -114,7 +116,9 @@ public abstract class Hud {
 
 			// -- Schwarze Blende, letzter Boss
 			if (alphaBlackBlend > 0) {
-				g.setColor(new Color(0, 0, 0, (int) (alphaBlackBlend)));
+				// halb so durchsichtig, wenn shielded
+				g.setColor(new Color(0, 0, 0,
+						(MainZap.getPlayer().isShielded()) ? (int) (alphaBlackBlend / 2.0f) : (int) (alphaBlackBlend)));
 				g.fillRect(0, 0, Frame.SIZE + 5, Frame.SIZE + 5);
 			}
 			// ---
@@ -330,11 +334,23 @@ public abstract class Hud {
 				alphaBlackBlend = 0;
 		} else {
 			// Projectil-einschlag
-			Projectile pseudoProj = new Projectile(1000, new ProjectileDesign(2, false, Color.BLACK),
-					DeltaDummy.DUMMY_DAMAGE * 10);
-			pseudoProj.setVelocity(
-					new SpeedVector((int) (1000 * Math.random()) - 500, (int) (1000 * Math.random()) - 500));
-			PlayerDamageIndicator.register(pseudoProj);
+			if (!MainZap.getPlayer().isShielded()) {
+				Projectile pseudoProj = new Projectile(1000, new ProjectileDesign(2, false, Color.BLACK),
+						DeltaDummy.DUMMY_DAMAGE * 10);
+				pseudoProj.setVelocity(
+						new SpeedVector((int) (1000 * Math.random()) - 500, (int) (1000 * Math.random()) - 500));
+				PlayerDamageIndicator.register(pseudoProj);
+			} else {
+				if (switchBooleanForShieldBlackBlend) { // Für halb so viele Einschläge
+					switchBooleanForShieldBlackBlend = false;
+					Projectile pseudoProj = new Projectile(1000, new ProjectileDesign(2, false, Color.BLACK),
+							DeltaDummy.DUMMY_DAMAGE_SHIELDED * 10);
+					pseudoProj.setVelocity(
+							new SpeedVector((int) (1000 * Math.random()) - 500, (int) (1000 * Math.random()) - 500));
+					PlayerDamageIndicator.register(pseudoProj);
+				} else
+					switchBooleanForShieldBlackBlend = true;
+			}
 			durationBlackBlendRemaining--;
 		}
 

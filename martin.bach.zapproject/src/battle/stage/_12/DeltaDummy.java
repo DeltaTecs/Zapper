@@ -19,6 +19,7 @@ import ingameobjects.Player;
 public class DeltaDummy implements Collideable {
 
 	public static final int DUMMY_DAMAGE = 5;
+	public static final int DUMMY_DAMAGE_SHIELDED = 1;
 
 	private float dx, dy, posX, posY, radius;
 	private CollisionInformation collInfo;
@@ -47,7 +48,7 @@ public class DeltaDummy implements Collideable {
 			return;
 
 		if (c instanceof Player) {
-			MainZap.getPlayer().trueDamage(DUMMY_DAMAGE);
+			MainZap.getPlayer().trueDamage(MainZap.getPlayer().isShielded() ? DUMMY_DAMAGE_SHIELDED : DUMMY_DAMAGE);
 			Hud.pushBlackBlending();
 		} else if (c instanceof Projectile) {
 
@@ -78,9 +79,7 @@ public class DeltaDummy implements Collideable {
 		child.register();
 		if (getHost().getInstance() + 1 == 4) {
 			child.update(); // Update vor break pushen für pos init
-			child.breakAt((byte) 1);
-			child.breakAt((byte) 2);
-			child.breakAt((byte) 4); // Mitte wird automatisch mit gebreaked
+			child.breakAll();
 		}
 		unRegister();
 		return child;
