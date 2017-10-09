@@ -266,6 +266,9 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 		coordinator.die();
 		unRegister();
 		alive = false;
+		
+		if (instance == 5)
+			FadeToPiecesEffect.execute(this);
 	}
 
 	public void register() {

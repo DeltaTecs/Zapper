@@ -1,6 +1,7 @@
 package battle.stage._12;
 
 import battle.stage.StageManager;
+import corecase.Cmd;
 import corecase.MainZap;
 import lib.ScheduledList;
 
@@ -76,7 +77,7 @@ public class TierOneCoordinator extends DeltaCoordinator {
 
 	private void executeCombatPhase(byte phase) {
 		
-		System.out.println("[Debug] DeltaEnemy: executing combat phase " + phase);
+		Cmd.print("[Debug] DeltaEnemy: executing combat phase " + phase);
 
 		switch (phase) {
 		case 1:
