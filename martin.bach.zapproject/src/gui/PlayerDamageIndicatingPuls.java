@@ -31,8 +31,8 @@ public class PlayerDamageIndicatingPuls implements PaintingTask, Updateable {
 		midToRing.invert();
 		midToRing.scaleToLength(MIDDISTANCE);
 
-		int midX = (int) (325 + midToRing.getX()); // punkt auf dem kreis (middistance)
-		int midY = (int) (325 + midToRing.getY());
+		int midX = (int) ((Frame.SIZE / 2.0f) + midToRing.getX()); // punkt auf dem kreis (middistance)
+		int midY = (int) ((Frame.SIZE / 2.0f) + midToRing.getY());
 		int size = p.getRadius() * 2;
 
 		// VVV Rechtwinklige Striche

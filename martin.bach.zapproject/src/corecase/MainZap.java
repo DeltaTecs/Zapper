@@ -17,6 +17,7 @@ import gui.PaintingLayer;
 import gui.extention.Extention;
 import gui.extention.ExtentionManager;
 import gui.screens.end.EndScreen;
+import gui.screens.finish.FinishScreen;
 import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
 import gui.shop.ShopSecUpgrade;
@@ -127,6 +128,7 @@ public abstract class MainZap {
 		staticLayer.addTask(player);
 		staticLayer.addTask(Hud.getPaintingTask());
 		staticLayer.addTask(EndScreen.getPaintingtask());
+		staticLayer.addTask(FinishScreen.getPaintingTask());
 
 		dynamicLayer = new PaintingLayer();
 		dynamicLayer.addTask(map);
@@ -158,7 +160,7 @@ public abstract class MainZap {
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
 			StageManager.setUp(12);
-			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
 			crystals = 8000;
 			ShopSecUpgrade.purchaseUpgrade(0);
 			ShopSecUpgrade.purchaseUpgrade(0);
@@ -167,6 +169,7 @@ public abstract class MainZap {
 			ShopSecUpgrade.purchaseUpgrade(3);
 			ShopSecUpgrade.purchaseUpgrade(3);
 			ExtentionManager.setExtention(Extention.MIRROR);
+			player.setHp(player.getMaxHp());
 		}
 		Hud.setUpClickListener();
 		ExtentionManager.setUpClickListener();

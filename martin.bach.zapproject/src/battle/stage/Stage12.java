@@ -1,9 +1,13 @@
 package battle.stage;
 
+import javax.print.attribute.standard.Finishings;
+
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
 import battle.stage._12.DeltaEnemy;
 import corecase.MainZap;
+import gui.screens.end.EndScreen;
+import gui.screens.finish.FinishScreen;
 
 public class Stage12 extends Stage {
 
@@ -22,7 +26,7 @@ public class Stage12 extends Stage {
 	private static final int SPAWN_RATE_RELOAD_PACK = MainZap.getMainLoop().inTicks(4000);
 
 	private SpawnScheduler[] spawner;
-	DeltaEnemy deltatest;
+	private DeltaEnemy deltaboss;
 
 	public Stage12() {
 		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 2200, 2200);
@@ -35,13 +39,20 @@ public class Stage12 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_RELOAD_PACK, PackType.RELOAD),
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED) };
 
-		deltatest = new DeltaEnemy(900, 0, null);
-		deltatest.register();
-		deltatest.setPosition(1500, 1500);
-
+		deltaboss = new DeltaEnemy(900, 0, null, this);
+		deltaboss.register();
+		deltaboss.setPosition(1500, 1500);
+		
+		pass();
+	}
+	
+	@Override
+	public void pass() {
+		super.pass();
+		FinishScreen.open();
+		MainZap.getPlayer().setAlive(false);
 	}
 
-	@Override
 	public void update() {
 
 		for (SpawnScheduler s : spawner)

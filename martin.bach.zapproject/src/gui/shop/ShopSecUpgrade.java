@@ -32,12 +32,14 @@ public abstract class ShopSecUpgrade {
 	private static final BufferedImage IMG_EXT_SHOCK = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_SHOCK);
 	private static final BufferedImage IMG_EXT_ADDCANNON = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_ADDCANNON);
 	private static final byte DIGITS_FLOATSTATS = 2;
-	private static final int STAT_POS_X = 40;
+	private static final int STAT_POS_X = 40 + 75;
+	private static final int EXT_D_POS_X = 75;
+	private static final int EXT_D_POS_Y = 75;
 	private static final int SYM_BACK_X = 40;
 	private static final int SYM_BACK_Y = 70;
-	private static final int STAT_POS_Y = 140;
+	private static final int STAT_POS_Y = 180;
 	private static final int STAT_SPACE_Y = 15;
-	private static final int HEADLINE_LINE_BASIC_POS_Y = 123;
+	private static final int HEADLINE_LINE_BASIC_POS_Y = STAT_POS_Y - 140 + 123;
 	private static final int HEADLINE_LINE_EXTENTION_POS_Y = 370;
 	private static final int EXT_DESCRIPTIONWIDTH = 190;
 	private static final Color COLOR_HOVER_BACK = new Color(0, 0, 50, 30);
@@ -197,10 +199,10 @@ public abstract class ShopSecUpgrade {
 
 		// -- Überschrift: Basic Upgrades ----
 		g.setFont(FONT_HEADLINE);
-		g.drawString(TEXT_HEADLINE_BASIC, 420, 130);
+		g.drawString(TEXT_HEADLINE_BASIC, 420 + 75, 130 + STAT_POS_Y - 140);
 		g.setStroke(STROKE_HEADLINE_LINE);
-		g.drawLine(400, HEADLINE_LINE_BASIC_POS_Y, 413, HEADLINE_LINE_BASIC_POS_Y);
-		g.drawLine(567, HEADLINE_LINE_BASIC_POS_Y, 610, HEADLINE_LINE_BASIC_POS_Y);
+		g.drawLine(400 + 75, HEADLINE_LINE_BASIC_POS_Y, 413 + 75, HEADLINE_LINE_BASIC_POS_Y);
+		g.drawLine(567 + 75, HEADLINE_LINE_BASIC_POS_Y, 610 + 75, HEADLINE_LINE_BASIC_POS_Y);
 		// ---
 
 		// Ganze Upgrade-Tabelle
@@ -209,10 +211,12 @@ public abstract class ShopSecUpgrade {
 		// -- Überschrift: Extention Upgrades ----
 		g.setColor(Color.BLACK);
 		g.setFont(FONT_HEADLINE);
-		g.drawString(TEXT_HEADLINE_EXTENTIONS, 420, HEADLINE_LINE_EXTENTION_POS_Y + 7);
+		g.drawString(TEXT_HEADLINE_EXTENTIONS, 420 + EXT_D_POS_X, HEADLINE_LINE_EXTENTION_POS_Y + 7 + EXT_D_POS_Y);
 		g.setStroke(STROKE_HEADLINE_LINE);
-		g.drawLine(400, HEADLINE_LINE_EXTENTION_POS_Y, 413, HEADLINE_LINE_EXTENTION_POS_Y);
-		g.drawLine(567, HEADLINE_LINE_EXTENTION_POS_Y, 610, HEADLINE_LINE_EXTENTION_POS_Y);
+		g.drawLine(400 + EXT_D_POS_X, HEADLINE_LINE_EXTENTION_POS_Y + EXT_D_POS_Y, 413 + EXT_D_POS_X,
+				HEADLINE_LINE_EXTENTION_POS_Y + EXT_D_POS_Y);
+		g.drawLine(567 + EXT_D_POS_X, HEADLINE_LINE_EXTENTION_POS_Y + EXT_D_POS_Y, 610 + EXT_D_POS_X,
+				HEADLINE_LINE_EXTENTION_POS_Y + EXT_D_POS_Y);
 		// ---
 
 		paintExtentionUpgradeSection(g);
@@ -227,13 +231,16 @@ public abstract class ShopSecUpgrade {
 	private static void paintExtentionUpgradeSection(Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.setStroke(STROK_TOPIC_FRAME);
-		g.drawRect(37, 382, 576, 201);
-		g.drawRect(420, 382, 193, 201);
-		paintExtentionUpgradeButton(g, IMG_EXT_MIRROR, 45, 390, TEXT_TITEL_MIRROR, extentionStates[0], PRICE_MIRROR);
-		paintExtentionUpgradeButton(g, IMG_EXT_SHIELD, 45, 492, TEXT_TITEL_SHIELD, extentionStates[1], PRICE_SHIELD);
-		paintExtentionUpgradeButton(g, IMG_EXT_SHOCK, 235, 492, TEXT_TITEL_SHOCK, extentionStates[2], PRICE_SHOCK);
-		paintExtentionUpgradeButton(g, IMG_EXT_ADDCANNON, 235, 390, TEXT_TITEL_ADDCANNON, extentionStates[3],
-				PRICE_CANNON[addedCannons]);
+		g.drawRect(37 + EXT_D_POS_X, 382 + EXT_D_POS_Y, 576, 201);
+		g.drawRect(420 + EXT_D_POS_X, 382 + EXT_D_POS_Y, 193, 201);
+		paintExtentionUpgradeButton(g, IMG_EXT_MIRROR, 45 + EXT_D_POS_X, 390 + EXT_D_POS_Y, TEXT_TITEL_MIRROR,
+				extentionStates[0], PRICE_MIRROR);
+		paintExtentionUpgradeButton(g, IMG_EXT_SHIELD, 45 + EXT_D_POS_X, 492 + EXT_D_POS_Y, TEXT_TITEL_SHIELD,
+				extentionStates[1], PRICE_SHIELD);
+		paintExtentionUpgradeButton(g, IMG_EXT_SHOCK, 235 + EXT_D_POS_X, 492 + EXT_D_POS_Y, TEXT_TITEL_SHOCK,
+				extentionStates[2], PRICE_SHOCK);
+		paintExtentionUpgradeButton(g, IMG_EXT_ADDCANNON, 235 + EXT_D_POS_X, 390 + EXT_D_POS_Y, TEXT_TITEL_ADDCANNON,
+				extentionStates[3], PRICE_CANNON[addedCannons]);
 		paintExtentionDesciption(g, activeDescription, selectedExtention, extentionStates[selectedExtention],
 				hoveringExtBuy);
 	}
@@ -264,14 +271,14 @@ public abstract class ShopSecUpgrade {
 
 		g.setFont(FONT_EXT_DESC_NAME);
 		g.setColor(Color.BLACK);
-		g.drawString(titel, 425, 400);
+		g.drawString(titel, 425 + EXT_D_POS_X, 400 + EXT_D_POS_Y);
 		g.setFont(FONT_EXT_DESC_DESC);
-		description.paint(g, 425, 415);
+		description.paint(g, 425 + EXT_D_POS_X, 415 + EXT_D_POS_Y);
 
 		if (active && index != 3) {
 			g.setColor(COLOR_MAX);
 			g.setFont(FONT_MAX);
-			g.drawString(TEXT_EXT_DESC_ACTIVE, 446, 570);
+			g.drawString(TEXT_EXT_DESC_ACTIVE, 446 + EXT_D_POS_X, 570 + EXT_D_POS_Y);
 			return;
 		}
 
@@ -279,17 +286,17 @@ public abstract class ShopSecUpgrade {
 			// Anzahl installierter Kannonen zeichnen
 			g.setColor(ShopSecBuy.COLOR_FG);
 			g.setFont(FONT_CANNNONS_ACTIVE);
-			g.drawString(TEXT_CANNONS_ACTIVE, 444, 522);
+			g.drawString(TEXT_CANNONS_ACTIVE, 444 + EXT_D_POS_X, 522 + EXT_D_POS_Y);
 			g.setColor(COLOR_CANNON_ACTIVE_BG);
-			g.fillRect(529, 503, 20, 25);
-			g.fillRect(551, 503, 20, 25);
-			g.fillRect(573, 503, 20, 25);
+			g.fillRect(529 + EXT_D_POS_X, 503 + EXT_D_POS_Y, 20, 25);
+			g.fillRect(551 + EXT_D_POS_X, 503 + EXT_D_POS_Y, 20, 25);
+			g.fillRect(573 + EXT_D_POS_X, 503 + EXT_D_POS_Y, 20, 25);
 			g.setColor(COLOR_CANNON_ACTIVE_FG);
-			g.fillRect(529, 503, 20, 25);
+			g.fillRect(529 + EXT_D_POS_X, 503 + EXT_D_POS_Y, 20, 25);
 			if (addedCannons > 0) {
-				g.fillRect(551, 503, 20, 25);
+				g.fillRect(551 + EXT_D_POS_X, 503 + EXT_D_POS_Y, 20, 25);
 				if (addedCannons > 1) {
-					g.fillRect(573, 503, 20, 25);
+					g.fillRect(573 + EXT_D_POS_X, 503 + EXT_D_POS_Y, 20, 25);
 					return; // Mann kan eh nix mehr kaufen
 				}
 			}
@@ -299,8 +306,8 @@ public abstract class ShopSecUpgrade {
 		if (MainZap.generalAntialize)
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-		g.drawImage(IMG_CRYSTAL, 418, 550, (int) (IMG_CRYSTAL.getWidth() * 2f), (int) (IMG_CRYSTAL.getHeight() * 2f),
-				null);
+		g.drawImage(IMG_CRYSTAL, 418 + EXT_D_POS_X, 550 + EXT_D_POS_Y, (int) (IMG_CRYSTAL.getWidth() * 2f),
+				(int) (IMG_CRYSTAL.getHeight() * 2f), null);
 
 		// Antialising reaktivieren
 		if (MainZap.generalAntialize)
@@ -308,18 +315,18 @@ public abstract class ShopSecUpgrade {
 
 		g.setColor(ShopSecBuy.COLOR_FG);
 		g.setFont(FONT_EXT_DESC_PRICE);
-		g.drawString(price + "", 439, 569);
+		g.drawString(price + "", 439 + EXT_D_POS_X, 569 + EXT_D_POS_Y);
 
 		g.setColor(ShopSecBuy.COLOR_BUY);
 		g.setStroke(STROKE_UPGRADE);
-		g.drawRect(530, 542, 76, 36);
+		g.drawRect(530 + EXT_D_POS_X, 542 + EXT_D_POS_Y, 76, 36);
 		if (buyHovered) {
 			g.setColor(COLOR_HOVER_BUY);
-			g.fillRect(530, 542, 76, 36);
+			g.fillRect(530 + EXT_D_POS_X, 542 + EXT_D_POS_Y, 76, 36);
 		}
 		g.setColor(ShopSecBuy.COLOR_BUY);
 		g.setFont(FONT_UPGRADE);
-		g.drawString(TEXT_UPGRADE, 534, 572);
+		g.drawString(TEXT_UPGRADE, 534 + EXT_D_POS_X, 572 + EXT_D_POS_Y);
 	}
 
 	private static void paintExtentionUpgradeButton(Graphics2D g, BufferedImage img, int x, int y, String name,

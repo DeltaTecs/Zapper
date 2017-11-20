@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
+import gui.Frame;
 import gui.screens.pause.PauseScreen;
 import gui.shop.Shop;
 import io.TextureBuffer;
@@ -25,8 +26,8 @@ public abstract class ExtentionManager {
 			TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_SHIELD),
 			TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_SHOCK) };
 	private static final int ROUND_DEEPTH = 8;
-	private static final int POS_BG_X = 547;
-	private static final int POS_BG_Y = 472;
+	private static final int POS_BG_X = Frame.SIZE - 103;
+	private static final int POS_BG_Y = Frame.SIZE - 178;
 	private static final int POS_FG_D = 8;
 	private static final int BG_SIZE = 100;
 	private static final int FG_SIZE = 84;

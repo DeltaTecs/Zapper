@@ -78,7 +78,7 @@ public class Player extends CombatObject {
 	private static final float SHIELD_FAC_DAMAGE = 3.0f;
 	private static final float SHIELD_FAC_INBOUND_DAMAGE = 0.1f;
 
-	private static final int POS_BOOST_INDICATOR = 170;
+	private static final int POS_BOOST_INDICATOR = 230;
 	private static final int SIZE_BOOST_INDICATOR = 53;
 	private static final int SPACE_BOOST_INDICATOR = 6;
 	private static final float ALPHA_BOOST_IND_FG = 0.4f;

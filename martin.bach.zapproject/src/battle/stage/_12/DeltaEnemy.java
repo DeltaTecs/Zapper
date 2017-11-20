@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import battle.WeaponPositioning;
+import battle.stage.Stage;
+import battle.stage.StageManager;
 import corecase.MainZap;
 import lib.PaintingTask;
 import lib.RotateablePolygon;
@@ -32,12 +34,14 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	private int partsRemaining;
 	private int instance;
 	private byte posIdLastInstance = 0;
+	private Stage stage;
 	private boolean alive = true;
 
-	public DeltaEnemy(int borderlen, int instance, DeltaEnemy source) {
+	public DeltaEnemy(int borderlen, int instance, DeltaEnemy source, Stage stage) {
 
 		volume = borderlen * borderlen / 2;
 		this.speed = BASE_SPEED * volume;
+		this.stage = stage;
 		velocity = new SpeedVector();
 		this.borderlen = borderlen;
 		splitable = instance < MAX_INSTANCES;
@@ -77,11 +81,12 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 			d.register();
 	}
 
-	public DeltaEnemy(int borderlen, int instance, DeltaEnemy source, byte posIdLastInstance) {
+	public DeltaEnemy(int borderlen, int instance, DeltaEnemy source, byte posIdLastInstance, Stage stage) {
 
 		volume = borderlen * borderlen / 2;
 		this.posIdLastInstance = posIdLastInstance;
 		this.speed = BASE_SPEED / volume;
+		this.stage = stage;
 		velocity = new SpeedVector();
 		this.borderlen = borderlen;
 		splitable = instance < MAX_INSTANCES;
@@ -177,7 +182,7 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 			return true; // Abbruch
 
 		if (splitable) {
-			
+
 			if (!partsAvailable[posId - 1])
 				return true; // Abbruch
 
@@ -266,14 +271,16 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 		coordinator.die();
 		unRegister();
 		alive = false;
-		
-		if (instance == 5)
+
+		if (instance == 5 && MainZap.fancyGraphics)
 			FadeToPiecesEffect.execute(this);
 	}
 
 	public void register() {
 		MainZap.getMap().addUpdateElement(this);
 		MainZap.getMap().addPaintElement(this, true);
+		stage.getPaintingTasks().add(this);
+		stage.getUpdateTasks().add(this);
 		if (!coordinator.isSubInitialised())
 			coordinator.subinit();
 	}
@@ -281,6 +288,8 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 	public void unRegister() {
 		MainZap.getMap().removeUpdateElement(this);
 		MainZap.getMap().removePaintElement(this, true);
+		stage.getPaintingTasks().remove(this);
+		stage.getUpdateTasks().remove(this);
 	}
 
 	public int getVolume() {
@@ -377,6 +386,10 @@ public class DeltaEnemy implements PaintingTask, Updateable {
 
 	public boolean isAlive() {
 		return alive;
+	}
+
+	public Stage getStage() {
+		return stage;
 	}
 
 }

@@ -1,5 +1,6 @@
 package battle.stage;
 
+import collision.Collideable;
 import corecase.MainZap;
 import gui.Hud;
 import ingameobjects.InteractiveObject;
@@ -162,7 +163,7 @@ public abstract class StageManager {
 		activeStage = new Stage12();
 		registerStage();
 	}
-	
+
 	private static void registerStage() {
 		if (activeStage != null) {
 			if (MainZap.FINAL_RUN)
@@ -181,7 +182,9 @@ public abstract class StageManager {
 			MainZap.getMap().getUpdateElements().schedRemoveAll(activeStage.getUpdateTasks());
 			MainZap.getMap().getForegroundPaintElements().schedRemoveAll(activeStage.getPaintingTasks());
 			MainZap.getMap().getBackgroundPaintElements().schedRemoveAll(activeStage.getPaintingTasks());
-
+			// Stage-Bound-Collision-Tasks entfernen
+			for (Collideable c : activeStage.getCollisionTasks())
+				MainZap.getGrid().remove(c);
 			// Stage null setzten
 			activeStage = null;
 		}

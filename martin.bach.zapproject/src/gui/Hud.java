@@ -45,7 +45,7 @@ public abstract class Hud {
 	private static final Polygon OUTLINE_SHOP = new Polygon(new int[] { 0, WIDTH_SHOP, WIDTH_SHOP, 40 },
 			new int[] { 0, 0, 40, 40 }, 4);
 	private static final float SHOP_BLEND_SPEED = 4;
-	private static final Rectangle CLICK_WARP_AREA = new Rectangle(547, 580, 100, 69);
+	private static final Rectangle CLICK_WARP_AREA = new Rectangle(Frame.SIZE - 103, Frame.SIZE - 70, 100, 69);
 	private static final Rectangle CLICK_OPENSHOP_AREA = new Rectangle(Frame.SIZE - 160, 25, 160, 50);
 
 	private static float alphaScore = COLOR_SCORE[3];
@@ -140,21 +140,21 @@ public abstract class Hud {
 				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 						RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 			}
-			g.drawImage(Crystal.TEXTURE, 100, 625, 22, 22, null);
+			g.drawImage(Crystal.TEXTURE, 100, Frame.SIZE - 25, 22, 22, null);
 			if (MainZap.generalAntialize) {
 				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			}
 			g.setColor(new Color(COLOR_SCORE[0], COLOR_SCORE[1], COLOR_SCORE[2], (int) alphaCrystals));
-			g.drawString(MainZap.getCrystals() + "", 120, 643);
+			g.drawString(MainZap.getCrystals() + "", 120, Frame.SIZE - 7);
 
 			// ----- NextStage - Button
 			if (StageManager.getActiveStage().isPassed()) {
 
 				if (lvlUpSignVisible) {
 					if (MainZap.roundCorners) {
-						g.drawImage(LVL_UP_TEXTURE_R, 547, 578, 100, 69, null);
+						g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 103, Frame.SIZE - 72, 100, 69, null);
 					} else {
-						g.drawImage(LVL_UP_TEXTURE_C, 547, 578, 100, 69, null);
+						g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 103, Frame.SIZE - 72, 100, 69, null);
 					}
 				}
 
@@ -163,9 +163,9 @@ public abstract class Hud {
 				Composite storeComp = g.getComposite();
 				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, LVL_UP_HIDDEN_ALPHA));
 				if (MainZap.roundCorners) {
-					g.drawImage(LVL_UP_TEXTURE_R, 547, 580, 100, 69, null);
+					g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 103, Frame.SIZE - 70, 100, 69, null);
 				} else {
-					g.drawImage(LVL_UP_TEXTURE_C, 547, 580, 100, 69, null);
+					g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 103, Frame.SIZE - 70, 100, 69, null);
 				}
 				g.setComposite(storeComp);
 

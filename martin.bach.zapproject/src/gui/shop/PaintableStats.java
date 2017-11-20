@@ -38,12 +38,12 @@ public class PaintableStats {
 	private static final Font FONT_DETAIL = new Font("Arial", Font.BOLD, 15);
 	private static final Font FONT_RAINMAKER = new Font("Arial", Font.ITALIC, 15);
 
-	private static final int POS_Y = 330;
-	private static final int POS_X = 350;
+	private static final int POS_Y = 400;
+	private static final int POS_X = 425;
 	private static final int POS_BAR_X = POS_X + 20 + 5;
 	private static final int SPACE_Y = 15;
 	private static final int HEIGHT = 16;
-	private static final int WIDTH = 230;
+	private static final int WIDTH = 305;
 	private static final int DELTA_MARKWIDTH = 3;
 
 	private ShipConfigGraphCalc thisConfig;
@@ -190,27 +190,27 @@ public class PaintableStats {
 		switch (option) {
 		case HEALTH:
 			y = POS_Y + (20 * 1) + (trueSpace * 0);
-			text = "Amour: " + thisConfig.getConfig().getHp() + " hp";
+			text = "Armor: " + thisConfig.getConfig().getHp() + " hp";
 			cBorder = COLOR_HEALTH;
 			break;
 		case SPEED:
 			y = POS_Y + (20 * 2) + (trueSpace * 1);
-			text = "Speed: " + thisConfig.getConfig().getSpeed() + " p/t";
+			text = "Speed: " + thisConfig.getConfig().getSpeed() + " px/tick";
 			cBorder = COLOR_SPEED;
 			break;
 		case EFFICIENCY:
 			y = POS_Y + (20 * 3) + (trueSpace * 2);
-			text = "Ammunition usage: " + thisConfig.getConfig().getEfficiency() + "x";
+			text = "Ammunitionusage: " + thisConfig.getConfig().getEfficiency() + "x";
 			cBorder = COLOR_EFFICIENCY;
 			break;
 		case RELOAD_WITH:
 			y = POS_Y + (20 * 4) + (trueSpace * 3);
-			text = "Cooldown, ammo available: " + thisConfig.getConfig().getReloadWith() + " t";
+			text = "Cooldown, on ammo available: " + thisConfig.getConfig().getReloadWith() + " ticks";
 			cBorder = COLOR_RELOAD;
 			break;
 		case RELOAD_WITHOUT:
 			y = POS_Y + (20 * 5) + (trueSpace * 4);
-			text = "Cooldown, no ammo: " + thisConfig.getConfig().getReloadWithout() + " t";
+			text = "Cooldown, no ammo: " + thisConfig.getConfig().getReloadWithout() + " ticks";
 			cBorder = COLOR_RELOAD;
 			break;
 		case DAMAGE:
@@ -220,12 +220,12 @@ public class PaintableStats {
 			break;
 		case BULLETSPEED:
 			y = POS_Y + (20 * 7) + (trueSpace * 6);
-			text = "Bullet speed: " + thisConfig.getConfig().getProjSpeed() + " p/t";
+			text = "Bulletspeed: " + thisConfig.getConfig().getProjSpeed() + " px/tick";
 			cBorder = COLOR_BULLETSPEED;
 			break;
 		case RANGE:
 			y = POS_Y + (20 * 8) + (trueSpace * 7);
-			text = "Weapon range: " + thisConfig.getConfig().getProjRange() + " p";
+			text = "Weaponrange: " + thisConfig.getConfig().getProjRange() + " px";
 			cBorder = COLOR_RANGE;
 			break;
 		default: // Wird nicht gebraucht! Eclipse zwingt mich !! :(

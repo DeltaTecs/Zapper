@@ -35,10 +35,15 @@ public abstract class PauseScreen {
 	private static final Font FONT = new Font("Arial", Font.BOLD + Font.ITALIC, FONTSIZE);
 	private static final BasicStroke STROKE_BORDER = new BasicStroke(4);
 	private static final int BORDER_ROUND_DEEPTH = 6;
-	private static final Rectangle BOUNDS_CONTINUE = new Rectangle(75, 120, 500, 80);
-	private static final Rectangle BOUNDS_RESTART = new Rectangle(75, 230, 500, 80);
-	private static final Rectangle BOUNDS_SETTINGS = new Rectangle(75, 340, 500, 80);
-	private static final Rectangle BOUNDS_EXIT = new Rectangle(75, 450, 500, 80);
+	private static final int[] KONTEXT_TRANSLATION = new int[] { 75, 75 };
+	private static final Rectangle BOUNDS_CONTINUE = new Rectangle(75 + KONTEXT_TRANSLATION[0],
+			120 + KONTEXT_TRANSLATION[1], 500, 80);
+	private static final Rectangle BOUNDS_RESTART = new Rectangle(75 + KONTEXT_TRANSLATION[0],
+			230 + KONTEXT_TRANSLATION[1], 500, 80);
+	private static final Rectangle BOUNDS_SETTINGS = new Rectangle(75 + KONTEXT_TRANSLATION[0],
+			340 + KONTEXT_TRANSLATION[1], 500, 80);
+	private static final Rectangle BOUNDS_EXIT = new Rectangle(75 + KONTEXT_TRANSLATION[0],
+			450 + KONTEXT_TRANSLATION[1], 500, 80);
 	private static final String TEXT_CONTINUE = "CONTINUE";
 	private static final String TEXT_RESTART = "RESTART";
 	private static final String TEXT_SETTINGS = "SETTINGS";
@@ -58,22 +63,22 @@ public abstract class PauseScreen {
 	private static final Color COLOR_DIA_TEXT = new Color(0, 0, 0, 180);
 	private static final Font FONT_DIALOG = new Font("Arial", Font.BOLD, 22);
 	private static final Font FONT_DIALOG_OPTION = new Font("Arial", Font.BOLD, 40);
-	private static final Rectangle BOUNDS_DIALOG = new Rectangle(140, 250, 370, 150);
+	private static final Rectangle BOUNDS_DIALOG = new Rectangle(140 + KONTEXT_TRANSLATION[0], 250 + KONTEXT_TRANSLATION[1], 370, 150);
 	private static final int BORDERWIDTH_DIALOG = 8;
 	private static final Stroke STROKE_BUTTON_BORDER = new BasicStroke(5);
-	private static final Rectangle BOUNDS_DIA_YES = new Rectangle(180, 330, 120, 50);
-	private static final Rectangle BOUNDS_DIA_NO = new Rectangle(350, 330, 120, 50);
+	private static final Rectangle BOUNDS_DIA_YES = new Rectangle(180 + KONTEXT_TRANSLATION[0], 330 + KONTEXT_TRANSLATION[1], 120, 50);
+	private static final Rectangle BOUNDS_DIA_NO = new Rectangle(350 + KONTEXT_TRANSLATION[0], 330 + KONTEXT_TRANSLATION[1], 120, 50);
 	private static final String TEXT_DIA_RESTART = "Restart? (Progress will be deleted)";
 	private static final String TEXT_DIA_EXIT = "Exit? Progress will be deleted.";
 	// ---
 	// -- Settings ---------
-	private static final Rectangle BOUNDS_SET_BACK = new Rectangle(20, 20, 80, 80);
-	private static final Rectangle BOUNDS_SET_GRAPH_SCALE = new Rectangle(380, 140, 80, 40);
-	private static final Rectangle BOUNDS_SET_GRAPH_FANCY = new Rectangle(380, 192, 60, 40);
-	private static final Rectangle BOUNDS_SET_GRAPH_ROUND = new Rectangle(380, 242, 60, 40);
-	private static final Rectangle BOUNDS_SET_AA_GENERAL = new Rectangle(380, 345, 60, 40);
-	private static final Rectangle BOUNDS_SET_AA_SHIPS = new Rectangle(380, 395, 60, 40);
-	private static final Rectangle BOUNDS_SET_SPEEDBOOST = new Rectangle(380, 480, 60, 40);
+	private static final Rectangle BOUNDS_SET_BACK = new Rectangle(20 + KONTEXT_TRANSLATION[0], 20 + KONTEXT_TRANSLATION[1], 80, 80);
+	private static final Rectangle BOUNDS_SET_GRAPH_SCALE = new Rectangle(380 + KONTEXT_TRANSLATION[0], 140 + KONTEXT_TRANSLATION[1], 80, 40);
+	private static final Rectangle BOUNDS_SET_GRAPH_FANCY = new Rectangle(380 + KONTEXT_TRANSLATION[0], 192 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_GRAPH_ROUND = new Rectangle(380 + KONTEXT_TRANSLATION[0], 242 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_AA_GENERAL = new Rectangle(380 + KONTEXT_TRANSLATION[0], 345 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_AA_SHIPS = new Rectangle(380 + KONTEXT_TRANSLATION[0], 395 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_SPEEDBOOST = new Rectangle(380 + KONTEXT_TRANSLATION[0], 480 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Color COLOR_SET_HOVER = new Color(45, 35, 11, 35);
 	private static final Color COLOR_SET_AA_FG = new Color(0, 0, 0, 220);
 	private static final Stroke STROKE_SET_BACK = new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
@@ -86,17 +91,17 @@ public abstract class PauseScreen {
 	// x1/x3, x2, y1, y2, y3
 	private static final int[] SYMBOL_SET_BACK_LOCS = new int[] { BOUNDS_SET_BACK.x + 60, BOUNDS_SET_BACK.x + 15,
 			BOUNDS_SET_BACK.y + 5, BOUNDS_SET_BACK.y + 37, BOUNDS_SET_BACK.y + 72 };
-	private static final String TEXT_SET_GRAPH = "general graphics";
+	private static final String TEXT_SET_GRAPH = "General graphics";
 	private static final String TEXT_SET_GRAPH_SCALE = "window size";
 	private static final String TEXT_SET_GRAPH_ROUNDCORNERS = "round corners";
 	private static final String TEXT_SET_GRAPH_FANCY = "fancyness";
-	private static final String TEXT_SET_AA = "antialising";
+	private static final String TEXT_SET_AA = "Antialising";
 	private static final String TEXT_SET_AA_GENERAL = "general smoothness";
 	private static final String TEXT_SET_AA_SHIPS = "smooth ships";
 	private static final String TEXT_ON = "ON";
 	private static final String TEXT_OFF = "OFF";
-	private static final String TEXT_SPEEDMODE = "hyper mode";
-	private static final float SWITCHING_SPEED = 25.0f;
+	private static final String TEXT_SPEEDMODE = "Hyper-Mode";
+	private static final float SWITCHING_SPEED = 32.0f;
 	// ---
 
 	// Maus über: Continue, Restart, Setting, Exit?
@@ -203,6 +208,7 @@ public abstract class PauseScreen {
 				drawDirSettings(g);
 			}
 		}
+
 	}
 
 	private static final ClickListener CLICK_LISTENER = new ClickListener() {

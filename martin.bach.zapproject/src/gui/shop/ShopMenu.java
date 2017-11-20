@@ -67,8 +67,8 @@ public abstract class ShopMenu {
 
 		g.setColor(COLOR_SELECT_BORDER);
 		g.setFont(FONT_BUTTON);
-		g.drawString(TEXT_BUY, 40, 355);
-		g.drawString(TEXT_UPGRADE, 347, 355);
+		g.drawString(TEXT_BUY, 75, 355 + 75);
+		g.drawString(TEXT_UPGRADE, 385 + 75, 355 + 75);
 	}
 
 	public static void update() {

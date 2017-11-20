@@ -72,7 +72,8 @@ public class DeltaDummy implements Collideable {
 	 * Ersetzt Dummy durch neues DeltaEnemy
 	 */
 	public DeltaEnemy replace() {
-		DeltaEnemy child = new DeltaEnemy(getHost().getBorderlen() / 2, getHost().getInstance() + 1, host, id);
+		DeltaEnemy child = new DeltaEnemy(getHost().getBorderlen() / 2, getHost().getInstance() + 1, host, id,
+				host.getStage());
 		child.setPosition(posX, posY);
 		child.setRotation((id != 3) ? (getHost().getRotation()) : (getHost().getRotation() + Math.PI));
 		child.getCoordinator().subinit();
@@ -87,11 +88,13 @@ public class DeltaDummy implements Collideable {
 
 	public void register() {
 		MainZap.getGrid().add(this); // Dummy register
+		host.getStage().getCollisionTasks().add(this);
 	}
 
 	public void unRegister() {
 		removed = true;
 		MainZap.getGrid().remove(this); // Dummy unregister
+		host.getStage().getCollisionTasks().remove(this);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import io.TextureBuffer;
 
 public abstract class ShopSecBuy {
 
-	public static final int DESCRIPTION_WIDTH = 272;
+	public static final int DESCRIPTION_WIDTH = 332;
 	protected static final float SCROLL_SPEED = 3.0f;
 	protected static final BufferedImage IMG_CRYSTAL = TextureBuffer.get(TextureBuffer.NAME_CRYSTAL);
 	protected static final Color COLOR_HOVER_BACK = new Color(0, 0, 50, 30);
@@ -52,10 +52,10 @@ public abstract class ShopSecBuy {
 	protected static final int SYM_BACK_X = 40;
 	protected static final int SYM_BACK_Y = 70;
 	protected static final Rectangle BOUNDS_BACK = new Rectangle(SYM_BACK_X - 5, SYM_BACK_Y - 5, 60, 60);
-	protected static final Rectangle BOUNDS_SCROLL_UP = new Rectangle(230, 526, 50, 50);
-	protected static final Rectangle BOUNDS_SCROLL_DOWN = new Rectangle(280, 526, 50, 50);
-	protected static final Rectangle BOUNDS_BUY = new Rectangle(510, 152, 100, 50);
-	protected static final Rectangle BOUNDS_DISPLAY_SHIPS = new Rectangle(39, 135, 293, 442);
+	protected static final Rectangle BOUNDS_SCROLL_UP = new Rectangle(280, 576 + 90, 50, 50);
+	protected static final Rectangle BOUNDS_SCROLL_DOWN = new Rectangle(330, 576 + 90, 50, 50);
+	protected static final Rectangle BOUNDS_BUY = new Rectangle(615, 152, 100, 50);
+	protected static final Rectangle BOUNDS_DISPLAY_SHIPS = new Rectangle(39, 145, 343, 492 + 80);
 	protected static final Polygon SYMBOL_BACK = new Polygon(new int[] { SYM_BACK_X, 50 + SYM_BACK_X, 50 + SYM_BACK_X },
 			new int[] { 25 + SYM_BACK_Y, SYM_BACK_Y, 50 + SYM_BACK_Y }, 3);
 	protected static final Polygon SYMBOL_UP = new Polygon(
@@ -65,25 +65,25 @@ public abstract class ShopSecBuy {
 			new int[] { BOUNDS_SCROLL_DOWN.x + 10, BOUNDS_SCROLL_DOWN.x + 40, BOUNDS_SCROLL_DOWN.x + 25 },
 			new int[] { BOUNDS_SCROLL_DOWN.y + 10, BOUNDS_SCROLL_DOWN.y + 10, BOUNDS_SCROLL_DOWN.y + 40 }, 3);
 	protected static final int ITEM_POS_X = 50;
-	protected static final int ITEM_IMAGE_WIDTH = 75;
-	protected static final int ITEM_IMAGE_HEIGHT = 50;
-	protected static final int ITEM_HEIGHT = 80;
-	protected static final int ITEM_WIDTH = 240;
+	protected static final int ITEM_IMAGE_WIDTH = 100;
+	protected static final int ITEM_IMAGE_HEIGHT = 75;
+	protected static final int ITEM_HEIGHT = 100;
+	protected static final int ITEM_WIDTH = 290;
 	protected static final int[] POINTS_X_TITLE_BG_CORNER = new int[] { ITEM_WIDTH + ITEM_POS_X + 4,
 			ITEM_WIDTH + ITEM_POS_X + 4 + 30, ITEM_WIDTH + ITEM_POS_X + 4 };
-	protected static final int SELECT_IMAGE_WIDTH = 150;
-	protected static final int SELECT_IMAGE_HEIGHT = 140;
+	protected static final int SELECT_IMAGE_WIDTH = 180;
+	protected static final int SELECT_IMAGE_HEIGHT = 190;
 	// -- Dailog ----------
 	protected static final Color COLOR_DIA_BG = new Color(255, 255, 255, 240);
 	protected static final Color COLOR_DIA_BORDER = new Color(0, 0, 0, 100);
 	protected static final Color COLOR_DIA_TEXT = new Color(0, 0, 0, 180);
 	protected static final Font FONT_DIALOG = new Font("Arial", Font.BOLD, 22);
 	protected static final Font FONT_DIALOG_OPTION = new Font("Arial", Font.BOLD, 40);
-	protected static final Rectangle BOUNDS_DIALOG = new Rectangle(140, 250, 370, 150);
+	protected static final Rectangle BOUNDS_DIALOG = new Rectangle(215, 325, 370, 150);
 	protected static final int BORDERWIDTH_DIALOG = 8;
 	protected static final Stroke STROKE_BUTTON_BORDER = new BasicStroke(5);
-	protected static final Rectangle BOUNDS_DIA_YES = new Rectangle(180, 330, 120, 50);
-	protected static final Rectangle BOUNDS_DIA_NO = new Rectangle(350, 330, 120, 50);
+	protected static final Rectangle BOUNDS_DIA_YES = new Rectangle(255, 405, 120, 50);
+	protected static final Rectangle BOUNDS_DIA_NO = new Rectangle(425, 405, 120, 50);
 	private static final String TEXT_DIA = "Exchange ship?";
 	// ---
 
@@ -156,7 +156,7 @@ public abstract class ShopSecBuy {
 		g.setStroke(STROKE_SHIPS_CUT);
 		g.drawLine(BOUNDS_DISPLAY_SHIPS.x, BOUNDS_DISPLAY_SHIPS.y,
 				BOUNDS_DISPLAY_SHIPS.x + BOUNDS_DISPLAY_SHIPS.width - 1, BOUNDS_DISPLAY_SHIPS.y);
-		g.drawLine(BOUNDS_DISPLAY_SHIPS.x, BOUNDS_DISPLAY_SHIPS.y + BOUNDS_DISPLAY_SHIPS.height, BOUNDS_SCROLL_UP.x - 2,
+		g.drawLine(BOUNDS_DISPLAY_SHIPS.x, BOUNDS_DISPLAY_SHIPS.y + BOUNDS_DISPLAY_SHIPS.height, BOUNDS_DISPLAY_SHIPS.x + BOUNDS_DISPLAY_SHIPS.width - 1,
 				BOUNDS_DISPLAY_SHIPS.y + BOUNDS_DISPLAY_SHIPS.height);
 
 		paintScrollButtons(g);
@@ -165,7 +165,7 @@ public abstract class ShopSecBuy {
 		// Rechte Seite
 		// Hintergrund und Trennung
 		g.setColor(COLOR_STATS_BG);
-		g.fillRect(Frame.SIZE / 2 + 15, Shop.Y, 279, Shop.BOUNDS.height);
+		g.fillRect(Frame.SIZE / 2 + 15, Shop.Y, 279 + 75, Shop.BOUNDS.height);
 		g.setColor(COLOR_SITE_BORDER);
 		g.setStroke(STROKE_SITE_BORDER);
 		g.drawLine(Frame.SIZE / 2 + 15, Shop.Y + 2, Frame.SIZE / 2 + 15, Shop.BOUNDS.height + Shop.Y - 2);
@@ -174,8 +174,8 @@ public abstract class ShopSecBuy {
 		Rectangle imgBounds = getItemImageBounds(selectedConfig.getConfig().getTexture(), SELECT_IMAGE_WIDTH,
 				SELECT_IMAGE_HEIGHT);
 		g.setColor(Color.WHITE);
-		g.fillRect(350, 65, SELECT_IMAGE_WIDTH, SELECT_IMAGE_HEIGHT);
-		g.drawImage(selectedConfig.getConfig().getTexture(), 350 + imgBounds.x, 65 + imgBounds.y, imgBounds.width,
+		g.fillRect(425, 65, SELECT_IMAGE_WIDTH, SELECT_IMAGE_HEIGHT);
+		g.drawImage(selectedConfig.getConfig().getTexture(), 425 + imgBounds.x, 65 + imgBounds.y, imgBounds.width,
 				imgBounds.height, null);
 
 		// - Preis
@@ -183,7 +183,7 @@ public abstract class ShopSecBuy {
 		if (MainZap.generalAntialize) {
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		}
-		g.drawImage(IMG_CRYSTAL, 352 + SELECT_IMAGE_WIDTH, 105, IMG_CRYSTAL.getWidth() * 3, IMG_CRYSTAL.getHeight() * 3,
+		g.drawImage(IMG_CRYSTAL, 427 + SELECT_IMAGE_WIDTH, 105, IMG_CRYSTAL.getWidth() * 3, IMG_CRYSTAL.getHeight() * 3,
 				null);
 		// Antialising reaktivieren
 		if (MainZap.generalAntialize) {
@@ -191,7 +191,7 @@ public abstract class ShopSecBuy {
 		}
 		g.setColor(Color.BLACK);
 		g.setFont(FONT_STATS_PRICE);
-		g.drawString(selectedConfig.getConfig().getPrice() + "", 350 + SELECT_IMAGE_WIDTH + 32, 131);
+		g.drawString(selectedConfig.getConfig().getPrice() + "", 425 + SELECT_IMAGE_WIDTH + 32, 131);
 
 		// Buy-Button
 		if (hoveringBuy) {
@@ -207,11 +207,11 @@ public abstract class ShopSecBuy {
 		// Name
 		g.setColor(Color.BLACK);
 		g.setFont(FONT_STATS_TITEL);
-		g.drawString(selectedConfig.getConfig().getName(), 350, 232);
+		g.drawString(selectedConfig.getConfig().getName(), 425, 282);
 
 		// Beschreibung
 		g.setFont(FONT_STATS_DESC);
-		selectedConfig.getDescription().paint(g, 352, 251);
+		selectedConfig.getDescription().paint(g, 427, 301);
 
 		// Statistiken
 		try {

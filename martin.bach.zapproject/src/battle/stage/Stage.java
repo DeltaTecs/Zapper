@@ -7,6 +7,7 @@ import battle.CombatObject;
 import battle.ai.AiProtocol;
 import battle.ai.DieCall;
 import battle.enemy.Enemy;
+import collision.Collideable;
 import corecase.MainZap;
 import gui.Map;
 import ingameobjects.InteractiveObject;
@@ -25,6 +26,7 @@ public class Stage implements Updateable {
 	private ArrayList<InteractiveObject> interactiveObjects = new ArrayList<InteractiveObject>();
 	private ArrayList<PaintingTask> paintingTasks = new ArrayList<PaintingTask>();
 	private ArrayList<Updateable> updateTasks = new ArrayList<Updateable>();
+	private ArrayList<Collideable> collisionTasks = new ArrayList<Collideable>();
 	private boolean passed = false;
 
 	public Stage(int lvl, String name, StageDifficulty difficulty, String description) {
@@ -154,4 +156,8 @@ public class Stage implements Updateable {
 		return RANDOM;
 	}
 
+	public ArrayList<Collideable> getCollisionTasks() {
+		return collisionTasks;
+	}
+	
 }

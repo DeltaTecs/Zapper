@@ -4,10 +4,9 @@ import corecase.MainZap;
 
 public class TierTwoCoordinator extends DeltaCoordinator {
 
-	private static final int TIME_OF_DRIFT = MainZap.inTicks(8000);
-	private static final float SPEED_DRIFT = 0.2f;
+	private static final int TIME_OF_DRIFT = MainZap.inTicks(12000);
+	private static final float SPEED_DRIFT = 0.15f;
 
-	private int tierThreePartsDepart = 0;
 	private int timeTillStop = TIME_OF_DRIFT;
 	private boolean partInPlace = false;
 
@@ -51,7 +50,6 @@ public class TierTwoCoordinator extends DeltaCoordinator {
 	@Override
 	public void breakAt(byte posId, DeltaEnemy result) {
 		super.breakAt(posId, result);
-		tierThreePartsDepart++;
 	}
 
 	public boolean isPartInPlace() {

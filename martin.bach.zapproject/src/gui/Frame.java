@@ -17,7 +17,7 @@ public class Frame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int SIZE = 650;
+	public static final int SIZE = 800;
 	public static final int HALF_SCREEN_SIZE = (SIZE / 2);
 	public static final int BUFFER_AMOUNT = 2;
 	

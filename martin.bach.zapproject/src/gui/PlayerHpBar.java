@@ -13,11 +13,12 @@ import lib.Updateable;
 public class PlayerHpBar implements PaintingTask, Updateable {
 
 	private static final float WARNING_BORDER = 0.3f; // Warnung ab 30% HP
-	private static final int WARNING_BORDER_REACH = 6;
+	private static final int WARNING_BORDER_REACH = 8;
 	private static final int ROUND_DEEPTH = 4;
 	private static final int PULSE_LENGTH = 100;
-	private static final int BAR_WIDTH = 570;
-	private static final int BAR_POS = 70;
+	private static final int BAR_WIDTH = 715;
+	private static final int BAR_POS = 77;
+	private static final int BAR_THICKNESS = 13;
 	private static final Color COLOR_BACKGROUND = new Color(174, 1, 2, 50);
 	private static final Color COLOR_FOREGROUND = new Color(221, 22, 10, 100);
 
@@ -59,20 +60,20 @@ public class PlayerHpBar implements PaintingTask, Updateable {
 
 		// Reguläre Hp-Bar
 
-		g.clipRect(BAR_POS, 6, BAR_WIDTH, 10);
+		g.clipRect(BAR_POS, 6, BAR_WIDTH, BAR_THICKNESS);
 
 		g.setColor(COLOR_BACKGROUND);
 
 		if (MainZap.roundCorners) {
 
-			g.fillRoundRect(BAR_POS, 6, BAR_WIDTH, 10, ROUND_DEEPTH, ROUND_DEEPTH);
+			g.fillRoundRect(BAR_POS, 6, BAR_WIDTH, BAR_THICKNESS, ROUND_DEEPTH, ROUND_DEEPTH);
 			g.setColor(COLOR_FOREGROUND);
-			g.fillRoundRect(BAR_POS, 6, (int) (BAR_WIDTH * (double) hp / maxHp), 10, ROUND_DEEPTH, ROUND_DEEPTH);
+			g.fillRoundRect(BAR_POS, 6, (int) (BAR_WIDTH * (double) hp / maxHp), BAR_THICKNESS, ROUND_DEEPTH, ROUND_DEEPTH);
 
 			if (dmgAlpha > 0) {
 				g.setColor(new Color(COLOR_FOREGROUND.getRed(), COLOR_FOREGROUND.getGreen(), COLOR_FOREGROUND.getBlue(),
 						dmgAlpha));
-				g.fillRoundRect(BAR_POS, 6, BAR_WIDTH, 10, ROUND_DEEPTH, ROUND_DEEPTH);
+				g.fillRoundRect(BAR_POS, 6, BAR_WIDTH, BAR_THICKNESS, ROUND_DEEPTH, ROUND_DEEPTH);
 			}
 
 			g.setColor(COLOR_FOREGROUND);
@@ -104,14 +105,14 @@ public class PlayerHpBar implements PaintingTask, Updateable {
 			return;
 		}
 
-		g.fillRect(BAR_POS, 6, BAR_WIDTH, 10);
+		g.fillRect(BAR_POS, 6, BAR_WIDTH, BAR_THICKNESS);
 		g.setColor(COLOR_FOREGROUND);
-		g.fillRect(BAR_POS, 6, (int) (BAR_WIDTH * (double) hp / maxHp), 10);
+		g.fillRect(BAR_POS, 6, (int) (BAR_WIDTH * (double) hp / maxHp), BAR_THICKNESS);
 
 		if (dmgAlpha > 0) {
 			g.setColor(new Color(COLOR_FOREGROUND.getRed(), COLOR_FOREGROUND.getGreen(), COLOR_FOREGROUND.getBlue(),
 					dmgAlpha));
-			g.fillRect(BAR_POS, 6, BAR_WIDTH, 10);
+			g.fillRect(BAR_POS, 6, BAR_WIDTH, BAR_THICKNESS);
 		}
 
 		g.setColor(COLOR_FOREGROUND);
@@ -131,7 +132,7 @@ public class PlayerHpBar implements PaintingTask, Updateable {
 				g.setColor(new Color(COLOR_FOREGROUND.getRed(), COLOR_FOREGROUND.getGreen(), COLOR_FOREGROUND.getBlue(),
 						(int) alpha));
 				alpha += alphaDelta;
-				g.fillRect(j, 6, 1, 10);
+				g.fillRect(j, 6, 1, BAR_THICKNESS);
 
 			}
 
@@ -162,7 +163,7 @@ public class PlayerHpBar implements PaintingTask, Updateable {
 
 		} else {
 			// Basic
-			g.fillRect(BAR_POS - 4, 2, BAR_WIDTH + 8, 18);
+			g.fillRect(BAR_POS - 5, 1, BAR_WIDTH + 10, BAR_THICKNESS + 10);
 		}
 
 	}

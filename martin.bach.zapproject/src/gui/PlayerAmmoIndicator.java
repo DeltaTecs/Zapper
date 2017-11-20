@@ -10,8 +10,8 @@ public class PlayerAmmoIndicator implements PaintingTask {
 
 	private static final int ROUND_DEEPTH = 7;
 	private static final float VALUE_DELTA = 0.00071f;
-	private static final int BAR_HEIGHT = 150;
-	private static final int BAR_WIDTH = 15;
+	private static final int BAR_HEIGHT = 200;
+	private static final int BAR_WIDTH = 18;
 	private static final int BAR_DISTANCE = 4;
 	private static final int BAR_POS = 6;
 	private static final Color COLOR_BARS = new Color(229, 71, 110, 200);
