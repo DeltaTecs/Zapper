@@ -65,7 +65,7 @@ public class Stage9 extends Stage {
 				new SpawnScheduler(50, SPAWN_RATE_SPEED_PACK, PackType.SPEED) };
 
 		// Base-Hintergrund init und registrierung
-		baseBG.setPosition(1500, 2777);
+		baseBG.setPosition(1500, 2840);
 		MainZap.getMap().addPaintElement(baseBG, true);
 		getPaintingTasks().add(baseBG);
 
