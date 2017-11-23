@@ -48,6 +48,7 @@ public abstract class MainZap {
 	public static boolean fancyGraphics = true;
 	public static boolean roundCorners = false;
 	public static boolean allowBiggerWindow = false;
+	private static boolean playedThrough = false;
 	private static int canvasDx;
 	private static int canvasDy;
 	private static float scale;
@@ -99,7 +100,7 @@ public abstract class MainZap {
 		scaleTransform = new AffineTransform();
 		scaleTransform.scale(scale, scale);
 		frame.rescale(scale);
-		
+
 		if (SCHEDULE_INSET_RECHECK)
 			scheduleFrameInsetRecheck();
 
@@ -409,20 +410,23 @@ public abstract class MainZap {
 	}
 
 	public static void addScore(int s) {
+		if (!playedThrough)
 		score += s * StageManager.getActiveStage().getLvl();
 		Hud.pushScore();
 	}
 
 	public static void addCrystal() {
 		crystals++;
+		if (!playedThrough)
 		crystalsEverEarned++;
 	}
 
 	public static void addCrystals(int amount) {
 		crystals += amount;
+		if (!playedThrough)
 		crystalsEverEarned += amount;
 	}
-	
+
 	public static void setCrystals(int crystals) {
 		MainZap.crystals = crystals;
 	}
@@ -566,6 +570,14 @@ public abstract class MainZap {
 				}
 			}
 		});
+	}
+
+	public static boolean isPlayedThrough() {
+		return playedThrough;
+	}
+
+	public static void setPlayedThrough(boolean playedThrough) {
+		MainZap.playedThrough = playedThrough;
 	}
 
 }

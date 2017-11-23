@@ -6,7 +6,8 @@ import lib.SpeedVector;
 
 public class TierSixCoordinator extends DeltaCoordinator {
 
-	private static final float EQUALIZING_FORCE = 0.0032f;
+	private static final float EQUALIZING_FORCE_COMBAT = 0.0032f;
+	private static final float EQUALIZING_FORCE_IDLE = 0.0005f;
 	private static final float LINE_SPREAD_FAC = 2.0f;
 
 	public TierSixCoordinator(DeltaEnemy host, TierFiveCoordinator superior) {
@@ -37,7 +38,7 @@ public class TierSixCoordinator extends DeltaCoordinator {
 	public void update() {
 		updateMovement();
 	}
-	
+
 	@Override
 	public void die() {
 		super.die();
@@ -48,10 +49,19 @@ public class TierSixCoordinator extends DeltaCoordinator {
 
 	private void updateMovement() {
 
-		SpeedVector directWayToPlayer = new SpeedVector(MainZap.getPlayer().getPosX() - getHost().getPosX(),
-				MainZap.getPlayer().getPosY() - getHost().getPosY());
-		getHost().setVelocity(SpeedVector.equalize(directWayToPlayer, getHost().getVelocity(), EQUALIZING_FORCE,
-				getHost().getSpeed()));
+		SpeedVector direction;
+		if (MainZap.getPlayer().isAlive())
+			direction = new SpeedVector(MainZap.getPlayer().getPosX() - getHost().getPosX(),
+					MainZap.getPlayer().getPosY() - getHost().getPosY()); // Direkter Weg zum Spieler
+		else
+			direction = new SpeedVector(1500 - getHost().getPosX(), 1500 - getHost().getPosY());
+
+		if (MainZap.getPlayer().isAlive())
+			getHost().setVelocity(
+					SpeedVector.equalize(direction, getHost().getVelocity(), EQUALIZING_FORCE_COMBAT, getHost().getSpeed()));
+		else
+			getHost().setVelocity(SpeedVector.equalize(direction, getHost().getVelocity(), EQUALIZING_FORCE_IDLE,
+					getHost().getSpeed() / 1.8f));
 		getHost().move();
 	}
 
