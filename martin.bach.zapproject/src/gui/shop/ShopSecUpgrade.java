@@ -183,15 +183,7 @@ public abstract class ShopSecUpgrade {
 		// ----
 
 		// -- Gesamt Geld -----
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-		}
-		g.drawImage(IMG_CRYSTAL, 150, 78, (int) (IMG_CRYSTAL.getWidth() * 3f), (int) (IMG_CRYSTAL.getHeight() * 3f),
-				null);
-		// Antialising reaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		}
+		Shop.drawCrystal(g, 150, 78, 3);
 		g.setColor(Color.BLACK);
 		g.setFont(FONT_BALANCE);
 		g.drawString(MainZap.getCrystals() + "", 180, 107);
@@ -302,17 +294,7 @@ public abstract class ShopSecUpgrade {
 			}
 		}
 
-		// Antialising deaktivieren
-		if (MainZap.generalAntialize)
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-
-		g.drawImage(IMG_CRYSTAL, 418 + EXT_D_POS_X, 550 + EXT_D_POS_Y, (int) (IMG_CRYSTAL.getWidth() * 2f),
-				(int) (IMG_CRYSTAL.getHeight() * 2f), null);
-
-		// Antialising reaktivieren
-		if (MainZap.generalAntialize)
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-
+		Shop.drawCrystal(g, 418 + EXT_D_POS_X, 550 + EXT_D_POS_Y, 2);
 		g.setColor(ShopSecBuy.COLOR_FG);
 		g.setFont(FONT_EXT_DESC_PRICE);
 		g.drawString(price + "", 439 + EXT_D_POS_X, 569 + EXT_D_POS_Y);
@@ -365,7 +347,7 @@ public abstract class ShopSecUpgrade {
 		// Antialising reaktivieren
 		if (MainZap.generalAntialize)
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-
+		
 	}
 
 	private static void paintStatUpgradeSection(Graphics2D g) {
@@ -428,16 +410,7 @@ public abstract class ShopSecUpgrade {
 			g.drawString("+15%", x + 310, y + FONT_PERCENTAGE.getSize() + 7);
 		}
 
-		// Antialising deaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-		}
-		g.drawImage(IMG_CRYSTAL, x + 389, y + 10, (int) (IMG_CRYSTAL.getWidth() * 2f),
-				(int) (IMG_CRYSTAL.getHeight() * 2f), null);
-		// Antialising reaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		}
+		Shop.drawCrystal(g, x + 389, y + 10, 2);
 
 		g.setColor(Color.BLACK);
 		g.setStroke(STROK_TOPIC_FRAME);

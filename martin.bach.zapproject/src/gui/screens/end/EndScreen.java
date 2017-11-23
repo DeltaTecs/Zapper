@@ -59,7 +59,7 @@ public abstract class EndScreen {
 
 		EndScreen.message = message;
 		entrys = ScoreReader.load();
-		sortScoreEntrys();
+		entrys = getSortedScoreEntrys(entrys);
 		Shop.close();
 
 		// Überdeckt ganzen Frame
@@ -71,7 +71,7 @@ public abstract class EndScreen {
 		clickObject = bg;
 		CashReader.save((int) (MainZap.getCrystalsEverEarned() * MainZap.CRYSTAL_GETBACK));
 		active = true;
-		
+
 	}
 
 	private static final PaintingTask PAINTINGTASK = new PaintingTask() {
@@ -182,15 +182,23 @@ public abstract class EndScreen {
 		@Override
 		public void keyPressed(KeyEvent e) {
 
-			if (scoreSubmitted)
-				return; // schon erledigt
+			if (scoreSubmitted || !active)
+				return; // schon erledigt oder inaktiv
 
 			if ((e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
 					&& nameEntered.length() > 0) {
+
 				if (nameEntered.length() == 0)
 					return;
 
 				nameEntered = nameEntered.substring(0, nameEntered.length() - 1);
+				return;
+
+			} else if (e.getKeyCode() == KeyEvent.VK_ENTER && startedTyping) { // Schneller Abschuss
+				entrys.add(new ScoreEntry(nameEntered, MainZap.getScore()));
+				scoreSubmitted = true;
+				entrys = getSortedScoreEntrys(entrys);
+				ScoreReader.save(entrys);
 				return;
 			}
 
@@ -229,7 +237,7 @@ public abstract class EndScreen {
 			if (HITBOX_SUBMIT.contains(dx, dy) && nameEntered.length() > 0 && !scoreSubmitted && startedTyping) {
 				entrys.add(new ScoreEntry(nameEntered, MainZap.getScore()));
 				scoreSubmitted = true;
-				sortScoreEntrys();
+				entrys = getSortedScoreEntrys(entrys);
 				ScoreReader.save(entrys);
 			} else if (HITBOX_RETRY.contains(dx, dy)) {
 				MainZap.getFrame().removeClickable(clickObject);
@@ -286,7 +294,7 @@ public abstract class EndScreen {
 
 	}
 
-	private static void sortScoreEntrys() {
+	public static ArrayList<ScoreEntry> getSortedScoreEntrys(ArrayList<ScoreEntry> entrys) {
 
 		ArrayList<ScoreEntry> tops = new ArrayList<ScoreEntry>();
 		int size = entrys.size();
@@ -306,8 +314,7 @@ public abstract class EndScreen {
 			tops.add(currentTopEntry);
 		}
 
-		entrys.clear();
-		entrys = tops;
+		return tops;
 	}
 
 	public static PaintingTask getPaintingtask() {
@@ -317,7 +324,5 @@ public abstract class EndScreen {
 	public static void setActive(boolean active) {
 		EndScreen.active = active;
 	}
-	
-	
 
 }

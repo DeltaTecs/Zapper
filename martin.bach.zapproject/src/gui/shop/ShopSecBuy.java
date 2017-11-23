@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,13 +15,11 @@ import err.InitializationTimingException;
 import gui.Frame;
 import gui.extention.Mirroring;
 import gui.shop.meta.ShipStartConfig;
-import io.TextureBuffer;
 
 public abstract class ShopSecBuy {
 
 	public static final int DESCRIPTION_WIDTH = 332;
 	protected static final float SCROLL_SPEED = 3.0f;
-	protected static final BufferedImage IMG_CRYSTAL = TextureBuffer.get(TextureBuffer.NAME_CRYSTAL);
 	protected static final Color COLOR_HOVER_BACK = new Color(0, 0, 50, 30);
 	protected static final Color COLOR_IMG_BG = new Color(230, 230, 255);
 	protected static final Color COLOR_BG = new Color(240, 240, 255);
@@ -123,16 +120,7 @@ public abstract class ShopSecBuy {
 
 		// Linke Seite
 
-		// Antialising deaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-		}
-		g.drawImage(IMG_CRYSTAL, 150, 78, (int) (IMG_CRYSTAL.getWidth() * 3f), (int) (IMG_CRYSTAL.getHeight() * 3f),
-				null);
-		// Antialising reaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		}
+		Shop.drawCrystal(g, 150, 78, 3);
 		g.setColor(Color.BLACK);
 		g.setFont(FONT_BALANCE);
 		g.drawString(MainZap.getCrystals() + "", 180, 107);
@@ -156,7 +144,8 @@ public abstract class ShopSecBuy {
 		g.setStroke(STROKE_SHIPS_CUT);
 		g.drawLine(BOUNDS_DISPLAY_SHIPS.x, BOUNDS_DISPLAY_SHIPS.y,
 				BOUNDS_DISPLAY_SHIPS.x + BOUNDS_DISPLAY_SHIPS.width - 1, BOUNDS_DISPLAY_SHIPS.y);
-		g.drawLine(BOUNDS_DISPLAY_SHIPS.x, BOUNDS_DISPLAY_SHIPS.y + BOUNDS_DISPLAY_SHIPS.height, BOUNDS_DISPLAY_SHIPS.x + BOUNDS_DISPLAY_SHIPS.width - 1,
+		g.drawLine(BOUNDS_DISPLAY_SHIPS.x, BOUNDS_DISPLAY_SHIPS.y + BOUNDS_DISPLAY_SHIPS.height,
+				BOUNDS_DISPLAY_SHIPS.x + BOUNDS_DISPLAY_SHIPS.width - 1,
 				BOUNDS_DISPLAY_SHIPS.y + BOUNDS_DISPLAY_SHIPS.height);
 
 		paintScrollButtons(g);
@@ -179,16 +168,7 @@ public abstract class ShopSecBuy {
 				imgBounds.height, null);
 
 		// - Preis
-		// Antialising deaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-		}
-		g.drawImage(IMG_CRYSTAL, 427 + SELECT_IMAGE_WIDTH, 105, IMG_CRYSTAL.getWidth() * 3, IMG_CRYSTAL.getHeight() * 3,
-				null);
-		// Antialising reaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		}
+		Shop.drawCrystal(g, 427 + SELECT_IMAGE_WIDTH, 105, 3);
 		g.setColor(Color.BLACK);
 		g.setFont(FONT_STATS_PRICE);
 		g.drawString(selectedConfig.getConfig().getPrice() + "", 425 + SELECT_IMAGE_WIDTH + 32, 131);
@@ -255,16 +235,7 @@ public abstract class ShopSecBuy {
 		g.setColor(COLOR_BG);
 		g.fillRect(ITEM_POS_X + ITEM_IMAGE_WIDTH + 4, y - 2 + 28 + 4, (int) ((ITEM_WIDTH - ITEM_IMAGE_WIDTH) * 0.8f),
 				22);
-		// Antialising deaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-		}
-		g.drawImage(IMG_CRYSTAL, ITEM_POS_X + ITEM_IMAGE_WIDTH + 3, y - 2 + 28 + 6,
-				(int) (IMG_CRYSTAL.getWidth() * 1.6f), (int) (IMG_CRYSTAL.getHeight() * 1.6f), null);
-		// Antialising reaktivieren
-		if (MainZap.generalAntialize) {
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		}
+		Shop.drawCrystal(g, ITEM_POS_X + ITEM_IMAGE_WIDTH + 3, y - 2 + 28 + 6, 1.6f);
 		g.setFont(FONT_PRICE);
 		g.setColor(Color.BLACK);
 		g.drawString(meta.getConfig().getPrice() + "", ITEM_POS_X + ITEM_IMAGE_WIDTH + 21, y - 2 + 50);
@@ -324,10 +295,8 @@ public abstract class ShopSecBuy {
 
 	protected static void callClick(int tx, int ty) {
 
-		
-		
 		scrollDelta = 0;
-		
+
 		if (BOUNDS_SCROLL_DOWN.contains(tx, ty) || BOUNDS_SCROLL_UP.contains(tx, ty))
 			return; // Scroll-Buttons werden über PRESS angesprochen
 

@@ -422,6 +422,10 @@ public abstract class MainZap {
 		crystals += amount;
 		crystalsEverEarned += amount;
 	}
+	
+	public static void setCrystals(int crystals) {
+		MainZap.crystals = crystals;
+	}
 
 	public static void removeCrystals(int amount) {
 		crystals -= amount;

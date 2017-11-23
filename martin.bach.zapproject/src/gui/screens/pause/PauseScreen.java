@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import corecase.Cmd;
 import corecase.MainZap;
 import gui.Frame;
+import gui.screens.finish.FinishScreen;
 import gui.shop.Shop;
 import io.CashReader;
 import io.SettingsInitReader;
@@ -63,22 +64,32 @@ public abstract class PauseScreen {
 	private static final Color COLOR_DIA_TEXT = new Color(0, 0, 0, 180);
 	private static final Font FONT_DIALOG = new Font("Arial", Font.BOLD, 22);
 	private static final Font FONT_DIALOG_OPTION = new Font("Arial", Font.BOLD, 40);
-	private static final Rectangle BOUNDS_DIALOG = new Rectangle(140 + KONTEXT_TRANSLATION[0], 250 + KONTEXT_TRANSLATION[1], 370, 150);
+	private static final Rectangle BOUNDS_DIALOG = new Rectangle(140 + KONTEXT_TRANSLATION[0],
+			250 + KONTEXT_TRANSLATION[1], 370, 150);
 	private static final int BORDERWIDTH_DIALOG = 8;
 	private static final Stroke STROKE_BUTTON_BORDER = new BasicStroke(5);
-	private static final Rectangle BOUNDS_DIA_YES = new Rectangle(180 + KONTEXT_TRANSLATION[0], 330 + KONTEXT_TRANSLATION[1], 120, 50);
-	private static final Rectangle BOUNDS_DIA_NO = new Rectangle(350 + KONTEXT_TRANSLATION[0], 330 + KONTEXT_TRANSLATION[1], 120, 50);
+	private static final Rectangle BOUNDS_DIA_YES = new Rectangle(180 + KONTEXT_TRANSLATION[0],
+			330 + KONTEXT_TRANSLATION[1], 120, 50);
+	private static final Rectangle BOUNDS_DIA_NO = new Rectangle(350 + KONTEXT_TRANSLATION[0],
+			330 + KONTEXT_TRANSLATION[1], 120, 50);
 	private static final String TEXT_DIA_RESTART = "Restart? (Progress will be deleted)";
 	private static final String TEXT_DIA_EXIT = "Exit? Progress will be deleted.";
 	// ---
 	// -- Settings ---------
-	private static final Rectangle BOUNDS_SET_BACK = new Rectangle(20 + KONTEXT_TRANSLATION[0], 20 + KONTEXT_TRANSLATION[1], 80, 80);
-	private static final Rectangle BOUNDS_SET_GRAPH_SCALE = new Rectangle(380 + KONTEXT_TRANSLATION[0], 140 + KONTEXT_TRANSLATION[1], 80, 40);
-	private static final Rectangle BOUNDS_SET_GRAPH_FANCY = new Rectangle(380 + KONTEXT_TRANSLATION[0], 192 + KONTEXT_TRANSLATION[1], 60, 40);
-	private static final Rectangle BOUNDS_SET_GRAPH_ROUND = new Rectangle(380 + KONTEXT_TRANSLATION[0], 242 + KONTEXT_TRANSLATION[1], 60, 40);
-	private static final Rectangle BOUNDS_SET_AA_GENERAL = new Rectangle(380 + KONTEXT_TRANSLATION[0], 345 + KONTEXT_TRANSLATION[1], 60, 40);
-	private static final Rectangle BOUNDS_SET_AA_SHIPS = new Rectangle(380 + KONTEXT_TRANSLATION[0], 395 + KONTEXT_TRANSLATION[1], 60, 40);
-	private static final Rectangle BOUNDS_SET_SPEEDBOOST = new Rectangle(380 + KONTEXT_TRANSLATION[0], 480 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_BACK = new Rectangle(20 + KONTEXT_TRANSLATION[0],
+			20 + KONTEXT_TRANSLATION[1], 80, 80);
+	private static final Rectangle BOUNDS_SET_GRAPH_SCALE = new Rectangle(380 + KONTEXT_TRANSLATION[0],
+			140 + KONTEXT_TRANSLATION[1], 80, 40);
+	private static final Rectangle BOUNDS_SET_GRAPH_FANCY = new Rectangle(380 + KONTEXT_TRANSLATION[0],
+			192 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_GRAPH_ROUND = new Rectangle(380 + KONTEXT_TRANSLATION[0],
+			242 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_AA_GENERAL = new Rectangle(380 + KONTEXT_TRANSLATION[0],
+			345 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_AA_SHIPS = new Rectangle(380 + KONTEXT_TRANSLATION[0],
+			395 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_SPEEDBOOST = new Rectangle(380 + KONTEXT_TRANSLATION[0],
+			480 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Color COLOR_SET_HOVER = new Color(45, 35, 11, 35);
 	private static final Color COLOR_SET_AA_FG = new Color(0, 0, 0, 220);
 	private static final Stroke STROKE_SET_BACK = new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
@@ -747,6 +758,10 @@ public abstract class PauseScreen {
 	}
 
 	private static void setOpen(boolean b) {
+
+		if (b && FinishScreen.isOpen())
+			return;
+
 		open = b;
 		listeningComponent.setVisible(b);
 		MainZap.getMainLoop().setPaused(b);

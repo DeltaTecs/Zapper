@@ -1,12 +1,9 @@
 package battle.stage;
 
-import javax.print.attribute.standard.Finishings;
-
 import battle.collect.PackType;
 import battle.collect.SpawnScheduler;
 import battle.stage._12.DeltaEnemy;
 import corecase.MainZap;
-import gui.screens.end.EndScreen;
 import gui.screens.finish.FinishScreen;
 
 public class Stage12 extends Stage {
@@ -42,15 +39,22 @@ public class Stage12 extends Stage {
 		deltaboss = new DeltaEnemy(900, 0, null, this);
 		deltaboss.register();
 		deltaboss.setPosition(1500, 1500);
-		
-		pass();
+
 	}
-	
+
 	@Override
 	public void pass() {
 		super.pass();
-		FinishScreen.open();
-		MainZap.getPlayer().setAlive(false);
+		
+		MainZap.getMainLoop().scheduleTask(new Runnable() {
+			
+			@Override
+			public void run() {
+				FinishScreen.open(); 
+				MainZap.getPlayer().setAlive(false);
+			}
+		}, MainZap.inTicks(2000), false);
+		
 	}
 
 	public void update() {

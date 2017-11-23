@@ -3,11 +3,14 @@ package gui.shop;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 
 import corecase.MainZap;
 import gui.Frame;
 import gui.Hud;
 import gui.screens.pause.PauseScreen;
+import io.TextureBuffer;
 import lib.ClickListener;
 import lib.ClickableObject;
 import lib.MotionListener;
@@ -23,6 +26,7 @@ public abstract class Shop {
 	public static final Rectangle BOUNDS_CENTER_TOTAL = new Rectangle(X, HEIGHT_INFOBAR, BOUNDS.width, HEIGHT_CENTER);
 	private static final Color COLOR_DARK_BACKGROUND = new Color(0, 0, 0, 70);
 	private static final Color COLOR_BRIGHT_BACKGROUND = new Color(255, 255, 255, 240);
+	private static final BufferedImage IMG_CRYSTAL = TextureBuffer.get(TextureBuffer.NAME_CRYSTAL);
 
 	private static boolean available = false;
 	private static boolean open = false;
@@ -179,6 +183,19 @@ public abstract class Shop {
 		g.setColor(COLOR_BRIGHT_BACKGROUND);
 		g.fillRect(X, Y, BOUNDS.width, BOUNDS.height);
 
+	}
+
+	public static void drawCrystal(Graphics2D g, int x, int y, float scaling) {
+		// Antialising deaktivieren
+		if (MainZap.generalAntialize) {
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		}
+		g.drawImage(IMG_CRYSTAL, x, y, (int) (IMG_CRYSTAL.getWidth() * scaling),
+				(int) (IMG_CRYSTAL.getHeight() * scaling), null);
+		// Antialising reaktivieren
+		if (MainZap.generalAntialize) {
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		}
 	}
 
 	public static void setDirectory(ShopDirectory d) {
