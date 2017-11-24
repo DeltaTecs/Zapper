@@ -9,6 +9,7 @@ import battle.ai.DieCall;
 import battle.enemy.Enemy;
 import collision.Collideable;
 import corecase.MainZap;
+import gui.Hud;
 import gui.Map;
 import ingameobjects.InteractiveObject;
 import ingameobjects.Player;
@@ -104,8 +105,10 @@ public class Stage implements Updateable {
 
 	}
 
+
 	public void pass() {
 		passed = true;
+		Hud.resetStagePassEffect();
 	}
 
 	public boolean isPassed() {
@@ -159,5 +162,5 @@ public class Stage implements Updateable {
 	public ArrayList<Collideable> getCollisionTasks() {
 		return collisionTasks;
 	}
-	
+
 }

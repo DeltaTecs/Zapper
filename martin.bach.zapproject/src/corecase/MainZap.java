@@ -160,7 +160,7 @@ public abstract class MainZap {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(9);
+			StageManager.setUp(10);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
 			crystals = 8000;
 			ShopSecUpgrade.purchaseUpgrade(0);
@@ -286,8 +286,6 @@ public abstract class MainZap {
 					g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 				}
 
-				dynamicLayer.update();
-				staticLayer.update();
 				dynamicLayer.drawLayer(g2d);
 				staticLayer.drawLayer(g2d);
 				Shop.paint(g2d);

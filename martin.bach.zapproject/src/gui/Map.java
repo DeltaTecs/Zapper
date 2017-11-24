@@ -13,6 +13,7 @@ import corecase.MainZap;
 import gui.extention.Shocking;
 import lib.PaintingTask;
 import lib.ScheduledList;
+import lib.SynchronisedScheduledList;
 import lib.Updateable;
 
 public class Map implements PaintingTask, Updateable {
@@ -23,9 +24,9 @@ public class Map implements PaintingTask, Updateable {
 
 	private ArrayList<Rectangle> backgroundParticles = new ArrayList<Rectangle>();
 	private ScheduledList<Updateable> updateElements = new ScheduledList<Updateable>();
-	private ScheduledList<PaintingTask> backgroundPaintElements = new ScheduledList<PaintingTask>();
-	private ScheduledList<PaintingTask> foregroundPaintElements = new ScheduledList<PaintingTask>();
-	private ScheduledList<PaintingTask> shipElements = new ScheduledList<PaintingTask>();
+	private SynchronisedScheduledList<PaintingTask> backgroundPaintElements = new SynchronisedScheduledList<PaintingTask>();
+	private SynchronisedScheduledList<PaintingTask> foregroundPaintElements = new SynchronisedScheduledList<PaintingTask>();
+	private SynchronisedScheduledList<PaintingTask> shipElements = new SynchronisedScheduledList<PaintingTask>();
 
 	public Map() {
 		rebuildBgParticles();
@@ -258,11 +259,11 @@ public class Map implements PaintingTask, Updateable {
 		return updateElements;
 	}
 
-	public ScheduledList<PaintingTask> getBackgroundPaintElements() {
+	public SynchronisedScheduledList<PaintingTask> getBackgroundPaintElements() {
 		return backgroundPaintElements;
 	}
 
-	public ScheduledList<PaintingTask> getForegroundPaintElements() {
+	public SynchronisedScheduledList<PaintingTask> getForegroundPaintElements() {
 		return foregroundPaintElements;
 	}
 

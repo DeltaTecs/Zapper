@@ -34,6 +34,7 @@ public abstract class Hud {
 	private static final float LVL_UP_HIDDEN_ALPHA = 0.2f;
 	private static final float TP_BLEND_ALPHA_REMOVE = 2.0f;
 	private static final Color COLOR_SHOP = new Color(0, 0, 93, 180);
+	private static final Color COLOR_STAGE_PASS_EFFECT = new Color(76, 132, 0, 120);
 	private static final Stroke STROKE_SHOP = new BasicStroke(5);
 	private static final Font FONT_SHOP = new Font("Arial", Font.BOLD, 36);
 	private static final int SPACE_Y_SHOP = 30;
@@ -41,6 +42,7 @@ public abstract class Hud {
 	private static final int WIDTH_SHOP = 150;
 	private static final int BLACK_BLEND_DURATION = MainZap.inTicks(150);
 	private static final int BLACK_BLEND_MAX_ALPHA = 220;
+	private static final float STAGE_PASS_EFFECT_DX = 15;
 	private static final float BLACK_BLEND_SPEED = 12.0f;
 	private static final Polygon OUTLINE_SHOP = new Polygon(new int[] { 0, WIDTH_SHOP, WIDTH_SHOP, 40 },
 			new int[] { 0, 0, 40, 40 }, 4);
@@ -62,6 +64,8 @@ public abstract class Hud {
 	private static boolean shopIconVisible = false;
 	private static float shopIconX = 0;
 	private static float shopBackgroundLength = WIDTH_SHOP;
+	private static float posStagePassEffect = -1;
+	private static boolean stagePassEffectFinished = true;
 
 	private static boolean switchBooleanForShieldBlackBlend = false;
 
@@ -104,6 +108,7 @@ public abstract class Hud {
 		@Override
 		public void paint(Graphics2D g) {
 
+			// Warp-Effect
 			if (MainZap.getPlayer().isWarping()) {
 				if (levelSwitchBlendAlpha != 0) {
 					if (levelSwitchBlendAlpha > 255)
@@ -112,6 +117,13 @@ public abstract class Hud {
 					g.fillRect(0, 0, Frame.SIZE, Frame.SIZE);
 				}
 				return;
+			}
+
+			// Stage-Pass-Effect
+			if (!stagePassEffectFinished) {
+				g.setColor(COLOR_STAGE_PASS_EFFECT);
+				g.fillRect((int)(posStagePassEffect), (int)(posStagePassEffect), Frame.SIZE - (int)(posStagePassEffect),
+						Frame.SIZE - (int)(posStagePassEffect));
 			}
 
 			// -- Schwarze Blende, letzter Boss
@@ -129,11 +141,14 @@ public abstract class Hud {
 			// ----- Hit-Indicator
 			if (MainZap.fancyGraphics)
 				PlayerDamageIndicator.paint(g);
-
+			
+			// ---- Bloody-Screen
+			BloodyScreen.paint(g);
+			
 			// ----- Spieler - Score
 			g.setColor(new Color(COLOR_SCORE[0], COLOR_SCORE[1], COLOR_SCORE[2], (int) alphaScore));
 			g.setFont(FONT_BIG);
-			g.drawString(MainZap.getScore() + " x" + StageManager.getActiveStage().getLvl() + "", 6, Frame.SIZE - 6);
+			g.drawString(MainZap.getScore() + " x" + StageManager.getActiveStage().getLvl() + "", 6, Frame.SIZE - 7);
 
 			// ----- Spieler - Knette
 			if (MainZap.generalAntialize) {
@@ -222,45 +237,27 @@ public abstract class Hud {
 		}
 	};
 
-	public static void pushBlackBlending() {
-		alphaBlackBlend = BLACK_BLEND_MAX_ALPHA;
-		durationBlackBlendRemaining = BLACK_BLEND_DURATION;
-	}
-
-	public static void pushScore() {
-		alphaScore += 50;
-		if (alphaScore > 255) {
-			alphaScore = 255;
-		}
-	}
-
-	public static void pushCrystals(int amount) {
-		alphaCrystals += 10 * amount;
-		if (alphaCrystals > 255) {
-			alphaCrystals = 255;
-		}
-	}
-
-	public static void pushBlending() {
-		levelSwitchBlendAlpha += 5;
-	}
-
-	public static void resetPortalBlending() {
-		tpBlendAlpha = 250;
-	}
-
-	public static void setBlending(int a) {
-		levelSwitchBlendAlpha = a;
-	}
-
 	public static void update() {
 
 		if (StageManager.getActiveStage() == null)
 			return; // Noch nicht initialisiert
 
+		// ----- Stage-Pass-Effect
+		if (!stagePassEffectFinished) {
+			if (posStagePassEffect < Frame.SIZE - 80)
+				posStagePassEffect += STAGE_PASS_EFFECT_DX;
+			else
+				stagePassEffectFinished = true;
+		}
+
+		// ---
+
 		// ----- Hit-Indicator
 		if (MainZap.fancyGraphics)
 			PlayerDamageIndicator.update();
+		
+		// ----- Bloody-Screen
+		BloodyScreen.update();
 
 		// -- Score ---------
 		if (alphaScore > COLOR_SCORE[3]) {
@@ -354,6 +351,42 @@ public abstract class Hud {
 			durationBlackBlendRemaining--;
 		}
 
+	}
+
+	public static void resetStagePassEffect() {
+		posStagePassEffect = 100;
+		stagePassEffectFinished = false;
+	}
+
+	public static void pushBlackBlending() {
+		alphaBlackBlend = BLACK_BLEND_MAX_ALPHA;
+		durationBlackBlendRemaining = BLACK_BLEND_DURATION;
+	}
+
+	public static void pushScore() {
+		alphaScore += 50;
+		if (alphaScore > 255) {
+			alphaScore = 255;
+		}
+	}
+
+	public static void pushCrystals(int amount) {
+		alphaCrystals += 10 * amount;
+		if (alphaCrystals > 255) {
+			alphaCrystals = 255;
+		}
+	}
+
+	public static void pushBlending() {
+		levelSwitchBlendAlpha += 5;
+	}
+
+	public static void resetPortalBlending() {
+		tpBlendAlpha = 250;
+	}
+
+	public static void setBlending(int a) {
+		levelSwitchBlendAlpha = a;
 	}
 
 	public static PaintingTask getPaintingTask() {

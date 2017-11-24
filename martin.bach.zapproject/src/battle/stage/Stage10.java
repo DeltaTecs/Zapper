@@ -120,7 +120,7 @@ public class Stage10 extends Stage {
 		for (SpawnScheduler s : spawner)
 			s.update();
 
-		if (enemys.size() < 4)
+		if (enemys.size() < 4 && !isPassed())
 			pass();
 
 		if (!MainZap.getPlayer().isAlive() && friendsAndPlayer.size() == 0) {
