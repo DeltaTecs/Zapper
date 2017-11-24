@@ -30,7 +30,7 @@ public abstract class PauseScreen {
 	private static final Color COLOR_BORDER = new Color(0, 10, 2, 200);
 	private static final Color COLOR_CONTINUE = new Color(22, 203, 226);
 	private static final Color COLOR_RESTART = new Color(230, 84, 155);
-	private static final Color COLOR_SETTINGS = new Color(147, 116, 37);
+	private static final Color COLOR_SETTINGS = new Color(73, 68, 59);
 	private static final Color COLOR_EXIT = new Color(96, 50, 50);
 	private static final int FONTSIZE = 70;
 	private static final Font FONT = new Font("Arial", Font.BOLD + Font.ITALIC, FONTSIZE);
@@ -85,11 +85,11 @@ public abstract class PauseScreen {
 	private static final Rectangle BOUNDS_SET_GRAPH_ROUND = new Rectangle(380 + KONTEXT_TRANSLATION[0],
 			242 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Rectangle BOUNDS_SET_AA_GENERAL = new Rectangle(380 + KONTEXT_TRANSLATION[0],
-			345 + KONTEXT_TRANSLATION[1], 60, 40);
+			292 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Rectangle BOUNDS_SET_AA_SHIPS = new Rectangle(380 + KONTEXT_TRANSLATION[0],
-			395 + KONTEXT_TRANSLATION[1], 60, 40);
+			342 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Rectangle BOUNDS_SET_SPEEDBOOST = new Rectangle(380 + KONTEXT_TRANSLATION[0],
-			480 + KONTEXT_TRANSLATION[1], 60, 40);
+			410 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Color COLOR_SET_HOVER = new Color(45, 35, 11, 35);
 	private static final Color COLOR_SET_AA_FG = new Color(0, 0, 0, 220);
 	private static final Stroke STROKE_SET_BACK = new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
@@ -102,13 +102,12 @@ public abstract class PauseScreen {
 	// x1/x3, x2, y1, y2, y3
 	private static final int[] SYMBOL_SET_BACK_LOCS = new int[] { BOUNDS_SET_BACK.x + 60, BOUNDS_SET_BACK.x + 15,
 			BOUNDS_SET_BACK.y + 5, BOUNDS_SET_BACK.y + 37, BOUNDS_SET_BACK.y + 72 };
-	private static final String TEXT_SET_GRAPH = "General graphics";
-	private static final String TEXT_SET_GRAPH_SCALE = "window size";
-	private static final String TEXT_SET_GRAPH_ROUNDCORNERS = "round corners";
-	private static final String TEXT_SET_GRAPH_FANCY = "fancyness";
-	private static final String TEXT_SET_AA = "Antialising";
-	private static final String TEXT_SET_AA_GENERAL = "general smoothness";
-	private static final String TEXT_SET_AA_SHIPS = "smooth ships";
+	private static final String TEXT_SET_GRAPH = "Graphics";
+	private static final String TEXT_SET_GRAPH_SCALE = "Window size";
+	private static final String TEXT_SET_GRAPH_ROUNDCORNERS = "Round corners";
+	private static final String TEXT_SET_GRAPH_FANCY = "Fancyness";
+	private static final String TEXT_SET_AA_GENERAL = "General smoothness";
+	private static final String TEXT_SET_AA_SHIPS = "Smooth ships";
 	private static final String TEXT_ON = "ON";
 	private static final String TEXT_OFF = "OFF";
 	private static final String TEXT_SPEEDMODE = "Hyper-Mode";
@@ -691,14 +690,11 @@ public abstract class PauseScreen {
 		g.drawString("%", BOUNDS_SET_GRAPH_SCALE.x + BOUNDS_SET_GRAPH_SCALE.width + 6,
 				BOUNDS_SET_GRAPH_SCALE.y + FONT_SET.getSize() + 4);
 		g.setColor(COLOR_SETTINGS);
-		g.drawString(TEXT_SET_GRAPH, BOUNDS_SET_GRAPH_SCALE.x - 210,
+		g.drawString(TEXT_SET_GRAPH, BOUNDS_SET_GRAPH_SCALE.x - 205,
 				BOUNDS_SET_GRAPH_SCALE.y - FONT_SET.getSize() + 16);
 		g.setFont(FONT_SET_SUB);
 		g.drawString(TEXT_SET_GRAPH_SCALE, BOUNDS_SET_GRAPH_SCALE.x - 142,
 				BOUNDS_SET_GRAPH_SCALE.y + FONT_SET.getSize() - 4);
-
-		g.setFont(FONT_SET);
-		g.drawString(TEXT_SET_AA, BOUNDS_SET_GRAPH_SCALE.x - 208, BOUNDS_SET_AA_GENERAL.y + FONT_SET.getSize() - 40);
 
 		// Fancy-Effekte:
 		g.setFont(FONT_SET_SUB);
