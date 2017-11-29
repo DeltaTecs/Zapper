@@ -17,7 +17,7 @@ public class AshshliderShipConfig extends ShipStartConfig {
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_ASHSLIDER);
 	private static final float SCALE = 0.5f;
 	private static final float AMMO_USAGE = 3.0f;
-	private static final int DAMAGE = 180;
+	private static final int DAMAGE = 210;
 	private static final float SPEED = 3.6f;
 	private static final float PROJ_SPEED = 14;
 	private static final float RELOAD_WITH = 2.0f;

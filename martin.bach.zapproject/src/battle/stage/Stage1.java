@@ -11,6 +11,7 @@ import battle.enemy.EnemyBeta1;
 import corecase.MainZap;
 import gui.Map;
 import ingameobjects.InteractiveObject;
+import io.SettingsInitReader;
 
 public class Stage1 extends Stage {
 
@@ -66,6 +67,15 @@ public class Stage1 extends Stage {
 			}
 
 		});
+	}
+
+	@Override
+	public void pass() {
+		super.pass();
+		if (MainZap.firstRun) {
+			MainZap.firstRun = false;
+			SettingsInitReader.save();
+		}
 	}
 
 	@Override

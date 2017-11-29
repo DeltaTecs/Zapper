@@ -101,8 +101,6 @@ public abstract class TextureBuffer {
 	public static final String NAME_SYMBOL_EXT_SHIELD = "symbolExtDefensive.png";
 	public static final String NAME_SYMBOL_EXT_SHOCK = "symbolExtShock.png";
 	public static final String NAME_SYMBOL_EXT_ADDCANNON = "symbolExtAddCannon.png";
-	public static final String NAME_GRAPHIC_BUY_NEW_SHIP = "graphicBuyNewShip.png";
-	public static final String NAME_GRAPHIC_UPGRADE_SHIP = "graphicUpgradeShip.png";
 	private static HashMap<String, BufferedImage> textures = new HashMap<String, BufferedImage>();
 	private static ArrayList<String> names = new ArrayList<String>();
 
@@ -194,8 +192,6 @@ public abstract class TextureBuffer {
 		names.add(NAME_SYMBOL_EXT_SHIELD);
 		names.add(NAME_SYMBOL_EXT_MIRROR);
 		names.add(NAME_SYMBOL_EXT_SHOCK);
-		names.add(NAME_GRAPHIC_BUY_NEW_SHIP);
-		names.add(NAME_GRAPHIC_UPGRADE_SHIP);
 		// Bilder eintragen...
 
 	}

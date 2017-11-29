@@ -34,7 +34,7 @@ public abstract class MainZap {
 	public static final String VERSION = "0.9.9";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = false || !inWorkspace();
+	public static final boolean FINAL_RUN = true || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static final float CRYSTAL_GETBACK = 0.20f;
@@ -48,6 +48,7 @@ public abstract class MainZap {
 	public static boolean fancyGraphics = true;
 	public static boolean roundCorners = false;
 	public static boolean allowBiggerWindow = false;
+	public static boolean firstRun = false;
 	private static boolean playedThrough = false;
 	private static int canvasDx;
 	private static int canvasDy;
@@ -82,6 +83,7 @@ public abstract class MainZap {
 		fancyGraphics = SettingsInitReader.loadFancyGraphics();
 		roundCorners = SettingsInitReader.loadRoundCorners();
 		speedMode = SettingsInitReader.loadSpeedmode();
+		firstRun = SettingsInitReader.loadFirstrun();
 		// Geld laden
 		crystals = CashReader.load() + 9;
 		crystalsEverEarned = crystals;
@@ -160,8 +162,8 @@ public abstract class MainZap {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(10);
-			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
+			StageManager.setUp(4);
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
 			crystals = 8000;
 			ShopSecUpgrade.purchaseUpgrade(0);
 			ShopSecUpgrade.purchaseUpgrade(0);
@@ -177,7 +179,7 @@ public abstract class MainZap {
 		PauseScreen.setUp(false);
 		Shop.setUp();
 
-		if (FINAL_RUN)
+		if (FINAL_RUN && firstRun)
 			Tutorial.show();
 
 		// -- Loop ----------
@@ -409,20 +411,20 @@ public abstract class MainZap {
 
 	public static void addScore(int s) {
 		if (!playedThrough)
-		score += s * StageManager.getActiveStage().getLvl();
+			score += s * StageManager.getActiveStage().getLvl();
 		Hud.pushScore();
 	}
 
 	public static void addCrystal() {
 		crystals++;
 		if (!playedThrough)
-		crystalsEverEarned++;
+			crystalsEverEarned++;
 	}
 
 	public static void addCrystals(int amount) {
 		crystals += amount;
 		if (!playedThrough)
-		crystalsEverEarned += amount;
+			crystalsEverEarned += amount;
 	}
 
 	public static void setCrystals(int crystals) {

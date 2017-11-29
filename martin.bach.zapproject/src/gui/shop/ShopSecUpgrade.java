@@ -68,14 +68,14 @@ public abstract class ShopSecUpgrade {
 	private static final Stroke STROK_TOPIC_FRAME = new BasicStroke(1.4f);
 	private static final Stroke STROKE_EXT_ACTIVE = new BasicStroke(5f);
 	private static final Rectangle BOUNDS_BACK = new Rectangle(SYM_BACK_X - 5, SYM_BACK_Y - 5, 60, 60);
-	private static final Rectangle BOUNDS_EXT_BUY = new Rectangle(530, 542, 76, 36);
+	private static final Rectangle BOUNDS_EXT_BUY = new Rectangle(605, 617, 76, 36);
 	private static final Rectangle[] BOUNDS_BUY = new Rectangle[] {
 			new Rectangle(STAT_POS_X + 490, STAT_POS_Y + (0 * 40) + (0 * STAT_SPACE_Y) + 2, 76, 36),
 			new Rectangle(STAT_POS_X + 490, STAT_POS_Y + (1 * 40) + (1 * STAT_SPACE_Y) + 2, 76, 36),
 			new Rectangle(STAT_POS_X + 490, STAT_POS_Y + (2 * 40) + (2 * STAT_SPACE_Y) + 2, 76, 36),
 			new Rectangle(STAT_POS_X + 490, STAT_POS_Y + (3 * 40) + (3 * STAT_SPACE_Y) + 2, 76, 36) };
-	private static final Rectangle[] BOUNDS_EXT = new Rectangle[] { new Rectangle(45, 390, 84, 84),
-			new Rectangle(45, 492, 84, 84), new Rectangle(235, 492, 84, 84), new Rectangle(235, 390, 84, 84) };
+	private static final Rectangle[] BOUNDS_EXT = new Rectangle[] { new Rectangle(120, 465, 84, 84),
+			new Rectangle(120, 567, 84, 84), new Rectangle(310, 567, 84, 84), new Rectangle(310, 465, 84, 84) };
 	private static final Polygon SYMBOL_BACK = new Polygon(new int[] { SYM_BACK_X, 50 + SYM_BACK_X, 50 + SYM_BACK_X },
 			new int[] { 25 + SYM_BACK_Y, SYM_BACK_Y, 50 + SYM_BACK_Y }, 3);
 	private static final String TEXT_UPGRADE = "BUY";
@@ -89,9 +89,9 @@ public abstract class ShopSecUpgrade {
 	private static final String TEXT_CANNONS_ACTIVE = "installed:";
 	private static final String TEXT_DES_ONLY_ONE_EXTENTION = "You can only select one extention at a time!";
 	private static final String TEXT_DES_MIRROR = "No more alone! Duplicates your ship to an armee of four. Mirror images have the same meta like you, but can not be healed. Cooldown: 20 sec. ";
-	private static final String TEXT_DES_SHIELD = "Temporary sentry mode. You are slowed down for 15 seconds, but your weapons are buffed and damage gets heavily absorbed. ";
+	private static final String TEXT_DES_SHIELD = "Temporary sentry mode. You are slowed down for 15 seconds, but your weapons are buffed and damage is heavily absorbed. ";
 	private static final String TEXT_DES_SHOCK = "Shock wave. Damages surrounding enemys and slows down their systems as well as breaking shields.";
-	private static final String TEXT_DES_ADDCANNON = "Adds another cannon to the weapon system. You can only have 3 cannons at total. ";
+	private static final String TEXT_DES_ADDCANNON = "Adds a cannon, but does not affect ammo usage. You can only have 3 cannons at total. ";
 
 	// -- Dailog ----------
 	private static final Color COLOR_DIA_BG = new Color(255, 255, 255, 240);
@@ -99,11 +99,11 @@ public abstract class ShopSecUpgrade {
 	private static final Color COLOR_DIA_TEXT = new Color(0, 0, 0, 180);
 	private static final Font FONT_DIALOG = new Font("Arial", Font.BOLD, 22);
 	private static final Font FONT_DIALOG_OPTION = new Font("Arial", Font.BOLD, 40);
-	private static final Rectangle BOUNDS_DIALOG = new Rectangle(140, 250, 370, 150);
+	private static final Rectangle BOUNDS_DIALOG = new Rectangle(215, 325, 370, 150);
 	private static final int BORDERWIDTH_DIALOG = 8;
 	private static final Stroke STROKE_BUTTON_BORDER = new BasicStroke(5);
-	private static final Rectangle BOUNDS_DIA_YES = new Rectangle(180, 330, 120, 50);
-	private static final Rectangle BOUNDS_DIA_NO = new Rectangle(350, 330, 120, 50);
+	private static final Rectangle BOUNDS_DIA_YES = new Rectangle(255, 405, 120, 50);
+	private static final Rectangle BOUNDS_DIA_NO = new Rectangle(425, 405, 120, 50);
 	// ---
 
 	private static boolean inDialog = false;
@@ -309,6 +309,10 @@ public abstract class ShopSecUpgrade {
 		g.setColor(ShopSecBuy.COLOR_BUY);
 		g.setFont(FONT_UPGRADE);
 		g.drawString(TEXT_UPGRADE, 534 + EXT_D_POS_X, 572 + EXT_D_POS_Y);
+		
+		
+		
+		
 	}
 
 	private static void paintExtentionUpgradeButton(Graphics2D g, BufferedImage img, int x, int y, String name,
