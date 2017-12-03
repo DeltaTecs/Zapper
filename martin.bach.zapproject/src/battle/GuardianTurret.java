@@ -15,22 +15,26 @@ public class GuardianTurret extends Enemy {
 
 	private static final float SPEED = 0;
 	private static final int MAX_HP = Integer.MAX_VALUE;
-	public static final int SHOOTING_RANGE = 700;
+	public static final int SHOOTING_RANGE = 950;
 	private static final BufferedImage[] TEXTURES = { TextureBuffer.get(TextureBuffer.NAME_FRIENDTURRET_SHOP0),
-			TextureBuffer.get(TextureBuffer.NAME_FRIENDTURRET_SHOP1) };
-	private static final float[] SCALES = { 1.2f, 1.2f };
-	private static final float[] RADIANS = { 50.0f, 75.0f };
+			TextureBuffer.get(TextureBuffer.NAME_FRIENDTURRET_SHOP1),
+			TextureBuffer.get(TextureBuffer.NAME_FRIENDTURRET_SHOP2) };
+	private static final float[] SCALES = { 1.2f, 1.2f, 0.5f };
+	private static final float[] RADIANS = { 50.0f, 75.0f, 60.0f };
 	private static final CollisionInformation[] COLINFOS = {
 			new CollisionInformation(RADIANS[0], CollisionType.COLLIDE_WITH_ENEMYS, false),
-			new CollisionInformation(RADIANS[1], CollisionType.COLLIDE_WITH_ENEMYS, false) };
+			new CollisionInformation(RADIANS[1], CollisionType.COLLIDE_WITH_ENEMYS, false),
+			new CollisionInformation(RADIANS[2], CollisionType.COLLIDE_WITH_ENEMYS, false) };
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = null;
 	private static final float COOLDOWN = 10;
 	private static final WeaponPositioning[] WEAPON_POSITIONS = {
 			new WeaponPositioning((byte) 1, new int[] { 0 }, new int[] { -55 }),
-			new WeaponPositioning((byte) 2, new int[] { -22, 22 }, new int[] { -70, -70 }) };
+			new WeaponPositioning((byte) 2, new int[] { -22, 22 }, new int[] { -70, -70 }),
+			new WeaponPositioning((byte) 2, new int[] { -10, 10 }, new int[] { -70, -70 })};
 	private static final MultiCannonWeaponConfiguration[] WEAPON_CONFIGS = {
 			new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONS[0]),
-			new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONS[1]) };
+			new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONS[1]),
+			new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONS[2])};
 	private static final int SCORE = 0;
 	private static final int CRYSTALS = 0;
 	private static final boolean FRIEND = true;

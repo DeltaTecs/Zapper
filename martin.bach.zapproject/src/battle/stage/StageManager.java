@@ -77,7 +77,7 @@ public abstract class StageManager {
 			public void run() {
 
 				MainZap.getPlayer().exitWarp();
-				setUp(currentLvl + 1);
+				setUp(currentLvl < 12 ? currentLvl + 1 : 1);
 				Hud.setBlending(0);
 				nextStageReachable = true;
 			}

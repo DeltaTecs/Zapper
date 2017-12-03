@@ -2,14 +2,17 @@ package battle.stage;
 
 import java.awt.Rectangle;
 
+import battle.GuardianTurret;
 import battle.collect.PackType;
 import battle.collect.SpawnEvent;
 import battle.collect.SpawnScheduler;
 import battle.enemy.Enemy;
 import battle.enemy.EnemyBeta0;
 import battle.enemy.EnemyBeta1;
+import battle.stage._1.Shop2;
 import corecase.MainZap;
 import gui.Map;
+import gui.shop.ShopLocation;
 import ingameobjects.InteractiveObject;
 import io.SettingsInitReader;
 
@@ -40,7 +43,7 @@ public class Stage1 extends Stage {
 	private SpawnScheduler[] spawner;
 
 	public Stage1() {
-		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 2400, 2400);
+		super(LVL, NAME, DIFFICULTY, DESCRIPTION, 2300, 2300);
 		spawner = new SpawnScheduler[] { new SpawnScheduler(MAX_AMOUNT_BETA0, SPAWN_RATE_BETA0, new EnemyBeta0(0, 0)),
 				new SpawnScheduler(MAX_AMOUNT_BETA1, SPAWN_RATE_BETA1, SPAWN_AREA_BETA1, new EnemyBeta1(0, 0)),
 				new SpawnScheduler(MAX_AMOUNT_AMMO_PACK_LARGE, 0, PackType.AMMO_LARGE),
@@ -67,6 +70,23 @@ public class Stage1 extends Stage {
 			}
 
 		});
+
+		if (!MainZap.firstRun) { // Shoppen möglich -> Shop spawnen
+			pass();
+
+			Shop2 shop = new Shop2();
+			super.getPaintingTasks().add(shop);
+			MainZap.getMap().addPaintElement(shop, true);
+			shop.setPosition(1900, 1900);
+			
+			ShopLocation shoploc = new ShopLocation(1900, 1900, 500, LVL);
+			MainZap.getMap().addUpdateElement(shoploc);
+			
+			GuardianTurret turret = new GuardianTurret(1900 + 134, 1900 - 51, 13, 2);
+			super.getInteractiveObjects().add(turret);
+			turret.register();
+
+		}
 	}
 
 	@Override

@@ -30,6 +30,7 @@ public abstract class TextureBuffer {
 	public static final String NAME_FRIENDSHIP_GAMMA_1_TURRET = "friendShipGamma1Turret.png";
 	public static final String NAME_FRIENDTURRET_SHOP0 = "friendTurretShop0.png";
 	public static final String NAME_FRIENDTURRET_SHOP1 = "friendTurretShop1.png";
+	public static final String NAME_FRIENDTURRET_SHOP2 = "friendTurretShop2.png";
 	public static final String NAME_FRIENDTURRET_ALPHA = "friendTurretAlpha.png";
 	public static final String NAME_FRIENDBASE_ALPHA = "friendBaseAlpha.png";
 	public static final String NAME_FRIENDBASECORE_ALPHA = "friendBasecoreAlpha.png";
@@ -64,6 +65,7 @@ public abstract class TextureBuffer {
 	public static final String NAME_ENEMYBASECORE_RAIDER_DES = "enemyBasecoreRaiderDestroyed.png";
 	public static final String NAME_STRUCTURE_SHOP0 = "strShop0.png";
 	public static final String NAME_STRUCTURE_SHOP1 = "strShop1.png";
+	public static final String NAME_STRUCTURE_SHOP2 = "strShop2.png";
 	public static final String NAME_STRUCTURE_ROCK0 = "strRock0.png";
 	public static final String NAME_STRUCTURE_STARGATE_FRAME = "stargate.png";
 	public static final String NAME_STRUCTURE_STARGATE_CONNECTOR = "stargateConnector.png";
@@ -123,6 +125,7 @@ public abstract class TextureBuffer {
 		names.add(NAME_FRIENDSHIP_GAMMA_1_TURRET);
 		names.add(NAME_FRIENDTURRET_SHOP0);
 		names.add(NAME_FRIENDTURRET_SHOP1);
+		names.add(NAME_FRIENDTURRET_SHOP2);
 		names.add(NAME_FRIENDTURRET_ALPHA);
 		names.add(NAME_FRIENDBASE_ALPHA);
 		names.add(NAME_FRIENDBASECORE_ALPHA);
@@ -155,6 +158,7 @@ public abstract class TextureBuffer {
 		names.add(NAME_ENEMYBASECORE_RAIDER_DES);
 		names.add(NAME_STRUCTURE_SHOP0);
 		names.add(NAME_STRUCTURE_SHOP1);
+		names.add(NAME_STRUCTURE_SHOP2);
 		names.add(NAME_STRUCTURE_ROCK0);
 		names.add(NAME_STRUCTURE_STARGATE_FRAME);
 		names.add(NAME_STRUCTURE_STARGATE_CONNECTOR);

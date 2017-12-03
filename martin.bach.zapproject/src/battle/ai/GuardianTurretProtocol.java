@@ -10,8 +10,8 @@ import lib.ScheduledList;
 
 public class GuardianTurretProtocol extends AiProtocol {
 
-	private static final int DISTANCE_FACE = 420;
-	private static final int DISTANCE_SHOOT = GuardianTurret.SHOOTING_RANGE;
+	private static final int DISTANCE_FACE = GuardianTurret.SHOOTING_RANGE - 100;
+	private static final int DISTANCE_SHOOT = GuardianTurret.SHOOTING_RANGE - 200;
 	private static final int DISTANCE_PHYSICAL_DETECTION = 800;
 
 	public GuardianTurretProtocol() {
@@ -26,6 +26,11 @@ public class GuardianTurretProtocol extends AiProtocol {
 	public void updateLockOn() {
 
 		CombatObject lock = getLockOn();
+		
+		if (lock != null) {
+			if (lock.distanceTo(getHost()) > DISTANCE_SHOOT)
+				lock = null; // Fallen lassen, da out of range
+		}
 
 		if (lock == null) {
 			// Lock suchen

@@ -34,7 +34,7 @@ public abstract class MainZap {
 	public static final String VERSION = "0.9.9";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = true || !inWorkspace();
+	public static final boolean FINAL_RUN = false || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static final float CRYSTAL_GETBACK = 0.20f;
@@ -162,8 +162,8 @@ public abstract class MainZap {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(4);
-			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DELTA_VII));
+			StageManager.setUp(12);
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
 			crystals = 8000;
 			ShopSecUpgrade.purchaseUpgrade(0);
 			ShopSecUpgrade.purchaseUpgrade(0);
