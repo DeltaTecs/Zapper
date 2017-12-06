@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.util.Random;
 
 import battle.enemy.Enemy;
+import corecase.Cmd;
 import corecase.MainZap;
 import lib.SpeedVector;
 
@@ -86,7 +87,11 @@ public class WarpInEffect extends Effect {
 		int maxDelta = DURATION - LIGHTNING_PART_UNTIL;
 
 		// Weiﬂ. Lineare Alpha abnahme
-		g.setColor(new Color(255, 255, 255, (int) ((254 * (float) deltaDur) / maxDelta)));
+		try {
+			g.setColor(new Color(255, 255, 255, (int) ((254 * (float) deltaDur) / maxDelta)));
+		} catch (IllegalArgumentException e) {
+			Cmd.err("Illegal Arg.Exception in gui.effect.WarpInEffect:93 - please ignore");
+		}
 
 		int size = (int) (MAX_LIGHTNING_SIZE * (0.5f + (0.5f * Math.random())));
 

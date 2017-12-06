@@ -1,1 +1,1 @@
-<24576>Arthur Dent<42>
+Arthur Dent<42

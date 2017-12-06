@@ -147,8 +147,11 @@ public class ShieldedEnemy extends Enemy {
 		// Einschläge
 		if (MainZap.fancyGraphics) {
 			synchronized (hits) { // Zugriff vor Calc-Loop shotgunnen.
-				for (SimpleShieldAbsorbtionEffect e : hits)
+				for (SimpleShieldAbsorbtionEffect e : hits) {
+					if (e == null) // Seltener Fehler
+						continue;
 					e.paint(g);
+				}
 			}
 		}
 

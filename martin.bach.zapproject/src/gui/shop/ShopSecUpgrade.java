@@ -22,10 +22,10 @@ import io.TextureBuffer;
 
 public abstract class ShopSecUpgrade {
 
-	private static final int PRICE_MIRROR = 2000;
-	private static final int PRICE_SHIELD = 1000;
-	private static final int PRICE_SHOCK = 3000;
-	private static final int[] PRICE_CANNON = new int[] { 2500, 8000, -1 };
+	private static final int PRICE_MIRROR = 1800;
+	private static final int PRICE_SHIELD = 800;
+	private static final int PRICE_SHOCK = 2500;
+	private static final int[] PRICE_CANNON = new int[] { 2000, 3000, -1 };
 	private static final BufferedImage IMG_CRYSTAL = TextureBuffer.get(TextureBuffer.NAME_CRYSTAL);
 	private static final BufferedImage IMG_EXT_MIRROR = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_MIRROR);
 	private static final BufferedImage IMG_EXT_SHIELD = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_SHIELD);

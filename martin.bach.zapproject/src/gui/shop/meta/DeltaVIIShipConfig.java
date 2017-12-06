@@ -24,7 +24,7 @@ public class DeltaVIIShipConfig extends ShipStartConfig {
 	private static final float RELOAD_WITHOUT = 2.3f;
 	private static final int HP = 8000;
 	private static final int HIT_RANGE = 40;
-	private static final int PROJ_RANGE = 680;
+	private static final int PROJ_RANGE = 400;
 	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignDeltaVII();
 	private static final ExplosionEffectPattern EXPL_PATTERN = new ExplosionEffectPattern(60, 600);
 	private static final CollisionInformation COLL_INFO = new CollisionInformation(HIT_RANGE,

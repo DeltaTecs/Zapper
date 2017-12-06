@@ -43,7 +43,7 @@ public class Stage9 extends Stage {
 
 	private static final Rectangle SPAWN_AREA_GAMMA_0 = new Rectangle(800, 1000, 1400, 1000);
 	private static final Rectangle SPAWN_AREA_GAMMA_1 = new Rectangle(1100, 1500, 1800, 500);
-	private static final Rectangle ENEMY_BOUNDARY = new Rectangle(50, 50, 2900, 2900);
+	private static final Rectangle ENEMY_BOUNDARY = new Rectangle(200, 200, 2600, 2600);
 
 	private int wave = 0;
 	private int enemysRemaining = WAVE_0_AMOUNT_G_0 + WAVE_0_AMOUNT_G_1;

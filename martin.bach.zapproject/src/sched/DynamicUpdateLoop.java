@@ -27,7 +27,7 @@ public class DynamicUpdateLoop implements Runnable {
 	private boolean runningOnFreeWheel = false;
 	private long tickTime = 0;
 	private long pauseableTickTime = 0;
-	private long timeBetweenFrames = 14 * NANO_MULTIPIER; // Momentan: 71 FPS
+	private long timeBetweenFrames = 12 * NANO_MULTIPIER; // Momentan: 83 FPS
 	private long booster = 0;
 
 	private String name;

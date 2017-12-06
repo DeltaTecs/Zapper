@@ -162,7 +162,7 @@ public abstract class MainZap {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(12);
+			StageManager.setUp(9);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
 			crystals = 8000;
 			ShopSecUpgrade.purchaseUpgrade(0);

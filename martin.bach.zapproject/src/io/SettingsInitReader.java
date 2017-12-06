@@ -282,9 +282,9 @@ public abstract class SettingsInitReader {
 		try {
 
 			Formatter f = new Formatter(FILE);
-			// scale, generalAA, shipAA, speedMode, fancyEffekts, roundCorners
+			// scale, generalAA, shipAA, speedMode, fancyEffekts, roundCorners, firstRun
 			f.format("1.0f" + SPLIT_FLAG + "true" + SPLIT_FLAG + "true" + SPLIT_FLAG + "false" + SPLIT_FLAG + "true"
-					+ SPLIT_FLAG + "true" + SPLIT_FLAG + "true");
+					+ SPLIT_FLAG + "false" + SPLIT_FLAG + "true");
 			f.close();
 
 		} catch (Exception e) {

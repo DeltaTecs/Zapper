@@ -120,10 +120,10 @@ public abstract class Hud {
 			}
 
 			// Stage-Pass-Effect
-			if (!stagePassEffectFinished) {
+			if (!stagePassEffectFinished && StageManager.getActiveStage().getLvl() != 12) {
 				g.setColor(COLOR_STAGE_PASS_EFFECT);
-				g.fillRect((int)(posStagePassEffect), (int)(posStagePassEffect), Frame.SIZE - (int)(posStagePassEffect),
-						Frame.SIZE - (int)(posStagePassEffect));
+				g.fillRect((int) (posStagePassEffect), (int) (posStagePassEffect),
+						Frame.SIZE - (int) (posStagePassEffect), Frame.SIZE - (int) (posStagePassEffect));
 			}
 
 			// -- Schwarze Blende, letzter Boss
@@ -136,15 +136,16 @@ public abstract class Hud {
 			// ---
 
 			if (StageManager.getActiveStage() == null || !MainZap.getPlayer().isAlive())
-				return; // noch nicht initialisiert, oder tot, oder im warp
+				return; // noch nicht initialisiert, oder
+						// tot, oder im warp
 
 			// ----- Hit-Indicator
 			if (MainZap.fancyGraphics)
 				PlayerDamageIndicator.paint(g);
-			
+
 			// ---- Bloody-Screen
 			BloodyScreen.paint(g);
-			
+
 			// ----- Spieler - Score
 			g.setColor(new Color(COLOR_SCORE[0], COLOR_SCORE[1], COLOR_SCORE[2], (int) alphaScore));
 			g.setFont(FONT_BIG);
@@ -163,27 +164,29 @@ public abstract class Hud {
 			g.drawString(MainZap.getCrystals() + "", 120, Frame.SIZE - 7);
 
 			// ----- NextStage - Button
-			if (StageManager.getActiveStage().isPassed()) {
+			if (StageManager.getActiveStage().getLvl() != 12) {
+				if (StageManager.getActiveStage().isPassed()) {
 
-				if (lvlUpSignVisible) {
-					if (MainZap.roundCorners) {
-						g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 103, Frame.SIZE - 72, 100, 69, null);
-					} else {
-						g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 103, Frame.SIZE - 72, 100, 69, null);
+					if (lvlUpSignVisible) {
+						if (MainZap.roundCorners) {
+							g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 103, Frame.SIZE - 72, 100, 69, null);
+						} else {
+							g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 103, Frame.SIZE - 72, 100, 69, null);
+						}
 					}
-				}
 
-			} else {
-
-				Composite storeComp = g.getComposite();
-				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, LVL_UP_HIDDEN_ALPHA));
-				if (MainZap.roundCorners) {
-					g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 103, Frame.SIZE - 70, 100, 69, null);
 				} else {
-					g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 103, Frame.SIZE - 70, 100, 69, null);
-				}
-				g.setComposite(storeComp);
 
+					Composite storeComp = g.getComposite();
+					g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, LVL_UP_HIDDEN_ALPHA));
+					if (MainZap.roundCorners) {
+						g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 103, Frame.SIZE - 70, 100, 69, null);
+					} else {
+						g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 103, Frame.SIZE - 70, 100, 69, null);
+					}
+					g.setComposite(storeComp);
+
+				}
 			}
 
 			// --------- Shop-Schild
@@ -255,7 +258,7 @@ public abstract class Hud {
 		// ----- Hit-Indicator
 		if (MainZap.fancyGraphics)
 			PlayerDamageIndicator.update();
-		
+
 		// ----- Bloody-Screen
 		BloodyScreen.update();
 
