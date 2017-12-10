@@ -83,7 +83,7 @@ public abstract class Hud {
 
 				if (CLICK_WARP_AREA.contains(dx, dy)) {
 					// next lvl
-					if (!StageManager.getActiveStage().isPassed())
+					if (!StageManager.getActiveStage().isPassed() || !MainZap.getPlayer().isAlive())
 						return; // Noch nicht durch!
 
 					StageManager.jumpToNextStage();
