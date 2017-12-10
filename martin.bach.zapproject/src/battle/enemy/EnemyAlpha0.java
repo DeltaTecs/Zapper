@@ -8,6 +8,7 @@ import battle.projectile.ProjectileAlpha0;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 import lib.ScheduledList;
 
@@ -22,6 +23,12 @@ public class EnemyAlpha0 extends Enemy {
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, true);
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(12, 50);
+	private static final int TAIL_SIZE = 12;
+	private static final int TAIL_DISTANCE = 8;
+	private static final float TAIL_SIZEREMOVAL = 0.4f;
+	private static final int[] TAIL_POS_X = new int[] {0};
+	private static final int[] TAIL_POS_Y = new int[] {27};
+	private static final boolean TAIL_SQUARE = true;
 	private static final float COOLDOWN = 50;
 	private static final int SCORE = 0;
 	private static final int CRYSTALS = 0;
@@ -33,7 +40,7 @@ public class EnemyAlpha0 extends Enemy {
 	public EnemyAlpha0(float posX, float posY, ScheduledList<Enemy> surrounding) {
 		super(posX, posY, SPEED, TEXTURE, SCALE, COLINFO, new ArmyCombatProtocol(surrounding, SHOOTING_RANGE, true),
 				new WeaponConfiguration(COOLDOWN, SHOOTING_RANGE), MAX_HP, EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE,
-				CRYSTALS, FRIEND);
+				CRYSTALS, FRIEND, new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL, TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE));
 		setProjectilePattern(new ProjectileAlpha0());
 		setMayShoot(true);
 		getAiProtocol().setPrioritisePlayerAsLockOn(false);

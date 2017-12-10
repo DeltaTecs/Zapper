@@ -38,7 +38,7 @@ public class FriendBasecoreAlpha extends Enemy {
 
 	public FriendBasecoreAlpha(Stage stage) {
 		super(0, 0, 0, TEXTURE, SCALE, COLLISION_INFORMATION, null, null, MAX_HP, EXPL_PATTERN, SCORE, 0, CRYSTALS,
-				FRIEND);
+				FRIEND, null);
 		this.stage = stage;
 	}
 

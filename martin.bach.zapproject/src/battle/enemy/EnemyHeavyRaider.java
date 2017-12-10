@@ -11,6 +11,7 @@ import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class EnemyHeavyRaider extends Enemy {
@@ -26,6 +27,12 @@ public class EnemyHeavyRaider extends Enemy {
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, true);
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(30, 150);
+	private static final int TAIL_SIZE = 20;
+	private static final int TAIL_DISTANCE = 8;
+	private static final float TAIL_SIZEREMOVAL = 0.25f;
+	private static final int[] TAIL_POS_X = new int[] {-20, 20};
+	private static final int[] TAIL_POS_Y = new int[] {30, 30};
+	private static final boolean TAIL_SQUARE = true;
 	private static final float COOLDOWN = 20.0f;
 	private static final WeaponPositioning WEAPON_POSITIONING = new WeaponPositioning((byte) 2, new int[] { -10, 10 },
 			new int[] { -20, -20 });
@@ -37,7 +44,7 @@ public class EnemyHeavyRaider extends Enemy {
 	public EnemyHeavyRaider() {
 		super(0, 0, SPEED, TEXTURES[MainZap.rand(TEXTURES.length)], SCALE, COLINFO, new AdvancedSingleProtocol(),
 				new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONING), MAX_HP,
-				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND);
+				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND, new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL, TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE));
 		setNoWaitAfterWarp(true);
 		setPreAiming(true);
 		setMayShoot(true);

@@ -31,7 +31,7 @@ public class StargateConnector extends Enemy {
 	private ScheduledList<StargateConnectionspark> sparks = new ScheduledList<StargateConnectionspark>();
 
 	public StargateConnector(double rotation) {
-		super(1, 1, 0, TEXTURE, SCALE, COLL_INFO, null, null, HEALTH, EXPL_PATTERN, SCORE, 0, CRYSTALS, FRIEND);
+		super(1, 1, 0, TEXTURE, SCALE, COLL_INFO, null, null, HEALTH, EXPL_PATTERN, SCORE, 0, CRYSTALS, FRIEND, null);
 		setRotation(rotation);
 	}
 

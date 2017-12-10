@@ -40,7 +40,7 @@ public class FriendGamma1Turret extends AttachedEnemy {
 	public FriendGamma1Turret(float dx, float dy, CombatObject host) {
 		super(SPEED, TEXTURE, SCALE, COLINFO, new BasicTurretProtocol(),
 				new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONING), MAX_HP,
-				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND, host, new float[] { dx, dy });
+				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND, host, new float[] { dx, dy }, null);
 		setProjectilePattern(new ProjectileFriendGamma1Turret());
 		setMayShoot(true);
 		setPreAiming(false); // Hardcore: pre-aim anschalten. -> Lieber aus lassen

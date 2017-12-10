@@ -37,6 +37,7 @@ import gui.PlayerDamageIndicator;
 import gui.PlayerHpBar;
 import gui.effect.ExplosionEffect;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import gui.extention.Mirroring;
 import gui.extention.Shielding;
 import gui.screens.end.EndScreen;
@@ -101,6 +102,7 @@ public class Player extends CombatObject {
 			true);
 	private float speed = 3.5f; // default
 	private BufferedImage texture;
+	private TailManager tailManager;
 	private float textureScale = 1.0f;
 	private SpeedVector velocity = new SpeedVector(0, 0);
 	private int screenAimX = Frame.HALF_SCREEN_SIZE;
@@ -174,6 +176,15 @@ public class Player extends CombatObject {
 	public void paint(Graphics2D g) {
 
 		// Graphics sind auf 0/0 Kontext
+		
+		// Schub-Schweif
+		if (MainZap.enableTails && tailManager != null) {
+			g.translate(Frame.HALF_SCREEN_SIZE, Frame.HALF_SCREEN_SIZE);
+			tailManager.update();
+			g.translate(-Frame.HALF_SCREEN_SIZE, -Frame.HALF_SCREEN_SIZE);
+		}
+		
+		
 
 		if (visibile) {
 
@@ -183,7 +194,7 @@ public class Player extends CombatObject {
 			g.drawImage(texture, buffer, null);
 
 		}
-
+		
 		// Explosion (falls tot)
 		if (explEffect != null) {
 			int x = getLocX();
@@ -691,6 +702,7 @@ public class Player extends CombatObject {
 
 	public void applyMeta(ShipStartConfig c) {
 		speed = c.getSpeed();
+		tailManager = c.getTailManager();
 		textureScale = c.getScale();
 		ammoUsageFac = c.getEfficiency();
 		maxWeaponCooldownWithout = c.getReloadWithout();
@@ -763,7 +775,7 @@ public class Player extends CombatObject {
 	}
 
 	public ShipStartConfig genConfig() {
-		return new ShipStartConfig(texture, textureScale, bulletDamage, speed, bulletSpeed, maxWeaponCooldownWith,
+		return new ShipStartConfig(texture, tailManager, textureScale, bulletDamage, speed, bulletSpeed, maxWeaponCooldownWith,
 				maxWeaponCooldownWithout, maxHp, collisionInfo, projRange, projDesign, explPattern, ammoUsageFac,
 				lastApplyedConfig.getName(), lastApplyedConfig.getDescription(), lastApplyedConfig.getPrice(),
 				singleWeaponPositioning, doubleWeaponPositioning, tripleWeaponPositioning);

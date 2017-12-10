@@ -11,6 +11,7 @@ import battle.projectile.ProjectileFriendGamma0;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class FriendGamma0 extends Enemy {
@@ -25,6 +26,12 @@ public class FriendGamma0 extends Enemy {
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(50, 200);
 	private static final WeaponPositioning WEAPON_POSITIONING = new WeaponPositioning((byte) 2, new int[] { -30, 30 },
 			new int[] { -28, -28 });
+	private static final int TAIL_SIZE = 20;
+	private static final int TAIL_DISTANCE = 5;
+	private static final float TAIL_SIZEREMOVAL = 0.4f;
+	private static final int[] TAIL_POS_X = new int[] {0};
+	private static final int[] TAIL_POS_Y = new int[] {20};
+	private static final boolean TAIL_SQUARE = true;
 	private static final float COOLDOWN = 5.0f;
 	private static final int SCORE = 0;
 	private static final int CRYSTALS = 0;
@@ -34,7 +41,7 @@ public class FriendGamma0 extends Enemy {
 	public FriendGamma0() {
 		super(0, 0, SPEED, TEXTURE, SCALE, COLINFO, new AdvancedSingleProtocol(),
 				new MultiCannonWeaponConfiguration(COOLDOWN, PROJECTILE_RANGE, WEAPON_POSITIONING), MAX_HP,
-				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND);
+				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND, new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL, TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE));
 		setNoWaitAfterWarp(true);
 		setPreAiming(true);
 		setMayShoot(true);

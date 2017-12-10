@@ -8,6 +8,7 @@ import battle.projectile.ProjectileDesign;
 import collision.CollisionInformation;
 import corecase.Cmd;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 
 public class ShipStartConfig {
 
@@ -22,6 +23,7 @@ public class ShipStartConfig {
 	private static ArrayList<ShipStartConfig> configs = new ArrayList<ShipStartConfig>();
 
 	private BufferedImage texture;
+	private TailManager tailManager;
 	private float scale;
 	private int damage;
 	private float speed;
@@ -41,20 +43,22 @@ public class ShipStartConfig {
 	private WeaponPositioning weaponPosDouble;
 	private WeaponPositioning weaponPosTriple;
 
-	public ShipStartConfig(BufferedImage texture, float scale, int damage, float speed, float projSpeed,
-			float reloadTimeWithAmmo, float reloadTimeOutOfAmmo, int hp, CollisionInformation collInfo, int projRange,
-			ProjectileDesign projDesign, ExplosionEffectPattern explPattern, float ammoUsageFac, String name,
-			String description, int price, WeaponPositioning weaponPosSingle, WeaponPositioning weaponPosDouble,
-			WeaponPositioning weaponPosTriple) {
-		super();
+
+
+	public ShipStartConfig(BufferedImage texture, TailManager tailmanager, float scale, int damage, float speed,
+			float projSpeed, float reloadWith, float reloadWithout, int hp, CollisionInformation collInfo,
+			int projRange, ProjectileDesign projDesign, ExplosionEffectPattern explPattern, float ammoUsage,
+			String name, String description, int price, WeaponPositioning weaponPositionsSingle,
+			WeaponPositioning weaponPositionsDouble, WeaponPositioning weaponPositionsTriple) {
 		this.texture = texture;
+		this.tailManager = tailmanager;
 		this.scale = scale;
 		this.damage = damage;
 		this.speed = speed;
 		this.projSpeed = projSpeed;
-		this.reloadWith = reloadTimeWithAmmo;
-		this.reloadWithout = reloadTimeOutOfAmmo;
-		this.efficiency = ammoUsageFac;
+		this.reloadWithout = reloadWithout;
+		this.reloadWith = reloadWith;
+		this.efficiency = ammoUsage;
 		this.hp = hp;
 		this.collInfo = collInfo;
 		this.projRange = projRange;
@@ -63,10 +67,9 @@ public class ShipStartConfig {
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		this.weaponPosSingle = weaponPosSingle;
-		this.weaponPosDouble = weaponPosDouble;
-		this.weaponPosTriple = weaponPosTriple;
-
+		this.weaponPosSingle = weaponPositionsSingle;
+		this.weaponPosDouble = weaponPositionsDouble;
+		this.weaponPosTriple = weaponPositionsTriple;
 	}
 
 	public static void loadAll() {
@@ -92,6 +95,11 @@ public class ShipStartConfig {
 
 	public static ArrayList<ShipStartConfig> getConfigs() {
 		return configs;
+	}
+	
+
+	public TailManager getTailManager() {
+		return tailManager;
 	}
 
 	public String getDescription() {

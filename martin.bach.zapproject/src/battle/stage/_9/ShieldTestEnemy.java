@@ -32,7 +32,7 @@ public class ShieldTestEnemy extends ShieldedEnemy {
 	public ShieldTestEnemy(float posX, float posY) {
 		super(posX, posY, SPEED, TEXTURE, SCALE, COLINFO, new BasicSingleProtocol(),
 				new WeaponConfiguration(COOLDOWN, SHOOTING_RANGE), MAX_HP, EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE,
-				CRYSTALS, FRIEND, SHIELD);
+				CRYSTALS, FRIEND, SHIELD, null);
 		setProjectilePattern(new ProjectileBeta1());
 		setMayShoot(true);
 	}

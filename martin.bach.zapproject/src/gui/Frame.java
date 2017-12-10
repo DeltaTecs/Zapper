@@ -27,7 +27,7 @@ public class Frame extends JFrame {
 
 	public Frame() {
 
-		super("Zapper " + MainZap.VERSION);
+		super("Zapper Space Combat Simulator " + MainZap.VERSION);
 		setIconImage(TextureBuffer.get(TextureBuffer.NAME_HEADIMAGE));
 		setLayout(null);
 		setResizable(MainZap.allowBiggerWindow);

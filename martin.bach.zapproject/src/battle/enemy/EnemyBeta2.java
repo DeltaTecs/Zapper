@@ -10,6 +10,7 @@ import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class EnemyBeta2 extends Enemy {
@@ -23,6 +24,12 @@ public class EnemyBeta2 extends Enemy {
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, true);
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(19, 60);
+	private static final int TAIL_SIZE = 20;
+	private static final int TAIL_DISTANCE = 2;
+	private static final float TAIL_SIZEREMOVAL = 0.4f;
+	private static final int[] TAIL_POS_X = new int[] {0};
+	private static final int[] TAIL_POS_Y = new int[] {18};
+	private static final boolean TAIL_SQUARE = false;
 	private static final float COOLDOWN = 2;
 	private static final int SCORE = 7;
 	private static final int CRYSTALS = 4;
@@ -37,7 +44,7 @@ public class EnemyBeta2 extends Enemy {
 	public EnemyBeta2(float posX, float posY) {
 		super(posX, posY, SPEED, TEXTURE, SCALE, COLINFO, new BasicSingleProtocol(),
 				new WeaponConfiguration(COOLDOWN, SHOOTING_RANGE), MAX_HP, EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE,
-				CRYSTALS, FRIEND);
+				CRYSTALS, FRIEND, new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL, TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE));
 		setProjectilePattern(new ProjectileBeta2());
 		setMayShoot(true);
 	}
@@ -61,7 +68,6 @@ public class EnemyBeta2 extends Enemy {
 			return; // Außer Reichweite
 		if (getWeaponConfiguration().isReady()) {
 			
-			getAiProtocol().setMoving(false);
 			
 			if (shootingPreperationTime > 0) {
 				shootingPreperationTime--;
@@ -69,9 +75,9 @@ public class EnemyBeta2 extends Enemy {
 			}
 			
 			
+			getAiProtocol().setMoving(false);
 			Projectile p = new ProjectileBeta2();
 			getWeaponConfiguration().fire(p, this, false);
-			
 			shootingPreperationTime = SHOOT_STOPPING_TIME / 2;
 			getAiProtocol().waitTicks(shootingPreperationTime);
 		}

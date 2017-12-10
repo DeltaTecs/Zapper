@@ -32,7 +32,7 @@ public class MirrorImage extends Enemy {
 		super(0, 0, 0, MainZap.getPlayer().getTexture(), 0,
 				new CollisionInformation(MainZap.getPlayer().getCollisionInfo().getRadius(),
 						CollisionType.COLLIDE_AS_PLAYER, false),
-				null, null, 0, null, 0, 0, 0, false);
+				null, null, 0, null, 0, 0, 0, false, null);
 		super.setFriend(true);
 		super.setStageBound(STAGE_BOUND);
 		weaponPositioning = MainZap.getPlayer().getActiveWeaponPositioning();

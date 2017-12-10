@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
+
 import battle.CombatObject;
 import battle.enemy.Enemy;
 import battle.projectile.Projectile;
@@ -111,6 +113,7 @@ public class ArmyCombatProtocol extends AiProtocol {
 			super.updateMovement();
 			return;
 		}
+		setMoving(true);
 
 		// Bewegung in Kampfhandlung
 		int maxCombatDistance = (int) (getLockOutOfRangeRange() * 0.75f);
@@ -217,6 +220,7 @@ public class ArmyCombatProtocol extends AiProtocol {
 		CombatObject lock = possibleLocks.get(rand(possibleLocks.size()));
 		setLockOn(lock);
 		getHost().setShootingAim(lock);
+		super.setMoving(true);
 	}
 
 	public CombatObject searchForLock() {

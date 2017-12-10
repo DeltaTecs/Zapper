@@ -180,41 +180,8 @@ public abstract class SettingsInitReader {
 			return loadFancyGraphics();
 		}
 	}
-	
+
 	public static boolean loadRoundCorners() {
-
-		boolean result = true;
-
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(FILE));
-			String content = "";
-			while (reader.ready()) {
-
-				String s = reader.readLine();
-				if (s == null)
-					break;
-				content += s;
-			}
-			reader.close();
-
-			try {
-				result = Boolean.parseBoolean(content.split(SPLIT_FLAG)[5]);
-			} catch (Exception e) {
-				Cmd.err("Who modified the data store? Regenerating...");
-				genFile();
-				return loadRoundCorners();
-			}
-
-			return result;
-
-		} catch (IOException e) {
-			Cmd.err("Data store not available. Regenerating...");
-			genFile();
-			return loadRoundCorners();
-		}
-	}
-	
-	public static boolean loadFirstrun() {
 
 		boolean result = true;
 
@@ -235,6 +202,72 @@ public abstract class SettingsInitReader {
 			} catch (Exception e) {
 				Cmd.err("Who modified the data store? Regenerating...");
 				genFile();
+				return loadRoundCorners();
+			}
+
+			return result;
+
+		} catch (IOException e) {
+			Cmd.err("Data store not available. Regenerating...");
+			genFile();
+			return loadRoundCorners();
+		}
+	}
+
+	public static boolean loadFirstrun() {
+
+		boolean result = true;
+
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(FILE));
+			String content = "";
+			while (reader.ready()) {
+
+				String s = reader.readLine();
+				if (s == null)
+					break;
+				content += s;
+			}
+			reader.close();
+
+			try {
+				result = Boolean.parseBoolean(content.split(SPLIT_FLAG)[7]);
+			} catch (Exception e) {
+				Cmd.err("Who modified the data store? Regenerating...");
+				genFile();
+				return loadSpeedmode();
+			}
+
+			return result;
+
+		} catch (IOException e) {
+			Cmd.err("Data store not available. Regenerating...");
+			genFile();
+			return loadSpeedmode();
+		}
+	}
+	
+	public static boolean loadEnableTrails() {
+
+		boolean result = true;
+
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(FILE));
+			String content = "";
+			while (reader.ready()) {
+
+				String s = reader.readLine();
+				if (s == null)
+					break;
+				content += s;
+			}
+			reader.close();
+
+			try {
+				result = Boolean.parseBoolean(content.split(SPLIT_FLAG)[5]);
+			} catch (Exception e) {
+				Cmd.err("Who modified the data store? Regenerating...");
+				genFile();
 				return loadSpeedmode();
 			}
 
@@ -247,14 +280,15 @@ public abstract class SettingsInitReader {
 		}
 	}
 
-	public static void save(float scale, boolean genAntialize, boolean shipAntialize, boolean speedMode, boolean fancyGraph,
-			boolean roundCorners, boolean firstrun) {
+	public static void save(float scale, boolean genAntialize, boolean shipAntialize, boolean speedMode,
+			boolean fancyGraph, boolean trails, boolean roundCorners, boolean firstrun) {
 
 		try {
 
 			Formatter f = new Formatter(FILE);
-			f.format(scale + SPLIT_FLAG + genAntialize + SPLIT_FLAG + shipAntialize + SPLIT_FLAG + speedMode + SPLIT_FLAG
-					+ fancyGraph + SPLIT_FLAG + roundCorners + SPLIT_FLAG + firstrun);
+			f.format(
+					scale + SPLIT_FLAG + genAntialize + SPLIT_FLAG + shipAntialize + SPLIT_FLAG + speedMode + SPLIT_FLAG
+							+ fancyGraph + SPLIT_FLAG + trails + SPLIT_FLAG + roundCorners + SPLIT_FLAG + firstrun);
 			f.close();
 
 		} catch (Exception e) {
@@ -269,7 +303,7 @@ public abstract class SettingsInitReader {
 			Formatter f = new Formatter(FILE);
 			f.format(MainZap.getScale() + SPLIT_FLAG + MainZap.generalAntialize + SPLIT_FLAG + MainZap.antializeShips
 					+ SPLIT_FLAG + MainZap.speedMode + SPLIT_FLAG + MainZap.fancyGraphics + SPLIT_FLAG
-					+ MainZap.roundCorners + SPLIT_FLAG + MainZap.firstRun);
+					+ MainZap.enableTails + SPLIT_FLAG + MainZap.roundCorners + SPLIT_FLAG + MainZap.firstRun);
 			f.close();
 
 		} catch (Exception e) {
@@ -282,9 +316,10 @@ public abstract class SettingsInitReader {
 		try {
 
 			Formatter f = new Formatter(FILE);
-			// scale, generalAA, shipAA, speedMode, fancyEffekts, roundCorners, firstRun
+			// scale, generalAA, shipAA, speedMode, fancyEffekts, trails, roundCorners,
+			// firstRun
 			f.format("1.0f" + SPLIT_FLAG + "true" + SPLIT_FLAG + "true" + SPLIT_FLAG + "false" + SPLIT_FLAG + "true"
-					+ SPLIT_FLAG + "false" + SPLIT_FLAG + "true");
+					+ SPLIT_FLAG + "true" + SPLIT_FLAG + "false" + SPLIT_FLAG + "true");
 			f.close();
 
 		} catch (Exception e) {

@@ -13,6 +13,7 @@ import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class EnemyGamma1 extends ShieldedEnemy {
@@ -29,6 +30,12 @@ public class EnemyGamma1 extends ShieldedEnemy {
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(85, 320);
 	private static final WeaponPositioning WEAPON_POSITIONING = new WeaponPositioning((byte) 1, new int[] { 0 },
 			new int[] { -40 });
+	private static final int TAIL_SIZE = 25;
+	private static final int TAIL_DISTANCE = 8;
+	private static final float TAIL_SIZEREMOVAL = 0.2f;
+	private static final int[] TAIL_POS_X = new int[] {-43, 0, 43};
+	private static final int[] TAIL_POS_Y = new int[] {47, 45, 47};
+	private static final boolean TAIL_SQUARE = true;
 	private static final float COOLDOWN = 50;
 	private static final int SCORE = 70;
 	private static final int CRYSTALS = 600;
@@ -45,7 +52,7 @@ public class EnemyGamma1 extends ShieldedEnemy {
 	public EnemyGamma1(float posX, float posY, Rectangle movementBounds) {
 		super(posX, posY, SPEED, TEXTURE, SCALE, COLINFO, new AdvancedSingleProtocol(),
 				new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONING), MAX_HP,
-				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND, SHIELD);
+				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND, SHIELD, new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL, TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE));
 		this.movementBounds = movementBounds;
 		setProjectilePattern(new ProjectileGamma1());
 		setMayShoot(true);

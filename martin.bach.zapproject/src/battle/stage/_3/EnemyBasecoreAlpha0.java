@@ -34,7 +34,7 @@ public class EnemyBasecoreAlpha0 extends Enemy {
 
 	public EnemyBasecoreAlpha0(Stage3 stage, ScheduledList<Enemy> listedEnemys) {
 		super(0, 0, 0, TEXTURE, SCALE, COLLISION_INFORMATION, null, null, MAX_HP, EXPL_PATTERN, SCORE, 0, CRYSTALS,
-				FRIEND);
+				FRIEND, null);
 		this.stage = stage;
 		this.listedEnemys = listedEnemys;
 	}

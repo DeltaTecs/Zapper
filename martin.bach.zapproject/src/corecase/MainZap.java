@@ -31,10 +31,10 @@ import sched.DynamicUpdateLoop;
 
 public abstract class MainZap {
 
-	public static final String VERSION = "0.9.9";
+	public static final String VERSION = "1.0";
 	public static final String DIRECTORY = determineDirectory();
 
-	public static final boolean FINAL_RUN = false || !inWorkspace();
+	public static final boolean FINAL_RUN = true || !inWorkspace();
 	public static final boolean PAINT_CALC_THREAD_SPLIT = true;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
 	public static final float CRYSTAL_GETBACK = 0.20f;
@@ -47,6 +47,7 @@ public abstract class MainZap {
 	public static boolean antializeShips = true;
 	public static boolean fancyGraphics = true;
 	public static boolean roundCorners = false;
+	public static boolean enableTails = true;
 	public static boolean allowBiggerWindow = false;
 	public static boolean firstRun = false;
 	private static boolean playedThrough = false;
@@ -83,6 +84,7 @@ public abstract class MainZap {
 		fancyGraphics = SettingsInitReader.loadFancyGraphics();
 		roundCorners = SettingsInitReader.loadRoundCorners();
 		speedMode = SettingsInitReader.loadSpeedmode();
+		enableTails = SettingsInitReader.loadEnableTrails();
 		firstRun = SettingsInitReader.loadFirstrun();
 		// Geld laden
 		crystals = CashReader.load() + 9;
@@ -162,9 +164,9 @@ public abstract class MainZap {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
-			StageManager.setUp(9);
+			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
-			crystals = 8000;
+			crystals = 80000;
 			ShopSecUpgrade.purchaseUpgrade(0);
 			ShopSecUpgrade.purchaseUpgrade(0);
 			ShopSecUpgrade.purchaseUpgrade(1);

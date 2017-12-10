@@ -7,6 +7,7 @@ import battle.projectile.ProjectileDesign;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class DarkperlShipConfig extends ShipStartConfig {
@@ -15,6 +16,14 @@ public class DarkperlShipConfig extends ShipStartConfig {
 	private static final String DESCRIPTION = "A unique sniper-like battle ship.";
 	private static final int PRICE = 1100;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DARKPERL);
+	private static final int TAIL_SIZE = 16;
+	private static final int TAIL_DISTANCE = 2;
+	private static final float TAIL_SIZEREMOVAL = 0.6f;
+	private static final int[] TAIL_POS_X = new int[] { -16, 16 };
+	private static final int[] TAIL_POS_Y = new int[] { 40, 40 };
+	private static final boolean TAIL_SQUARE = false;
+	private static final TailManager TAILMANAGER = new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL,
+			TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE);
 	private static final float SCALE = 0.9f;
 	private static final float AMMO_USAGE = 2.0f;
 	private static final int DAMAGE = 400;
@@ -37,7 +46,7 @@ public class DarkperlShipConfig extends ShipStartConfig {
 			new int[] { -35, 0, 35 }, new int[] { -10, -38, -10 });
 
 	public DarkperlShipConfig() {
-		super(TEXTURE, SCALE, DAMAGE, SPEED, PROJ_SPEED, RELOAD_WITH, RELOAD_WITHOUT, HP, COLL_INFO, PROJ_RANGE,
+		super(TEXTURE, TAILMANAGER, SCALE, DAMAGE, SPEED, PROJ_SPEED, RELOAD_WITH, RELOAD_WITHOUT, HP, COLL_INFO, PROJ_RANGE,
 				PROJ_DESIGN, EXPL_PATTERN, AMMO_USAGE, NAME, DESCRIPTION, PRICE, WEAPON_POSITIONS_SINGLE,
 				WEAPON_POSITIONS_DOUBLE, WEAPON_POSITIONS_TRIPLE);
 	}

@@ -13,6 +13,7 @@ import battle.ai.AiProtocol;
 import collision.CollisionInformation;
 import corecase.MainZap;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 
 public class AttachedEnemy extends Enemy {
 
@@ -22,9 +23,9 @@ public class AttachedEnemy extends Enemy {
 
 	public AttachedEnemy(float speed, BufferedImage texture, float scale, CollisionInformation information,
 			AiProtocol ai, WeaponConfiguration weaponconf, int health, ExplosionEffectPattern explPattern, int score,
-			int projRange, int crystals, boolean friend, CombatObject host, float[] deltaLoc) {
+			int projRange, int crystals, boolean friend, CombatObject host, float[] deltaLoc, TailManager tail) {
 		super(host.getPosX() + deltaLoc[0], host.getPosY() + deltaLoc[1], speed, texture, scale, information, ai,
-				weaponconf, health, explPattern, score, projRange, crystals, friend);
+				weaponconf, health, explPattern, score, projRange, crystals, friend, tail);
 		this.host = host;
 		latestPaintHostLoc = host.getLocation(); // init
 		this.dx = deltaLoc[0];

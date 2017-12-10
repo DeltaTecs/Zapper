@@ -43,7 +43,7 @@ public class FriendTurretAlpha extends Enemy {
 	public FriendTurretAlpha(float posX, float posY) {
 		super(posX, posY, SPEED, TEXTURE, SCALE, COLINFO, new BasicTurretProtocol(),
 				new MultiCannonWeaponConfiguration(COOLDOWN, PROJECTILE_RANGE, WEAPON_POSITIONING), MAX_HP,
-				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND);
+				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND, null);
 		setProjectilePattern(new ProjectileTurretAlpha());
 		setMayShoot(true);
 		getAiProtocol().setSelfRotating(true);

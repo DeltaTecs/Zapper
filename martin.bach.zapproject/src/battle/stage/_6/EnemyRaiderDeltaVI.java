@@ -10,6 +10,7 @@ import battle.projectile.ProjectileRaiderDeltaVI;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class EnemyRaiderDeltaVI extends Enemy {
@@ -23,6 +24,12 @@ public class EnemyRaiderDeltaVI extends Enemy {
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, true);
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(50, 500);
+	private static final int TAIL_SIZE = 20;
+	private static final int TAIL_DISTANCE = 3;
+	private static final float TAIL_SIZEREMOVAL = 0.4f;
+	private static final int[] TAIL_POS_X = new int[] {21, -21};
+	private static final int[] TAIL_POS_Y = new int[] {30, 30};
+	private static final boolean TAIL_SQUARE = false;
 	private static final float COOLDOWN = 1.4f;
 	private static final int SCORE = 50;
 	private static final int CRYSTALS = 300;
@@ -32,7 +39,7 @@ public class EnemyRaiderDeltaVI extends Enemy {
 	public EnemyRaiderDeltaVI(float posX, float posY) {
 		super(posX, posY, SPEED, TEXTURE, SCALE, COLINFO, new AdvancedSingleProtocol(),
 				new WeaponConfiguration(COOLDOWN, SHOOTING_RANGE), MAX_HP, EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE,
-				CRYSTALS, FRIEND);
+				CRYSTALS, FRIEND, new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL, TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE));
 		setHealth(2600);
 		setProjectilePattern(new ProjectileRaiderDeltaVI());
 		setMayShoot(true);

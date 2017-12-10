@@ -7,6 +7,7 @@ import battle.projectile.ProjectileDesign;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class DeltaVIIShipConfig extends ShipStartConfig {
@@ -15,6 +16,14 @@ public class DeltaVIIShipConfig extends ShipStartConfig {
 	private static final String DESCRIPTION = "The seventh generation of a fast fighter with powerful weapons, but less amour to be lighter. In the right hands, this prototype becomes the most dangerous ship ever built.";
 	private static final int PRICE = 2400;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_DELTAVII);
+	private static final int TAIL_SIZE = 22;
+	private static final int TAIL_DISTANCE = 0;
+	private static final float TAIL_SIZEREMOVAL = 1.1f;
+	private static final int[] TAIL_POS_X = new int[] { -16, 16 };
+	private static final int[] TAIL_POS_Y = new int[] { 33, 33 };
+	private static final boolean TAIL_SQUARE = true;
+	private static final TailManager TAILMANAGER = new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL,
+			TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE);
 	private static final float SCALE = 1.0f;
 	private static final float AMMO_USAGE = 3.5f;
 	private static final int DAMAGE = 105;
@@ -38,7 +47,7 @@ public class DeltaVIIShipConfig extends ShipStartConfig {
 
 
 	public DeltaVIIShipConfig() {
-		super(TEXTURE, SCALE, DAMAGE, SPEED, PROJ_SPEED, RELOAD_WITH, RELOAD_WITHOUT, HP, COLL_INFO, PROJ_RANGE,
+		super(TEXTURE, TAILMANAGER, SCALE, DAMAGE, SPEED, PROJ_SPEED, RELOAD_WITH, RELOAD_WITHOUT, HP, COLL_INFO, PROJ_RANGE,
 				PROJ_DESIGN, EXPL_PATTERN, AMMO_USAGE, NAME, DESCRIPTION, PRICE, WEAPON_POSITIONS_SINGLE,
 				WEAPON_POSITIONS_DOUBLE, WEAPON_POSITIONS_TRIPLE);
 	}

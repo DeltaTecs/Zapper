@@ -40,7 +40,7 @@ public class EnemyTurretRaider extends Enemy {
 	public EnemyTurretRaider(float posX, float posY) {
 		super(posX, posY, SPEED, TEXTURES[MainZap.rand(TEXTURES.length)], SCALE, COLINFO, new BasicTurretProtocol(),
 				new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONING), MAX_HP,
-				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND);
+				EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE, CRYSTALS, FRIEND, null);
 		setProjectilePattern(new ProjectileTurretRaider());
 		setMayShoot(true);
 		getAiProtocol().setLockOn(MainZap.getPlayer());

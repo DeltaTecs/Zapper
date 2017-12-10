@@ -31,7 +31,7 @@ public class EnemyTurretAlpha0 extends Enemy {
 	public EnemyTurretAlpha0(float posX, float posY) {
 		super(posX, posY, SPEED, TEXTURE, SCALE, COLINFO, new BasicTurretProtocol(),
 				new WeaponConfiguration(COOLDOWN, SHOOTING_RANGE), MAX_HP, EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE,
-				CRYSTALS, FRIEND);
+				CRYSTALS, FRIEND, null);
 		setProjectilePattern(new ProjectileTurretAlpha0());
 		setMayShoot(true);
 	}

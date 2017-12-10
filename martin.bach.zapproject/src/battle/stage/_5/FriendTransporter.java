@@ -8,6 +8,7 @@ import battle.enemy.Enemy;
 import collision.CollisionInformation;
 import collision.CollisionType;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class FriendTransporter extends Enemy {
@@ -21,6 +22,12 @@ public class FriendTransporter extends Enemy {
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_ENEMYS, true);
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(40, 300);
+	private static final int TAIL_SIZE = 20;
+	private static final int TAIL_DISTANCE = 4;
+	private static final float TAIL_SIZEREMOVAL = 0.3f;
+	private static final int[] TAIL_POS_X = new int[] {0};
+	private static final int[] TAIL_POS_Y = new int[] {35};
+	private static final boolean TAIL_SQUARE = false;
 	private static final float COOLDOWN = 27.0f;
 	private static final int SCORE = 0;
 	private static final int CRYSTALS = 0;
@@ -30,7 +37,7 @@ public class FriendTransporter extends Enemy {
 	public FriendTransporter(int x, int y, int desX, int desY) {
 		super(x, y, SPEED, TEXTURE, SCALE, COLINFO, new AiProtocol(),
 				new WeaponConfiguration(COOLDOWN, SHOOTING_RANGE), MAX_HP, EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE,
-				CRYSTALS, FRIEND);
+				CRYSTALS, FRIEND, new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL, TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE));
 		setMayShoot(false);
 		getAiProtocol().setNonAutoLockon(true);
 		getAiProtocol().moveTo(desX, desY);

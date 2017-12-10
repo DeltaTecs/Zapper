@@ -140,7 +140,7 @@ public class SpeedVector {
 	 * Returns the sum of x and y
 	 */
 	public float getSpeed() {
-		return x + y;
+		return Math.abs(x) + Math.abs(y);
 	}
 
 	public void invertX() {

@@ -10,6 +10,7 @@ import collision.CollisionInformation;
 import collision.CollisionType;
 import corecase.MainZap;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import io.TextureBuffer;
 
 public class EnemyBasicRaider extends Enemy {
@@ -27,6 +28,12 @@ public class EnemyBasicRaider extends Enemy {
 	private static final CollisionInformation COLINFO = new CollisionInformation(RADIUS,
 			CollisionType.COLLIDE_WITH_FRIENDS, true);
 	private static final ExplosionEffectPattern EXPL_EFFECT_PATTERN = new ExplosionEffectPattern(30, 60);
+	private static final int TAIL_SIZE = 16;
+	private static final int TAIL_DISTANCE = 2;
+	private static final float TAIL_SIZEREMOVAL = 0.55f;
+	private static final int[] TAIL_POS_X = new int[] {0};
+	private static final int[] TAIL_POS_Y = new int[] {20};
+	private static final boolean TAIL_SQUARE = false;
 	private static final float COOLDOWN = 30.0f;
 	private static final int SCORE = 20;
 	private static final int CRYSTALS = 13;
@@ -36,7 +43,7 @@ public class EnemyBasicRaider extends Enemy {
 	public EnemyBasicRaider() {
 		super(0, 0, SPEED, TEXTURES[MainZap.rand(TEXTURES.length)], SCALE, COLINFO, new AdvancedSingleProtocol(),
 				new WeaponConfiguration(COOLDOWN, SHOOTING_RANGE), MAX_HP, EXPL_EFFECT_PATTERN, SCORE, PROJECTILE_RANGE,
-				CRYSTALS, FRIEND);
+				CRYSTALS, FRIEND, new TailManager(TAIL_SIZE, TAIL_DISTANCE, TAIL_SIZEREMOVAL, TAIL_POS_X, TAIL_POS_Y, TAIL_SQUARE));
 		setNoWaitAfterWarp(true);
 		setPreAiming(true);
 		setMayShoot(true);

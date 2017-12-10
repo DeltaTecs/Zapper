@@ -88,8 +88,10 @@ public abstract class PauseScreen {
 			292 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Rectangle BOUNDS_SET_AA_SHIPS = new Rectangle(380 + KONTEXT_TRANSLATION[0],
 			342 + KONTEXT_TRANSLATION[1], 60, 40);
+	private static final Rectangle BOUNDS_SET_TRAILS = new Rectangle(380 + KONTEXT_TRANSLATION[0],
+			392 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Rectangle BOUNDS_SET_SPEEDBOOST = new Rectangle(380 + KONTEXT_TRANSLATION[0],
-			410 + KONTEXT_TRANSLATION[1], 60, 40);
+			460 + KONTEXT_TRANSLATION[1], 60, 40);
 	private static final Color COLOR_SET_HOVER = new Color(45, 35, 11, 35);
 	private static final Color COLOR_SET_AA_FG = new Color(0, 0, 0, 220);
 	private static final Stroke STROKE_SET_BACK = new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
@@ -108,6 +110,7 @@ public abstract class PauseScreen {
 	private static final String TEXT_SET_GRAPH_FANCY = "Fancyness";
 	private static final String TEXT_SET_AA_GENERAL = "General smoothness";
 	private static final String TEXT_SET_AA_SHIPS = "Smooth ships";
+	private static final String TEXT_SET_TRAILS = "Trails";
 	private static final String TEXT_ON = "ON";
 	private static final String TEXT_OFF = "OFF";
 	private static final String TEXT_SPEEDMODE = "Hyper-Mode";
@@ -123,6 +126,7 @@ public abstract class PauseScreen {
 	private static boolean hoveringSpeedMode = false; // Maus über HyperMode?
 	private static boolean hoveringRoundcorners = false;
 	private static boolean hoveringFancygraphics = false;
+	private static boolean hoveringTrails = false;
 	private static boolean open = false;
 	private static ClickableObject listeningComponent;
 	private static PauseScreenDirectory dir = PauseScreenDirectory.MAIN;
@@ -282,6 +286,11 @@ public abstract class PauseScreen {
 				}
 				if (BOUNDS_SET_AA_SHIPS.contains(dx, dy)) {
 					MainZap.antializeShips = !MainZap.antializeShips;
+					SettingsInitReader.save();
+					return;
+				}
+				if (BOUNDS_SET_TRAILS.contains(dx, dy)) {
+					MainZap.enableTails = !MainZap.enableTails;
 					SettingsInitReader.save();
 					return;
 				}
@@ -476,6 +485,7 @@ public abstract class PauseScreen {
 			hoveringSpeedMode = false;
 			hoveringFancygraphics = false;
 			hoveringRoundcorners = false;
+			hoveringTrails = false;
 			return;
 		}
 
@@ -485,6 +495,7 @@ public abstract class PauseScreen {
 			hoveringSpeedMode = false;
 			hoveringFancygraphics = false;
 			hoveringRoundcorners = false;
+			hoveringTrails = false;
 			return;
 		}
 		if (BOUNDS_SET_SPEEDBOOST.contains(x, y)) {
@@ -493,6 +504,7 @@ public abstract class PauseScreen {
 			hoveringSpeedMode = true;
 			hoveringFancygraphics = false;
 			hoveringRoundcorners = false;
+			hoveringTrails = false;
 			return;
 		}
 		if (BOUNDS_SET_GRAPH_FANCY.contains(x, y)) {
@@ -501,6 +513,7 @@ public abstract class PauseScreen {
 			hoveringSpeedMode = false;
 			hoveringFancygraphics = true;
 			hoveringRoundcorners = false;
+			hoveringTrails = false;
 			return;
 		}
 		if (BOUNDS_SET_GRAPH_ROUND.contains(x, y)) {
@@ -509,6 +522,17 @@ public abstract class PauseScreen {
 			hoveringSpeedMode = false;
 			hoveringFancygraphics = false;
 			hoveringRoundcorners = true;
+			hoveringTrails = false;
+			return;
+		}
+
+		if (BOUNDS_SET_TRAILS.contains(x, y)) {
+			hoveringAA[0] = false;
+			hoveringAA[1] = false;
+			hoveringSpeedMode = false;
+			hoveringFancygraphics = false;
+			hoveringRoundcorners = false;
+			hoveringTrails = true;
 			return;
 		}
 
@@ -517,6 +541,7 @@ public abstract class PauseScreen {
 		hoveringSpeedMode = false;
 		hoveringFancygraphics = false;
 		hoveringRoundcorners = false;
+		hoveringTrails = false;
 		return;
 
 	}
@@ -725,6 +750,14 @@ public abstract class PauseScreen {
 
 		// Schiffe glätten:
 		drawButton(g, BOUNDS_SET_AA_SHIPS, MainZap.antializeShips, hoveringAA[1]);
+		
+		// Schweife-Anschalten:
+		g.setColor(COLOR_SETTINGS);
+		g.setFont(FONT_SET_SUB);
+		g.drawString(TEXT_SET_TRAILS, BOUNDS_SET_TRAILS.x - 67,
+				BOUNDS_SET_TRAILS.y + FONT_SET_SUB.getSize() + 4);
+		// Schweife-Anschalten-Button:
+		drawButton(g, BOUNDS_SET_TRAILS, MainZap.enableTails, hoveringTrails);
 
 		g.setFont(FONT_SET);
 		g.setColor(COLOR_SETTINGS);

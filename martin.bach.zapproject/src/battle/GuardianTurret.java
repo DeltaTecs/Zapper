@@ -30,11 +30,11 @@ public class GuardianTurret extends Enemy {
 	private static final WeaponPositioning[] WEAPON_POSITIONS = {
 			new WeaponPositioning((byte) 1, new int[] { 0 }, new int[] { -55 }),
 			new WeaponPositioning((byte) 2, new int[] { -22, 22 }, new int[] { -70, -70 }),
-			new WeaponPositioning((byte) 2, new int[] { -10, 10 }, new int[] { -70, -70 })};
+			new WeaponPositioning((byte) 2, new int[] { -10, 10 }, new int[] { -70, -70 }) };
 	private static final MultiCannonWeaponConfiguration[] WEAPON_CONFIGS = {
 			new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONS[0]),
 			new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONS[1]),
-			new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONS[2])};
+			new MultiCannonWeaponConfiguration(COOLDOWN, SHOOTING_RANGE, WEAPON_POSITIONS[2]) };
 	private static final int SCORE = 0;
 	private static final int CRYSTALS = 0;
 	private static final boolean FRIEND = true;
@@ -45,7 +45,7 @@ public class GuardianTurret extends Enemy {
 
 	public GuardianTurret(float posX, float posY, int projectileSize, int img) {
 		super(posX, posY, SPEED, TEXTURES[img], SCALES[img], COLINFOS[img], new GuardianTurretProtocol(),
-				WEAPON_CONFIGS[img], MAX_HP, EXPL_EFFECT_PATTERN, SCORE, 2 * SHOOTING_RANGE, CRYSTALS, FRIEND);
+				WEAPON_CONFIGS[img], MAX_HP, EXPL_EFFECT_PATTERN, SCORE, 2 * SHOOTING_RANGE, CRYSTALS, FRIEND, null);
 		// 2 * SCHOOTING_RANGE, da mahcnmal trotz lock (quadratisch) nicht
 		// schießt. (Außer reichweite) -> Überdimensionale Reichweite
 		// 2 * SHOOTING_RANGE, damit Kugeln nicht einfach verpuffen

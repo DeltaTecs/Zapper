@@ -12,6 +12,7 @@ import battle.projectile.Projectile;
 import collision.CollisionInformation;
 import corecase.MainZap;
 import gui.effect.ExplosionEffectPattern;
+import gui.effect.TailManager;
 import gui.extention.Shielding;
 import lib.ScheduledList;
 
@@ -39,9 +40,9 @@ public class ShieldedEnemy extends Enemy {
 
 	public ShieldedEnemy(float posX, float posY, float speed, BufferedImage texture, float scale,
 			CollisionInformation information, AiProtocol ai, WeaponConfiguration weaponconf, int health,
-			ExplosionEffectPattern explPattern, int score, int projRange, int crystals, boolean friend, int shield) {
+			ExplosionEffectPattern explPattern, int score, int projRange, int crystals, boolean friend, int shield, TailManager tail) {
 		super(posX, posY, speed, texture, scale, information, ai, weaponconf, health, explPattern, score, projRange,
-				crystals, friend);
+				crystals, friend, tail);
 		this.shield = shield;
 		maxShield = shield;
 		shieldRadian = Shielding.calcShieldRange(texture, scale);

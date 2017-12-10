@@ -21,6 +21,7 @@ import gui.effect.Effect;
 import gui.effect.ExplosionEffect;
 import gui.effect.ExplosionEffectPattern;
 import gui.effect.ShockedEffect;
+import gui.effect.TailManager;
 import gui.effect.WarpInEffect;
 import gui.effect.WarpOutEffect;
 import gui.extention.Shocking;
@@ -57,6 +58,7 @@ public class Enemy extends CombatObject implements Shockable {
 	private InteractiveObject shootingAim;
 	private WeaponConfiguration weaponConfiguration;
 	private ExplosionEffectPattern explosionEffectPattern;
+	private TailManager tailManager;
 	private ShockedEffect shockEffect;
 	private ArrayList<AttachedEnemy> attachments = new ArrayList<AttachedEnemy>();
 	private int maxHealth;
@@ -70,7 +72,8 @@ public class Enemy extends CombatObject implements Shockable {
 
 	public Enemy(float posX, float posY, float speed, BufferedImage texture, float scale,
 			CollisionInformation information, AiProtocol ai, WeaponConfiguration weaponconf, int health,
-			ExplosionEffectPattern explPattern, int score, int projRange, int crystals, boolean friend) {
+			ExplosionEffectPattern explPattern, int score, int projRange, int crystals, boolean friend,
+			TailManager trail) {
 		super(information, true, false, friend); // true -> Immer an Stage
 													// gebunden;
 		// false -> im Vordergrund
@@ -84,6 +87,7 @@ public class Enemy extends CombatObject implements Shockable {
 		this.score = score;
 		this.projRange = projRange;
 		this.crystals = crystals;
+		this.tailManager = trail;
 		size = (int) (((texture.getHeight() * scale) + (texture.getWidth() * scale)) / 2);
 		hpBarLength = (int) (size * 0.8f);
 		maxMiddistance = (int) (texture.getHeight() * scale / 2);
@@ -205,6 +209,9 @@ public class Enemy extends CombatObject implements Shockable {
 			updateUI();
 			return;
 		}
+
+		if (MainZap.enableTails && tailManager != null)
+			tailManager.update(this);
 
 		if (warping) {
 			updateWarp();
@@ -357,11 +364,17 @@ public class Enemy extends CombatObject implements Shockable {
 			return new Enemy(getPosX(), getPosY(), speed, texture, scale, getCollisionInfo(),
 					(AiProtocol) aiProtocol.getClone(),
 					new WeaponConfiguration(weaponConfiguration.getMaxCooldown(), weaponConfiguration.getRange()),
-					getMaxHealth(), getExplosionEffectPattern(), score, projRange, crystals, isFriend());
+					getMaxHealth(), getExplosionEffectPattern(), score, projRange, crystals, isFriend(),
+					new TailManager(tailManager.getSize(), (int) tailManager.getSize(),
+							tailManager.getSizeRemoval(), tailManager.getPosX(), tailManager.getPosY(),
+							tailManager.isSquare()));
 		} else {
 			return new Enemy(getPosX(), getPosY(), speed, texture, scale, getCollisionInfo(),
 					(AiProtocol) aiProtocol.getClone(), null, getMaxHealth(), getExplosionEffectPattern(), score,
-					projRange, crystals, isFriend());
+					projRange, crystals, isFriend(),
+					new TailManager(tailManager.getSize(), (int) tailManager.getSize(),
+							tailManager.getSizeRemoval(), tailManager.getPosX(), tailManager.getPosY(),
+							tailManager.isSquare()));
 		}
 	}
 
@@ -590,19 +603,25 @@ public class Enemy extends CombatObject implements Shockable {
 	public int getDmgIndicatingTime() {
 		return dmgIndicatingTime;
 	}
-	
+
 	public void attach(AttachedEnemy e) {
 		synchronized (attachments) {
 			attachments.add(e);
 		}
 	}
-	
+
 	public void detach(AttachedEnemy e) {
 		synchronized (attachments) {
 			attachments.remove(e);
 		}
 	}
-	
-	
+
+	public TailManager getTrailManager() {
+		return tailManager;
+	}
+
+	public void setTrailManager(TailManager tailManager) {
+		this.tailManager = tailManager;
+	}
 
 }
