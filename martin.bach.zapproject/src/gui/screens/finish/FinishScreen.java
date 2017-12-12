@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import corecase.Cmd;
 import corecase.MainZap;
 import corecase.StringConverter;
 import gui.Frame;
@@ -182,6 +183,12 @@ public abstract class FinishScreen {
 			} else if (HITBOX_CONTINUE.contains(dx, dy)) {
 				close();
 				MainZap.setCrystals(REWARD);
+			} else if (HITBOX_RESTART.contains(dx, dy)) {
+				close();
+				MainZap.restartGame();
+			} else if (HITBOX_EXIT.contains(dx, dy)) {
+				Cmd.print("User quits...");
+				System.exit(0);
 			}
 		}
 
@@ -255,7 +262,8 @@ public abstract class FinishScreen {
 
 			char c = e.getKeyChar();
 			if (!StringConverter.isClassic(c) || playername.length() > MAX_NAME_LENGTH)
-				return; // Nich zulässig oder zu lang
+				return; // Nich zulässig
+						// oder zu lang
 
 			if (!startedTyping) {
 				startedTyping = true;

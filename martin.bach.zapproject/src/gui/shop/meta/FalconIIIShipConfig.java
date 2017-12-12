@@ -17,7 +17,7 @@ public class FalconIIIShipConfig extends ShipStartConfig {
 	private static final int PRICE = 500;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_PLAYERSHIP_FALCONIII);
 	private static final int TAIL_SIZE = 15;
-	private static final int TAIL_DISTANCE = 2;
+	private static final int TAIL_DISTANCE = 1;
 	private static final float TAIL_SIZEREMOVAL = 0.9f;
 	private static final int[] TAIL_POS_X = new int[] { 12, -12 };
 	private static final int[] TAIL_POS_Y = new int[] { 31, 31 };
@@ -33,7 +33,7 @@ public class FalconIIIShipConfig extends ShipStartConfig {
 	private static final float RELOAD_WITHOUT = 4.3f;
 	private static final int HP = 12500;
 	private static final int HIT_RANGE = 40;
-	private static final int PROJ_RANGE = 840;
+	private static final int PROJ_RANGE = 500;
 	private static final ProjectileDesign PROJ_DESIGN = new ProjDesignFalconIII();
 	private static final ExplosionEffectPattern EXPL_PATTERN = new ExplosionEffectPattern(60, 600);
 	private static final CollisionInformation COLL_INFO = new CollisionInformation(HIT_RANGE,

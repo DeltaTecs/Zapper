@@ -176,15 +176,13 @@ public class Player extends CombatObject {
 	public void paint(Graphics2D g) {
 
 		// Graphics sind auf 0/0 Kontext
-		
+
 		// Schub-Schweif
 		if (MainZap.enableTails && tailManager != null) {
 			g.translate(Frame.HALF_SCREEN_SIZE, Frame.HALF_SCREEN_SIZE);
 			tailManager.update();
 			g.translate(-Frame.HALF_SCREEN_SIZE, -Frame.HALF_SCREEN_SIZE);
 		}
-		
-		
 
 		if (visibile) {
 
@@ -194,7 +192,7 @@ public class Player extends CombatObject {
 			g.drawImage(texture, buffer, null);
 
 		}
-		
+
 		// Explosion (falls tot)
 		if (explEffect != null) {
 			int x = getLocX();
@@ -710,6 +708,7 @@ public class Player extends CombatObject {
 		bulletDamage = c.getDamage();
 		projDesign = c.getProjDesign();
 		bulletSpeed = c.getProjSpeed();
+		projRange = c.getProjRange();
 		maxHp = c.getHp();
 		hp = c.getHp();
 		collisionInfo = c.getCollInfo();
@@ -775,10 +774,11 @@ public class Player extends CombatObject {
 	}
 
 	public ShipStartConfig genConfig() {
-		return new ShipStartConfig(texture, tailManager, textureScale, bulletDamage, speed, bulletSpeed, maxWeaponCooldownWith,
-				maxWeaponCooldownWithout, maxHp, collisionInfo, projRange, projDesign, explPattern, ammoUsageFac,
-				lastApplyedConfig.getName(), lastApplyedConfig.getDescription(), lastApplyedConfig.getPrice(),
-				singleWeaponPositioning, doubleWeaponPositioning, tripleWeaponPositioning);
+		return new ShipStartConfig(texture, tailManager, textureScale, bulletDamage, speed, bulletSpeed,
+				maxWeaponCooldownWith, maxWeaponCooldownWithout, maxHp, collisionInfo, projRange, projDesign,
+				explPattern, ammoUsageFac, lastApplyedConfig.getName(), lastApplyedConfig.getDescription(),
+				lastApplyedConfig.getPrice(), singleWeaponPositioning, doubleWeaponPositioning,
+				tripleWeaponPositioning);
 	}
 
 	private MouseMotionListener motionListener = new MouseMotionListener() {
