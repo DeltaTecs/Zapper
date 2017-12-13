@@ -47,7 +47,7 @@ public abstract class Hud {
 	private static final Polygon OUTLINE_SHOP = new Polygon(new int[] { 0, WIDTH_SHOP, WIDTH_SHOP, 40 },
 			new int[] { 0, 0, 40, 40 }, 4);
 	private static final float SHOP_BLEND_SPEED = 4;
-	private static final Rectangle CLICK_WARP_AREA = new Rectangle(Frame.SIZE - 103, Frame.SIZE - 70, 100, 69);
+	private static final Rectangle CLICK_WARP_AREA = new Rectangle(Frame.SIZE - 248, Frame.SIZE - 70, 245, 69);
 	private static final Rectangle CLICK_OPENSHOP_AREA = new Rectangle(Frame.SIZE - 160, 25, 160, 50);
 
 	private static float alphaScore = COLOR_SCORE[3];
@@ -169,9 +169,9 @@ public abstract class Hud {
 
 					if (lvlUpSignVisible) {
 						if (MainZap.roundCorners) {
-							g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 103, Frame.SIZE - 72, 100, 69, null);
+							g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 248, Frame.SIZE - 72, 245, 69, null);
 						} else {
-							g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 103, Frame.SIZE - 72, 100, 69, null);
+							g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 248, Frame.SIZE - 72, 245, 69, null);
 						}
 					}
 
@@ -180,9 +180,9 @@ public abstract class Hud {
 					Composite storeComp = g.getComposite();
 					g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, LVL_UP_HIDDEN_ALPHA));
 					if (MainZap.roundCorners) {
-						g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 103, Frame.SIZE - 70, 100, 69, null);
+						g.drawImage(LVL_UP_TEXTURE_R, Frame.SIZE - 248, Frame.SIZE - 70, 245, 69, null);
 					} else {
-						g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 103, Frame.SIZE - 70, 100, 69, null);
+						g.drawImage(LVL_UP_TEXTURE_C, Frame.SIZE - 248, Frame.SIZE - 70, 245, 69, null);
 					}
 					g.setComposite(storeComp);
 
