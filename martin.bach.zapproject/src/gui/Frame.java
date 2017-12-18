@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import corecase.MainZap;
+import io.SettingsInitReader;
 import io.TextureBuffer;
 import lib.ClickableObject;
 
@@ -20,7 +23,7 @@ public class Frame extends JFrame {
 	public static final int SIZE = 800;
 	public static final int HALF_SCREEN_SIZE = (SIZE / 2);
 	public static final int BUFFER_AMOUNT = 2;
-	
+
 	private BufferStrategy bufferStrategy;
 
 	private ArrayList<ClickableObject> coreClickables = new ArrayList<ClickableObject>();
@@ -102,6 +105,21 @@ public class Frame extends JFrame {
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
+	}
+
+	public void autoscale() {
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int sx = gd.getDisplayMode().getWidth();
+		int sy = gd.getDisplayMode().getHeight();
+
+		int smallerSize = sy;
+		if (sx < sy)
+			smallerSize = sx;
+		
+		int availableSize = smallerSize - 100;
+		float scale = (float) availableSize / SIZE;
+		MainZap.setScale(scale);
+		SettingsInitReader.save();
 	}
 
 	public void addClickable(ClickableObject co) {

@@ -103,7 +103,10 @@ public abstract class MainZap {
 		canvasDy = s.top;
 		scaleTransform = new AffineTransform();
 		scaleTransform.scale(scale, scale);
-		frame.rescale(scale);
+		if (firstRun)
+			frame.autoscale();
+		else
+			frame.rescale(scale);
 
 		if (SCHEDULE_INSET_RECHECK)
 			scheduleFrameInsetRecheck();
@@ -160,6 +163,8 @@ public abstract class MainZap {
 			frame.getContentPane().remove(stamp);
 		}
 
+		Freezer.init(); // Freezing-Option aktivieren
+
 		if (FINAL_RUN) {
 			StageManager.setUp(1);
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
@@ -203,6 +208,11 @@ public abstract class MainZap {
 		if (speedMode) // SPEED IT UP!!!
 			collisionLoop.setBooster(collisionLoop.getTimeBetweenFramesMS() / 2);
 		// ----
+
+		if (firstRun) {
+			firstRun = false;
+			SettingsInitReader.save();
+		}
 	}
 
 	private static final Runnable TASK_UPDATE = new Runnable() {
