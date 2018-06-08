@@ -233,6 +233,9 @@ public abstract class EndScreen {
 		@Override
 		public void release(int dx, int dy) {
 			// d = 1. Da ganzer Bildschirm überdeckt
+			
+			if (!active)
+				return;
 
 			if (HITBOX_SUBMIT.contains(dx, dy) && nameEntered.length() > 0 && !scoreSubmitted && startedTyping) {
 				entrys.add(new ScoreEntry(nameEntered, MainZap.getScore()));
@@ -255,6 +258,9 @@ public abstract class EndScreen {
 
 		@Override
 		public void press(int dx, int dy) {
+			
+			if (!active)
+				return;
 
 			if (HITBOX_SCROLL_DOWN.contains(dx, dy)) {
 				scrollButtonsPressed[0] = false;

@@ -180,6 +180,7 @@ public class InteractiveObject implements Collideable, PaintingTask, Updateable,
 
 	@Override
 	public void push(Collideable from, float speed) {
+		
 		SpeedVector vec = new SpeedVector(0, 0);
 		vec.aimFor(from.getLocation()[0], from.getLocation()[1], speed, posX, posY);
 		move(vec);

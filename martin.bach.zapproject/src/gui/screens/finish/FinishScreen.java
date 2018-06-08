@@ -63,7 +63,6 @@ public abstract class FinishScreen {
 	private static String playername = "name";
 	private static boolean submitted = false;
 	private static boolean startedTyping = false;
-	private static boolean typingUnlocked = false;
 
 	public static void update() {
 
@@ -177,6 +176,10 @@ public abstract class FinishScreen {
 
 		@Override
 		public void release(int dx, int dy) {
+			
+			if (!open)
+				return;
+			
 			if (HITBOX_SUBMIT.contains(dx, dy)) {
 				if (!submitted && startedTyping)
 					submit();
