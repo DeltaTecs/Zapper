@@ -25,13 +25,13 @@ public class Storage extends Enemy {
 	private static final float SCALE = 2.0f;
 	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_CONTAINER);
 	private static final int HEALTH = 600;
-	private static final int MIN_CRYSTALS_PER_STAGE = 30;
-	private static final int MAX_CRYSTALS_PER_STAGE = 80;
+	private static final int MIN_CRYSTALS_PER_STAGE = 10;
+	private static final int MAX_CRYSTALS_PER_STAGE = 30;
 
-	private static final int RAND_CONTAINER_SPOTTER = 5;
-	private static final int RAND_DIRECT_EXTENTION = 18;
+	private static final int RAND_CONTAINER_SPOTTER = 7;
+	private static final int RAND_DIRECT_EXTENTION = 16;
 	private static final int RAND_LICENSE_SHIP = 7;
-	private static final int RAND_LICENSE_EXTENTION = 9;
+	private static final int RAND_LICENSE_EXTENTION = 8;
 	private static final int RAND_LICENSE_UPGRADE = 3;
 
 	public Storage(int posX, int posY) {
