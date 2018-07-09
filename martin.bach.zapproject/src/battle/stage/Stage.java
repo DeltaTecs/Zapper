@@ -7,6 +7,7 @@ import battle.CombatObject;
 import battle.ai.AiProtocol;
 import battle.ai.DieCall;
 import battle.enemy.Enemy;
+import battle.looting.Container;
 import collision.Collideable;
 import corecase.MainZap;
 import gui.Hud;
@@ -19,6 +20,7 @@ import lib.Updateable;
 public class Stage implements Updateable {
 
 	private static final Random RANDOM = new Random(System.currentTimeMillis());
+	private static final int MAX_AMOUNT_CONTAINER = 2;
 
 	private int lvl;
 	private String name;
@@ -51,6 +53,11 @@ public class Stage implements Updateable {
 		MainZap.getPlayer().setPosition(x, y);
 
 		passed = MainZap.debug; // in Debug alle Skippen können
+		
+		// Container spawnen
+		int containers = MainZap.rand(MAX_AMOUNT_CONTAINER + 1);
+		for (int i = 0; i != containers; i++)
+			Container.spawn(this);
 	}
 
 	public void applyRemoveTask(final ArrayList<CombatObject> list, final CombatObject subject) {

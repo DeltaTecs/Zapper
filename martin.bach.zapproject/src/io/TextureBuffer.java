@@ -67,6 +67,7 @@ public abstract class TextureBuffer {
 	public static final String NAME_STRUCTURE_SHOP1 = "strShop1.png";
 	public static final String NAME_STRUCTURE_SHOP2 = "strShop2.png";
 	public static final String NAME_STRUCTURE_ROCK0 = "strRock0.png";
+	public static final String NAME_STRUCTURE_ROCK1 = "strRock1.png";
 	public static final String NAME_STRUCTURE_STARGATE_FRAME = "stargate.png";
 	public static final String NAME_STRUCTURE_STARGATE_CONNECTOR = "stargateConnector.png";
 	public static final String NAME_COLLECT_HEALTHUP_ROUND = "collectHealthupRound.png";
@@ -86,6 +87,7 @@ public abstract class TextureBuffer {
 	public static final String NAME_COLLECT_BULLET_RANGE_UP_CORNER = "collectBulletRangeUp.png";
 	public static final String NAME_COLLECT_RELOAD_UP_CORNER = "collectReloadSpeedUp.png";
 	public static final String NAME_CRYSTAL = "crystal.png";
+	public static final String NAME_CONTAINER = "container.png";
 	public static final String NAME_BUTTON_LVL_UP_ROUND = "nextLvlRound.png";
 	public static final String NAME_BUTTON_LVL_UP_CORNER = "nextLvl.png";
 	public static final String NAME_TUTORIAL_SCREEN = "tutorial.png";
@@ -160,6 +162,7 @@ public abstract class TextureBuffer {
 		names.add(NAME_STRUCTURE_SHOP1);
 		names.add(NAME_STRUCTURE_SHOP2);
 		names.add(NAME_STRUCTURE_ROCK0);
+		names.add(NAME_STRUCTURE_ROCK1);
 		names.add(NAME_STRUCTURE_STARGATE_FRAME);
 		names.add(NAME_STRUCTURE_STARGATE_CONNECTOR);
 		names.add(NAME_COLLECT_HEALTHUP_ROUND);
@@ -181,6 +184,7 @@ public abstract class TextureBuffer {
 		names.add(NAME_BUTTON_LVL_UP_ROUND);
 		names.add(NAME_BUTTON_LVL_UP_CORNER);
 		names.add(NAME_CRYSTAL);
+		names.add(NAME_CONTAINER);
 		names.add(NAME_TUTORIAL_SCREEN);
 		names.add(NAME_SYMBOL_RESTART);
 		names.add(NAME_SYMBOL_SETTINGS);
