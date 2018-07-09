@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import battle.CombatObject;
 import battle.GuardianTurret;
 import battle.enemy.Enemy;
+import battle.looting.Storage;
 import corecase.MainZap;
 import lib.ScheduledList;
 
@@ -26,7 +27,7 @@ public class GuardianTurretProtocol extends AiProtocol {
 	public void updateLockOn() {
 
 		CombatObject lock = getLockOn();
-		
+
 		if (lock != null) {
 			if (lock.distanceTo(getHost()) > DISTANCE_SHOOT)
 				lock = null; // Fallen lassen, da out of range
@@ -60,7 +61,7 @@ public class GuardianTurretProtocol extends AiProtocol {
 		// Umgebung abgehen
 		for (Enemy e : surrounding) {
 
-			if (e.isFriend() || !e.isAlive() || !MainZap.fittsMap(e.getLocX(), e.getLocY()))
+			if (e.isFriend() || !e.isAlive() || !MainZap.fittsMap(e.getLocX(), e.getLocY()) || e instanceof Storage)
 				continue; // nur Feinde in der Grid beschieﬂen
 
 			// Da is was in Range

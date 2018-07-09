@@ -138,7 +138,11 @@ public abstract class Hud {
 			if (StageManager.getActiveStage() == null || !MainZap.getPlayer().isAlive())
 				return; // noch nicht initialisiert, oder
 						// tot, oder im warp
-
+			
+			// ----- Container-Spotter
+			if (Shop.unlocked[0])
+				ContainerSpotter.paint(g);
+			
 			// ----- Hit-Indicator
 			if (MainZap.fancyGraphics)
 				PlayerDamageIndicator.paint(g);

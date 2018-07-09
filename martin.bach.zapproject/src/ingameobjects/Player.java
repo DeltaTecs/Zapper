@@ -156,6 +156,7 @@ public class Player extends CombatObject {
 	private float boostAlphaDelta = ALPHA_BOOST_IND_ADD_DELTA;
 	private ShipStartConfig lastApplyedConfig;
 	private boolean shielded = false; // Für Schild-Effekt
+	private boolean shipmetalockable = false;
 
 	public Player() {
 		super(collisionInfo, false, false, true); // false -> nicht an Stage gebunden;
@@ -699,6 +700,7 @@ public class Player extends CombatObject {
 	}
 
 	public void applyMeta(ShipStartConfig c) {
+		shipmetalockable = c.isLockable();
 		speed = c.getSpeed();
 		tailManager = c.getTailManager();
 		textureScale = c.getScale();
@@ -778,7 +780,7 @@ public class Player extends CombatObject {
 				maxWeaponCooldownWith, maxWeaponCooldownWithout, maxHp, collisionInfo, projRange, projDesign,
 				explPattern, ammoUsageFac, lastApplyedConfig.getName(), lastApplyedConfig.getDescription(),
 				lastApplyedConfig.getPrice(), singleWeaponPositioning, doubleWeaponPositioning,
-				tripleWeaponPositioning);
+				tripleWeaponPositioning, shipmetalockable);
 	}
 
 	private MouseMotionListener motionListener = new MouseMotionListener() {

@@ -1,6 +1,7 @@
 package battle.stage;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import battle.CombatObject;
@@ -20,7 +21,7 @@ import lib.Updateable;
 public class Stage implements Updateable {
 
 	private static final Random RANDOM = new Random(System.currentTimeMillis());
-	private static final int MAX_AMOUNT_CONTAINER = 2;
+	private static final int MAX_AMOUNT_CONTAINER = 3;
 
 	private int lvl;
 	private String name;
@@ -30,6 +31,7 @@ public class Stage implements Updateable {
 	private ArrayList<PaintingTask> paintingTasks = new ArrayList<PaintingTask>();
 	private ArrayList<Updateable> updateTasks = new ArrayList<Updateable>();
 	private ArrayList<Collideable> collisionTasks = new ArrayList<Collideable>();
+	private List<Container> containers = new ArrayList<Container>();
 	private boolean passed = false;
 
 	public Stage(int lvl, String name, StageDifficulty difficulty, String description) {
@@ -41,6 +43,11 @@ public class Stage implements Updateable {
 		MainZap.getPlayer().setPosition(Map.SIZE / 2, Map.SIZE / 2);
 
 		passed = MainZap.debug; // in Debug alle Skippen können
+		
+		// Container spawnen
+		int containers = MainZap.rand(MAX_AMOUNT_CONTAINER) + 1;
+		for (int i = 0; i != containers; i++)
+			this.containers.add(Container.spawn(this));
 
 	}
 
@@ -55,9 +62,9 @@ public class Stage implements Updateable {
 		passed = MainZap.debug; // in Debug alle Skippen können
 		
 		// Container spawnen
-		int containers = MainZap.rand(MAX_AMOUNT_CONTAINER + 1);
+		int containers = MainZap.rand(MAX_AMOUNT_CONTAINER) + 1;
 		for (int i = 0; i != containers; i++)
-			Container.spawn(this);
+			this.containers.add(Container.spawn(this));
 	}
 
 	public void applyRemoveTask(final ArrayList<CombatObject> list, final CombatObject subject) {
@@ -111,7 +118,6 @@ public class Stage implements Updateable {
 			throw new RuntimeException("remove-tasks can only be applyed on a player or an enemy");
 
 	}
-
 
 	public void pass() {
 		passed = true;
@@ -168,6 +174,10 @@ public class Stage implements Updateable {
 
 	public ArrayList<Collideable> getCollisionTasks() {
 		return collisionTasks;
+	}
+
+	public List<Container> getContainers() {
+		return containers;
 	}
 
 }

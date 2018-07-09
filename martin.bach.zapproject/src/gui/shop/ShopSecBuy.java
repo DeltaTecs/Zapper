@@ -34,6 +34,8 @@ public abstract class ShopSecBuy {
 	protected static final Color COLOR_SCROLL_FG = new Color(104, 33, 38, 150);
 	protected static final Color COLOR_SCROLL_HOVER = new Color(40, 0, 0, 40);
 	protected static final Color COLOR_SCROLL_BG = new Color(255, 255, 255, 200);
+	protected static final Color COLOR_LOCKED_BG = new Color(0, 0, 0, 190);
+	protected static final Color COLOR_LOCKED_FG = new Color(240, 240, 240, 190);
 	protected static final Font FONT_NAME = new Font("Arial", Font.BOLD, 20);
 	protected static final Font FONT_PRICE = new Font("Arial", Font.BOLD, 19);
 	protected static final Font FONT_BALANCE = new Font("Arial", Font.BOLD, 35);
@@ -41,6 +43,8 @@ public abstract class ShopSecBuy {
 	protected static final Font FONT_STATS_PRICE = new Font("Arial", Font.BOLD, 24);
 	protected static final Font FONT_STATS_TITEL = new Font("Arial", Font.BOLD, 24);
 	protected static final Font FONT_STATS_DESC = new Font("Arial", 0, 15);
+	protected static final Font FONT_LOCKED_0 = new Font("Arial", Font.BOLD, 18);
+	protected static final Font FONT_LOCKED_1 = new Font("Arial", Font.BOLD, 16);
 	protected static final BasicStroke STROKE_ITEM_FRAME = new BasicStroke(2.3f);
 	protected static final BasicStroke STROKE_SITE_BORDER = new BasicStroke(4f);
 	protected static final BasicStroke STROKE_BUY = new BasicStroke(4.5f);
@@ -98,6 +102,7 @@ public abstract class ShopSecBuy {
 	private static float scroll = 0;
 	private static float scrollDelta = 0;
 	// ---
+	private static boolean selectedShipLocked = false;
 
 	private static ShipConfigGraphCalc selectedConfig;
 	private static ShipConfigGraphCalc activeConfig;
@@ -135,8 +140,11 @@ public abstract class ShopSecBuy {
 		g.clipRect(BOUNDS_DISPLAY_SHIPS.x, BOUNDS_DISPLAY_SHIPS.y, BOUNDS_DISPLAY_SHIPS.width,
 				BOUNDS_DISPLAY_SHIPS.height);
 		int y = 150 + (int) scroll;
+		int lockindex = 0;
 		for (ShipConfigGraphCalc c : availableConfigs) {
-			paintItem(g, y, c);
+			paintItem(g, y, c, lockindex);
+			if (c.getConfig().isLockable())
+				lockindex++;
 			y += ITEM_HEIGHT;
 		}
 		g.setClip(null);
@@ -174,15 +182,17 @@ public abstract class ShopSecBuy {
 		g.drawString(selectedConfig.getConfig().getPrice() + "", 425 + SELECT_IMAGE_WIDTH + 32, 131);
 
 		// Buy-Button
-		if (hoveringBuy) {
-			g.setColor(COLOR_BUY_HOVER);
-			g.fillRect(BOUNDS_BUY.x, BOUNDS_BUY.y, BOUNDS_BUY.width, BOUNDS_BUY.height);
+		if (!selectedShipLocked) {
+			if (hoveringBuy) {
+				g.setColor(COLOR_BUY_HOVER);
+				g.fillRect(BOUNDS_BUY.x, BOUNDS_BUY.y, BOUNDS_BUY.width, BOUNDS_BUY.height);
+			}
+			g.setColor(COLOR_BUY);
+			g.setStroke(STROKE_BUY);
+			g.drawRect(BOUNDS_BUY.x, BOUNDS_BUY.y, BOUNDS_BUY.width, BOUNDS_BUY.height);
+			g.setFont(FONT_BUY);
+			g.drawString("BUY", BOUNDS_BUY.x + 3, BOUNDS_BUY.y + BOUNDS_BUY.height - 7);
 		}
-		g.setColor(COLOR_BUY);
-		g.setStroke(STROKE_BUY);
-		g.drawRect(BOUNDS_BUY.x, BOUNDS_BUY.y, BOUNDS_BUY.width, BOUNDS_BUY.height);
-		g.setFont(FONT_BUY);
-		g.drawString("BUY", BOUNDS_BUY.x + 3, BOUNDS_BUY.y + BOUNDS_BUY.height - 7);
 
 		// Name
 		g.setColor(Color.BLACK);
@@ -207,7 +217,7 @@ public abstract class ShopSecBuy {
 		}
 	}
 
-	private static void paintItem(Graphics2D g, int y, ShipConfigGraphCalc meta) {
+	private static void paintItem(Graphics2D g, int y, ShipConfigGraphCalc meta, int lockindex) {
 
 		// Rahmen
 		g.setColor(COLOR_FRAME_BG);
@@ -239,6 +249,18 @@ public abstract class ShopSecBuy {
 		g.setFont(FONT_PRICE);
 		g.setColor(Color.BLACK);
 		g.drawString(meta.getConfig().getPrice() + "", ITEM_POS_X + ITEM_IMAGE_WIDTH + 21, y - 2 + 50);
+
+		if (meta.getConfig().isLockable() && !Shop.unlocked[lockindex + 8]) {
+			// nicht freigeschaltet
+			g.setColor(COLOR_LOCKED_BG);
+			g.fillRect(ITEM_POS_X - 10, y - 13, ITEM_WIDTH + 50, ITEM_HEIGHT - 5);
+			g.setColor(COLOR_LOCKED_FG);
+			g.setFont(FONT_LOCKED_0);
+			g.drawString("[LOCKED]", ITEM_POS_X + 5, y + 40);
+			g.setFont(FONT_LOCKED_1);
+			g.drawString("License required", ITEM_POS_X + 100, y + 41);
+
+		}
 	}
 
 	private static void paintDialog(Graphics2D g) {
@@ -322,19 +344,26 @@ public abstract class ShopSecBuy {
 			return;
 		}
 		if (BOUNDS_BUY.contains(tx, ty)) {
-			if (selectedConfig.getConfig().getPrice() <= MainZap.getCrystals())
+			if (selectedConfig.getConfig().getPrice() <= MainZap.getCrystals() && !selectedShipLocked)
 				inDialog = true;
 			return;
 		}
 
 		if (BOUNDS_DISPLAY_SHIPS.contains(tx, ty)) {
 			int y = 150 + (int) scroll;
+			int lockindex = 0;
 			for (ShipConfigGraphCalc c : availableConfigs) {
 				if (new Rectangle(ITEM_POS_X - 10, y - 13, ITEM_WIDTH + 50, ITEM_HEIGHT - 5).contains(tx, ty)) {
+					if (c.getConfig().isLockable())
+						selectedShipLocked = !Shop.unlocked[8 + lockindex];
+					else
+						selectedShipLocked = false;
 					selectedConfig = c;
 					shownStats.setConfigs(selectedConfig, activeConfig);
 					return;
 				}
+				if (c.getConfig().isLockable())
+					lockindex++;
 				y += ITEM_HEIGHT;
 			}
 		}

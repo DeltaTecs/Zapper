@@ -24,6 +24,7 @@ import gui.shop.ShopSecUpgrade;
 import gui.shop.meta.ShipStartConfig;
 import ingameobjects.Player;
 import io.CashReader;
+import io.LootReader;
 import io.SettingsInitReader;
 import io.TextureBuffer;
 import lib.Updateable;
@@ -89,7 +90,9 @@ public abstract class MainZap {
 		// Geld laden
 		crystals = CashReader.load() + 9;
 		crystalsEverEarned = crystals;
-
+		// Freigeschaltetes laden
+		LootReader.load();
+		
 		frame = new Frame();
 		Thread.sleep(SLEEPTIME_AFTER_WINDOW_INIT);
 		player = new Player();
@@ -170,7 +173,7 @@ public abstract class MainZap {
 			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_DEFAULT));
 		} else {
 			StageManager.setUp(0);
-			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_FALCON_III));
+			player.applyMeta(ShipStartConfig.get(ShipStartConfig.C_RAINMAKER));
 			crystals = 0;
 			ShopSecUpgrade.purchaseUpgrade(0);
 			ShopSecUpgrade.purchaseUpgrade(0);
@@ -178,7 +181,6 @@ public abstract class MainZap {
 			ShopSecUpgrade.purchaseUpgrade(1);
 			ShopSecUpgrade.purchaseUpgrade(3);
 			ShopSecUpgrade.purchaseUpgrade(3);
-			ExtentionManager.setExtention(Extention.MIRROR);
 			player.setHp(player.getMaxHp());
 		}
 		Hud.setUpClickListener();

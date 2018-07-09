@@ -22,9 +22,9 @@ import io.TextureBuffer;
 
 public abstract class ShopSecUpgrade {
 
-	private static final int PRICE_MIRROR = 1800;
-	private static final int PRICE_SHIELD = 800;
-	private static final int PRICE_SHOCK = 2500;
+	private static final int PRICE_MIRROR = 1400;
+	private static final int PRICE_SHIELD = 700;
+	private static final int PRICE_SHOCK = 1500;
 	private static final int[] PRICE_CANNON = new int[] { 2000, 3000, -1 };
 	private static final BufferedImage IMG_CRYSTAL = TextureBuffer.get(TextureBuffer.NAME_CRYSTAL);
 	private static final BufferedImage IMG_EXT_MIRROR = TextureBuffer.get(TextureBuffer.NAME_SYMBOL_EXT_MIRROR);
@@ -49,6 +49,8 @@ public abstract class ShopSecUpgrade {
 	private static final Color COLOR_EXT_ACTIVE_BASE = new Color(255, 127, 89);
 	private static final Color COLOR_CANNON_ACTIVE_BG = new Color(70, 85, 255, 30);
 	private static final Color COLOR_CANNON_ACTIVE_FG = new Color(70, 85, 255, 170);
+	private static final Color COLOR_LOCKED_BG = new Color(0, 0, 0, 190);
+	private static final Color COLOR_LOCKED_FG = new Color(240, 240, 240, 190);
 	private static final Font FONT_BALANCE = new Font("Arial", Font.BOLD, 35);
 	private static final Font FONT_VALUE = new Font("Arial", 0, 20);
 	private static final Font FONT_LVL = new Font("Arial", Font.BOLD, 25);
@@ -63,6 +65,8 @@ public abstract class ShopSecUpgrade {
 	private static final Font FONT_EXT_DESC_DESC = new Font("Arial", 0, 15);
 	private static final Font FONT_EXT_DESC_PRICE = new Font("Arial", Font.BOLD, 20);
 	private static final Font FONT_CANNNONS_ACTIVE = new Font("Arial", Font.BOLD, 18);
+	private static final Font FONT_LOCKED_0 = new Font("Arial", Font.BOLD, 18);
+	private static final Font FONT_LOCKED_1 = new Font("Arial", Font.BOLD, 16);
 	private static final Stroke STROKE_UPGRADE = new BasicStroke(3);
 	private static final Stroke STROKE_HEADLINE_LINE = new BasicStroke(3);
 	private static final Stroke STROK_TOPIC_FRAME = new BasicStroke(1.4f);
@@ -226,13 +230,13 @@ public abstract class ShopSecUpgrade {
 		g.drawRect(37 + EXT_D_POS_X, 382 + EXT_D_POS_Y, 576, 201);
 		g.drawRect(420 + EXT_D_POS_X, 382 + EXT_D_POS_Y, 193, 201);
 		paintExtentionUpgradeButton(g, IMG_EXT_MIRROR, 45 + EXT_D_POS_X, 390 + EXT_D_POS_Y, TEXT_TITEL_MIRROR,
-				extentionStates[0], PRICE_MIRROR);
+				extentionStates[0], PRICE_MIRROR, Shop.unlocked[1]);
 		paintExtentionUpgradeButton(g, IMG_EXT_SHIELD, 45 + EXT_D_POS_X, 492 + EXT_D_POS_Y, TEXT_TITEL_SHIELD,
-				extentionStates[1], PRICE_SHIELD);
+				extentionStates[1], PRICE_SHIELD, Shop.unlocked[2]);
 		paintExtentionUpgradeButton(g, IMG_EXT_SHOCK, 235 + EXT_D_POS_X, 492 + EXT_D_POS_Y, TEXT_TITEL_SHOCK,
-				extentionStates[2], PRICE_SHOCK);
+				extentionStates[2], PRICE_SHOCK, Shop.unlocked[3]);
 		paintExtentionUpgradeButton(g, IMG_EXT_ADDCANNON, 235 + EXT_D_POS_X, 390 + EXT_D_POS_Y, TEXT_TITEL_ADDCANNON,
-				extentionStates[3], PRICE_CANNON[addedCannons]);
+				extentionStates[3], PRICE_CANNON[addedCannons], true);
 		paintExtentionDesciption(g, activeDescription, selectedExtention, extentionStates[selectedExtention],
 				hoveringExtBuy);
 	}
@@ -294,6 +298,9 @@ public abstract class ShopSecUpgrade {
 			}
 		}
 
+		if (index != 3 && !Shop.unlocked[index + 1])
+			return;
+
 		Shop.drawCrystal(g, 418 + EXT_D_POS_X, 550 + EXT_D_POS_Y, 2);
 		g.setColor(ShopSecBuy.COLOR_FG);
 		g.setFont(FONT_EXT_DESC_PRICE);
@@ -309,14 +316,11 @@ public abstract class ShopSecUpgrade {
 		g.setColor(ShopSecBuy.COLOR_BUY);
 		g.setFont(FONT_UPGRADE);
 		g.drawString(TEXT_UPGRADE, 534 + EXT_D_POS_X, 572 + EXT_D_POS_Y);
-		
-		
-		
-		
+
 	}
 
 	private static void paintExtentionUpgradeButton(Graphics2D g, BufferedImage img, int x, int y, String name,
-			boolean active, int price) {
+			boolean active, int price, boolean unlocked) {
 
 		if (active) {
 			g.setColor(colorExtActive);
@@ -351,30 +355,42 @@ public abstract class ShopSecUpgrade {
 		// Antialising reaktivieren
 		if (MainZap.generalAntialize)
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		
+
+		if (!unlocked) {
+			g.setColor(COLOR_LOCKED_BG);
+			g.fillRect(x - 2, y - 2, 175 + 4, 84 + 4);
+			g.setColor(COLOR_LOCKED_FG);
+			g.setFont(FONT_LOCKED_0);
+			g.drawString("[LOCKED]", x + 42, y + 42 - 7);
+			g.setFont(FONT_LOCKED_1);
+			g.drawString("No License", x + 42 + 1, y + 42 - 9 + 24);
+		}
+
 	}
 
 	private static void paintStatUpgradeSection(Graphics2D g) {
 
 		int y = STAT_POS_Y;
 		paintStatObject(g, STAT_POS_X, y, PaintableStats.IMG_HEALTH, PaintableStats.COLOR_HEALTH,
-				"health: " + MainZap.getPlayer().getMaxHp() + " hp", activeUpgrades[0], hoveringBuys[0]);
+				"health: " + MainZap.getPlayer().getMaxHp() + " hp", activeUpgrades[0], hoveringBuys[0],
+				Shop.unlocked[4]);
 		y += 40 + STAT_SPACE_Y;
 		paintStatObject(g, STAT_POS_X, y, PaintableStats.IMG_DAMAGE, PaintableStats.COLOR_DAMAGE,
-				"damage: " + MainZap.getPlayer().getBulletDamage() + " hp", activeUpgrades[1], hoveringBuys[1]);
+				"damage: " + MainZap.getPlayer().getBulletDamage() + " hp", activeUpgrades[1], hoveringBuys[1],
+				Shop.unlocked[5]);
 		y += 40 + STAT_SPACE_Y;
 		paintStatObject(g, STAT_POS_X, y, PaintableStats.IMG_EFFICIENCY, PaintableStats.COLOR_EFFICIENCY,
 				"ammo usage: " + cut(MainZap.getPlayer().getAmmoUsageFac(), DIGITS_FLOATSTATS) + "x", activeUpgrades[2],
-				hoveringBuys[2]);
+				hoveringBuys[2], Shop.unlocked[6]);
 		y += 40 + STAT_SPACE_Y;
 		paintStatObject(g, STAT_POS_X, y, PaintableStats.IMG_BULLETSPEED, PaintableStats.COLOR_BULLETSPEED,
 				"bullet speed: " + cut(MainZap.getPlayer().getBulletSpeed(), DIGITS_FLOATSTATS) + " p/t",
-				activeUpgrades[3], hoveringBuys[3]);
+				activeUpgrades[3], hoveringBuys[3], Shop.unlocked[7]);
 
 	}
 
 	private static void paintStatObject(Graphics2D g, int x, int y, BufferedImage img, Color c, String text, byte lvl,
-			boolean hovered) {
+			boolean hovered, boolean unlocked) {
 
 		g.setColor(Color.BLACK);
 		g.setStroke(STROK_TOPIC_FRAME);
@@ -424,6 +440,7 @@ public abstract class ShopSecUpgrade {
 		g.setFont(FONT_PRICE);
 		g.drawString(priceTable[lvl] + "", x + 411, y + FONT_PRICE.getSize() + 4);
 
+		if (unlocked) {
 		g.setColor(ShopSecBuy.COLOR_BUY);
 		g.setStroke(STROKE_UPGRADE);
 		g.drawRect(x + 490, y + 2, 76, 36);
@@ -434,6 +451,15 @@ public abstract class ShopSecUpgrade {
 		g.setColor(ShopSecBuy.COLOR_BUY);
 		g.setFont(FONT_UPGRADE);
 		g.drawString(TEXT_UPGRADE, x + 494, y + 33);
+		} else {
+			g.setColor(COLOR_LOCKED_BG);
+			g.fillRect(x - 3, y - 3, 575, 46);
+			g.setColor(COLOR_LOCKED_FG);
+			g.setFont(FONT_LOCKED_0);
+			g.drawString("[LOCKED]", x + 20 + 30, y + 23 + 2);
+			g.setFont(FONT_LOCKED_1);
+			g.drawString("License required", x + 120 + 30, y + 23 + 2);
+		}
 
 	}
 
@@ -610,6 +636,9 @@ public abstract class ShopSecUpgrade {
 		if ((extentionStates[selectedExtention] && selectedExtention != 3)
 				|| (selectedExtention == 3 && addedCannons == 2))
 			return; // Haste schon. Oder Kannonen ausgemaxt
+		// Freigeschaltet?
+		if (!Shop.unlocked[selectedExtention + 1])
+			return;
 		// -Preis:
 		if (selectedExtention == 0) {
 			priceDia = PRICE_MIRROR;
@@ -688,8 +717,9 @@ public abstract class ShopSecUpgrade {
 	}
 
 	public static void purchaseUpgrade(int index) {
-		if (priceTable[activeUpgrades[index]] > MainZap.getCrystals() || activeUpgrades[index] == 5)
-			return; // Nicht genug Knete oder alle schon gekauft
+		if (priceTable[activeUpgrades[index]] > MainZap.getCrystals() || activeUpgrades[index] == 5
+				|| !Shop.unlocked[index + 4])
+			return; // Nicht genug Knete oder alle schon gekauft oder nicht freigschaltet
 
 		MainZap.removeCrystals(priceTable[activeUpgrades[index]]);
 		activeUpgrades[index]++;

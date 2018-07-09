@@ -4,10 +4,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
-
 import battle.CombatObject;
 import battle.enemy.Enemy;
+import battle.looting.Storage;
 import battle.projectile.Projectile;
 import collision.Grid;
 import corecase.MainZap;
@@ -242,8 +241,8 @@ public class ArmyCombatProtocol extends AiProtocol {
 		// Umgebung abgehen
 		for (Enemy e : surrounding) {
 
-			if (e.isFriend() == getHost().isFriend())
-				continue; // Keinen der eigenen Sippschaft anvisieren
+			if (e.isFriend() == getHost().isFriend() || e instanceof Storage)
+				continue; // Keinen der eigenen Sippschaft oder Container anvisieren
 
 			// Da is was in Range
 			if (e.isInRange(getHost(), getLockRange()))

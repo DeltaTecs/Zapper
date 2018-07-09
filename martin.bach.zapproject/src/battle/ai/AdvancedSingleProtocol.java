@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import battle.CombatObject;
 import battle.enemy.Enemy;
+import battle.looting.Storage;
 import battle.projectile.Projectile;
 import collision.Collideable;
 import collision.Grid;
@@ -328,7 +329,7 @@ public class AdvancedSingleProtocol extends AiProtocol {
 		// Umgebung abgehen
 		for (Enemy e : surrounding) {
 
-			if (e.isFriend() == getHost().isFriend() || !e.isAlive())
+			if (e.isFriend() == getHost().isFriend() || !e.isAlive() || e instanceof Storage)
 				continue; // Keinen der eigenen Sippschaft oder Tote anvisieren
 
 			// Da is was in Range

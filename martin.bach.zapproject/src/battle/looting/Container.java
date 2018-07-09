@@ -5,17 +5,9 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-import battle.enemy.Enemy;
-import battle.projectile.Projectile;
 import battle.stage.Stage;
-import battle.stage.StageManager;
-import collision.Collideable;
-import collision.CollisionInformation;
-import collision.CollisionType;
 import corecase.MainZap;
-import gui.Crystal;
 import gui.Map;
-import gui.effect.ExplosionEffectPattern;
 import io.TextureBuffer;
 import lib.PaintingTask;
 
@@ -23,11 +15,14 @@ public class Container {
 
 	private Rock rock;
 	private Storage storage;
+	private int x, y;
 
 	public Container(int x, int y) {
 		rock = new Rock();
 		storage = new Storage(x, y);
 		rock.setPosition(x, y);
+		this.x = x;
+		this.y = y;
 	}
 
 	public void register(Stage s) {
@@ -36,7 +31,7 @@ public class Container {
 		storage.register();
 	}
 
-	public static void spawn(Stage stage) {
+	public static Container spawn(Stage stage) {
 
 		final Rectangle forbiddenZone = new Rectangle(Map.SIZE / 3, Map.SIZE / 3, Map.SIZE / 3, 2 * Map.SIZE / 3);
 
@@ -50,7 +45,19 @@ public class Container {
 		Container c = new Container(x, y);
 		c.register(stage);
 
-		System.out.println("container at " + x + " : " + y);
+		return c;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public Storage getStorage() {
+		return storage;
 	}
 
 }
@@ -100,50 +107,6 @@ class Rock implements PaintingTask {
 
 	public int getPosY() {
 		return posY;
-	}
-
-}
-
-class Storage extends Enemy {
-
-	private static final float SCALE = 2.0f;
-	private static final BufferedImage TEXTURE = TextureBuffer.get(TextureBuffer.NAME_CONTAINER);
-	private static final int HEALTH = 600;
-	private static final int MIN_CRYSTALS_PER_STAGE = 30;
-	private static final int MAX_CRYSTALS_PER_STAGE = 80;
-	
-
-	public Storage(int posX, int posY) {
-		super(posX, posY, 0, TEXTURE, SCALE, new CollisionInformation(30, CollisionType.COLLIDE_WITH_FRIENDS, false),
-				null, null, HEALTH, new ExplosionEffectPattern(5, 50), 0, 0, 0, false, null);
-	}
-	
-	@Override
-	public void die() {
-		super.die();
-		
-		int crystalAmount = MainZap.rand(MAX_CRYSTALS_PER_STAGE - MIN_CRYSTALS_PER_STAGE) + MIN_CRYSTALS_PER_STAGE;
-		crystalAmount *= StageManager.getActiveStage().getLvl() == 0 ? 1 : StageManager.getActiveStage().getLvl();
-		Crystal.spawn(this.getLocX(), this.getLocY(), crystalAmount, 100);
-	}
-
-	@Override
-	public void collide(Collideable c) {
-		if (!(c instanceof Projectile))
-			return;
-		if (((Projectile) c).getSender() == MainZap.getPlayer())
-			super.collide(c);
-	}
-
-	@Override
-	public void paint(Graphics2D g) {
-		if (MainZap.generalAntialize)
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-
-		super.paint(g);
-
-		if (MainZap.generalAntialize)
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 	}
 
 }

@@ -197,4 +197,10 @@ public class Collectable extends InteractiveObject implements Shockable {
 		this.unregisterTask = unregisterTask;
 	}
 
+	public AffineTransform getTextureTransform() {
+		return textureTransform;
+	}
+	
+	
+
 }

@@ -86,6 +86,7 @@ public abstract class TextureBuffer {
 	public static final String NAME_COLLECT_BULLET_DMG_UP_CORNER = "collectBulletDamageUp.png";
 	public static final String NAME_COLLECT_BULLET_RANGE_UP_CORNER = "collectBulletRangeUp.png";
 	public static final String NAME_COLLECT_RELOAD_UP_CORNER = "collectReloadSpeedUp.png";
+	public static final String NAME_COLLECT_CONTAINER_SPOTTER = "collectContainerSpotter.png";
 	public static final String NAME_CRYSTAL = "crystal.png";
 	public static final String NAME_CONTAINER = "container.png";
 	public static final String NAME_BUTTON_LVL_UP_ROUND = "nextLvlRound.png";
@@ -181,6 +182,7 @@ public abstract class TextureBuffer {
 		names.add(NAME_COLLECT_BULLET_RANGE_UP_CORNER);
 		names.add(NAME_COLLECT_BULLET_SPEED_UP_CORNER);
 		names.add(NAME_COLLECT_RELOAD_UP_CORNER);
+		names.add(NAME_COLLECT_CONTAINER_SPOTTER);
 		names.add(NAME_BUTTON_LVL_UP_ROUND);
 		names.add(NAME_BUTTON_LVL_UP_CORNER);
 		names.add(NAME_CRYSTAL);

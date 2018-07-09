@@ -162,5 +162,6 @@ public class ShipConfigGraphCalc {
 	public PaintableDescription getDescription() {
 		return description;
 	}
+	
 
 }

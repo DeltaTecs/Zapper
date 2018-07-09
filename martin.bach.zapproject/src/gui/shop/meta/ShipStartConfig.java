@@ -42,14 +42,14 @@ public class ShipStartConfig {
 	private WeaponPositioning weaponPosSingle;
 	private WeaponPositioning weaponPosDouble;
 	private WeaponPositioning weaponPosTriple;
-
+	private boolean lockable = false;
 
 
 	public ShipStartConfig(BufferedImage texture, TailManager tailmanager, float scale, int damage, float speed,
 			float projSpeed, float reloadWith, float reloadWithout, int hp, CollisionInformation collInfo,
 			int projRange, ProjectileDesign projDesign, ExplosionEffectPattern explPattern, float ammoUsage,
 			String name, String description, int price, WeaponPositioning weaponPositionsSingle,
-			WeaponPositioning weaponPositionsDouble, WeaponPositioning weaponPositionsTriple) {
+			WeaponPositioning weaponPositionsDouble, WeaponPositioning weaponPositionsTriple, boolean lockable) {
 		this.texture = texture;
 		this.tailManager = tailmanager;
 		this.scale = scale;
@@ -70,6 +70,7 @@ public class ShipStartConfig {
 		this.weaponPosSingle = weaponPositionsSingle;
 		this.weaponPosDouble = weaponPositionsDouble;
 		this.weaponPosTriple = weaponPositionsTriple;
+		this.lockable = lockable;
 	}
 
 	public static void loadAll() {
@@ -188,4 +189,7 @@ public class ShipStartConfig {
 		return weaponPosTriple;
 	}
 
+	public boolean isLockable() {
+		return lockable;
+	}
 }

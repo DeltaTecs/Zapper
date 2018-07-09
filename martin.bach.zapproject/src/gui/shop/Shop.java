@@ -21,6 +21,7 @@ public abstract class Shop {
 	public static final int Y = 60;
 	public static final int HEIGHT_CENTER = (3 * Frame.SIZE / 7);
 	public static final int HEIGHT_INFOBAR = (2 * Frame.SIZE / 7);
+	public static boolean[] unlocked = new boolean[11]; // 3 extentions, 4 upgrades, 3 ships, 1 Container spotter
 	private static final int BORDERWIDTH = 8;
 	public static final Rectangle BOUNDS = new Rectangle(X, Y, Frame.SIZE - 2 * X, Frame.SIZE - 2 * Y);
 	public static final Rectangle BOUNDS_CENTER_TOTAL = new Rectangle(X, HEIGHT_INFOBAR, BOUNDS.width, HEIGHT_CENTER);
@@ -159,7 +160,6 @@ public abstract class Shop {
 			return; // Bereits offen oder Spieler tot
 		open = true;
 		directory = ShopDirectory.MENU;
-		// &&& Öffnungsprozess
 	}
 
 	public static void close() {
